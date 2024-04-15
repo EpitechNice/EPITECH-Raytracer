@@ -128,12 +128,8 @@ COMMAND 2
 ## :wave: Contributing
 
 <a href="https://github.com/Tech0ne"> <img src="https://github.com/Tech0ne.png" width=64 height=64/> </a>&emsp;
-<a href="https://github.com/AelionDW
-"> <img src="https://github.com/AelionDW
-.png" width=64 height=64/> </a>&emsp;
-<a href="https://github.com/Alexandre-Gh
-"> <img src="https://github.com/Alexandre-Gh
-.png" width=64 height=64/> </a>&emsp;
+<a href="https://github.com/AelionDW"> <img src="https://github.com/AelionDW.png" width=64 height=64/> </a>&emsp;
+<a href="https://github.com/Alexandre-Gh"> <img src="https://github.com/Alexandre-Gh.png" width=64 height=64/> </a>&emsp;
 
 Contributions are always welcome!
 
