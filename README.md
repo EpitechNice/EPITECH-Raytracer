@@ -95,7 +95,7 @@ COMMAND 2
 Clone the project
 
 ```bash
-PROJECT_URL
+https://github.com/EpitechNice/EPITECH-Raytracer
 ```
 INSTRUCTION 1
 ```bash
@@ -127,13 +127,19 @@ COMMAND 2
 
 ## :wave: Contributing
 
-<a href="https://github.com/Tech0ne"> <img src="https://github.com/Tech0ne.png" width=64 height=64/> </a>
+<a href="https://github.com/Tech0ne"> <img src="https://github.com/Tech0ne.png" width=64 height=64/> </a>&emsp;
+<a href="https://github.com/AelionDW
+"> <img src="https://github.com/AelionDW
+.png" width=64 height=64/> </a>&emsp;
+<a href="https://github.com/Alexandre-Gh
+"> <img src="https://github.com/Alexandre-Gh
+.png" width=64 height=64/> </a>&emsp;
 
 Contributions are always welcome!
 
 ### :scroll: Code of Conduct
 
-Please read the [Code of Conduct](PROJECT_URL/CODE_OF_CONDUCT.md)
+Please read the [Code of Conduct](https://github.com/EpitechNice/EPITECH-Raytracer/CODE_OF_CONDUCT.md)
 
 ## :grey_question: FAQ
 
@@ -145,13 +151,13 @@ Please read the [Code of Conduct](PROJECT_URL/CODE_OF_CONDUCT.md)
 
 ## :warning: License
 
-Distributed under the MIT License. See LICENSE.txt for more information.
+Distributed under the MIT License. See LICENSE for more information.
 
 ## :handshake: Contact
 
-Tech0ne - [link](https://tech0ne.github.io) - clement.piasco@epitech.eu
+Tech0ne - [website](https://tech0ne.github.io) - clement.piasco@epitech.eu
 
-Project Link: [PROJECT_URL](PROJECT_URL)
+Project Link: [https://github.com/EpitechNice/EPITECH-Raytracer](https://github.com/EpitechNice/EPITECH-Raytracer)
 
 ## :gem: Acknowledgements
 
