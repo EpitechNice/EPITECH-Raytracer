@@ -1,11 +1,11 @@
 <div align='center'>
 
-<img src=IMAGE alt="logo" width=WIDTH height=HEIGHT />
+<img src=./assets/icons/icon.png alt="logo" width=64 height=64 />
 
-<h1>TOPIC</h1>
-<p>PROJECT_DESCRIPTION</p>
+<h1>Raytracer</h1>
+<p>Your CPU goes brrrrr!</p>
 
-<h4> <span> · </span> <a href="https://github.com/Tech0ne/PROJECT_NAME/doc/"> Documentation </a> <span> · </span> <a href="https://github.com/Tech0ne/PROJECT_NAME/issues"> Report Bug </a> <span> · </span> <a href="https://github.com/Tech0ne/PROJECT_NAME/issues"> Request Feature </a> </h4>
+<h4> <span> · </span> <a href="https://github.com/EpitechNice/EPITECH-Raytracer/"> Documentation </a> <span> · </span> <a href="https://github.com/EpitechNice/EPITECH-Raytracer/issues"> Report Bug </a> <span> · </span> <a href="https://github.com/EpitechNice/EPITECH-Raytracer/issues"> Request Feature </a> </h4>
 
 
 </div>
@@ -28,9 +28,6 @@
 
 
 ### :space_invader: Tech Stack
-<details> <summary>Client</summary> <ul>
-<li><a href="CLIENT URL">CLIENT NAME</a></li>
-</ul> </details>
 <details> <summary>Server</summary> <ul>
 <li><a href="SERVER URL">SERVER NAME</a></li>
 </ul> </details>
