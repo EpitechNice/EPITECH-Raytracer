@@ -105,7 +105,17 @@ jobs:
           embed-url: "${{ github.event.head_commit.url }}"
           embed-author-url: "https://github.com/${{ github.actor }}"
           embed-author-icon-url: "https://github.com/${{ github.actor }}.png"
-          embed-description: "**${{ github.event.repository.owner.name }}/${{ github.event.repository.name }}**\n[${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})\nCommit ID: ${{ github.event.head_commit.id }}\nPushed by ${{ github.event.pusher.email }}\nCompilation type: ${{ steps.check-type.outputs.PROJECT_TYPE }}\nCompilation output: ```${{ steps.compilation.outputs.COMPILATION_OUTPUT }}\n```\nCompilation time: `${{ steps.build-time.outputs.TIME_TAKEN }}`\nUnit testing output: ```${{ steps.unit-tests.outputs.UNIT_TESTS_OUTPUT }}\n```\nUnit testing time: `${{ steps.unit-tests-time.outputs.TIME_TAKEN }}`"
+          embed-description: "**${{ github.event.repository.owner.name }}/${{ github.event.repository.name }}**
+[${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})
+Commit ID: ${{ github.event.head_commit.id }}
+Pushed by ${{ github.event.pusher.email }}
+Compilation type: ${{ steps.check-type.outputs.PROJECT_TYPE }}
+Compilation output: ```${{ steps.compilation.outputs.COMPILATION_OUTPUT }}
+```
+Compilation time: `${{ steps.build-time.outputs.TIME_TAKEN }}`
+Unit testing output: ```${{ steps.unit-tests.outputs.UNIT_TESTS_OUTPUT }}
+```
+Unit testing time: `${{ steps.unit-tests-time.outputs.TIME_TAKEN }}`"
 
       - name: Send error message to Discord on failure
         if: always() && failure()
@@ -121,4 +131,14 @@ jobs:
           embed-url: "${{ github.event.head_commit.url }}"
           embed-author-url: "https://github.com/${{ github.actor }}"
           embed-author-icon-url: "https://github.com/${{ github.actor }}.png"
-          embed-description: "**${{ github.event.repository.owner.name }}/${{ github.event.repository.name }}**\n[${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})\nCommit ID: ${{ github.event.head_commit.id }}\nPushed by ${{ github.event.pusher.email }}\nCompilation type: ${{ steps.check-type.outputs.PROJECT_TYPE }}\nCompilation output: ```${{ steps.compilation.outputs.COMPILATION_OUTPUT }}\n```\nCompilation time: `${{ steps.build-time.outputs.TIME_TAKEN }}`\nUnit testing output: ```${{ steps.unit-tests.outputs.UNIT_TESTS_OUTPUT }}\n```\nUnit testing time: `${{ steps.unit-tests-time.outputs.TIME_TAKEN }}`"
+          embed-description: "**${{ github.event.repository.owner.name }}/${{ github.event.repository.name }}**
+          [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})
+          Commit ID: ${{ github.event.head_commit.id }}
+          Pushed by ${{ github.event.pusher.email }}
+          Compilation type: ${{ steps.check-type.outputs.PROJECT_TYPE }}
+          Compilation output: ```${{ steps.compilation.outputs.COMPILATION_OUTPUT }}
+          ```
+          Compilation time: `${{ steps.build-time.outputs.TIME_TAKEN }}`
+          Unit testing output: ```${{ steps.unit-tests.outputs.UNIT_TESTS_OUTPUT }}
+          ```
+          Unit testing time: `${{ steps.unit-tests-time.outputs.TIME_TAKEN }}`"
