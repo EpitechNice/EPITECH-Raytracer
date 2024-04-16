@@ -6,6 +6,7 @@ echo "=== Started the Unit testing ==="
 cmake -S . -B build
 cmake --build build
 echo "===== Running Tests ====="
-cd build && ctest --output-on-failure
+cd build
+ctest --output-on-failure || exit 1
 
 echo "=== Unit testing ended gracefully ==="
