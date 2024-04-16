@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(
-    PROJECT_NAME
+    raytracer
 )
 
 set(
@@ -13,19 +13,19 @@ add_compile_options(
 
 
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-    ${PROJECT_SOURCE_DIR}/PROJECT_NAME
+    ${PROJECT_SOURCE_DIR}/raytracer
 )
 
-add_executable(PROJECT_NAME
+add_executable(raytracer
     src/main.cpp
 )
 
-target_include_directories(PROJECT_NAME PUBLIC
+target_include_directories(raytracer PUBLIC
     ./includes/
 )
 
-add_custom_command(TARGET PROJECT_NAME
+add_custom_command(TARGET raytracer
     POST_BUILD
     COMMAND
-        cp PROJECT_NAME ${PROJECT_SOURCE_DIR}/PROJECT_NAME
+        cp raytracer ${PROJECT_SOURCE_DIR}/raytracer
 )
