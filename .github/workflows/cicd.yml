@@ -15,7 +15,7 @@ jobs:
       - name: Install build tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake make g++ gcc
+          sudo apt-get install -y build-essential cmake make g++ gcc python3
 
       - name: Check for compilation type
         id: check-type
@@ -47,7 +47,7 @@ jobs:
             echo "=== Building project ==="
             make
             echo EOF
-            make clean
+            make clean >/dev/null 2>&1
             if [ '${{ steps.check-type.outputs.PROJECT_TYPE }}' == 'cmake' ]; then
               cd ..
             fi
@@ -73,7 +73,9 @@ jobs:
           {
             echo 'UNIT_TESTS_OUTPUT<<EOF'
             echo "=== Running unit tests ==="
-            bash -c "cd ./tests/ && ./run_unit_tests.sh"
+            cd ./tests/
+            ./run_unit_tests.sh
+            cd ./../
             echo EOF
           } >> "$GITHUB_OUTPUT"
 

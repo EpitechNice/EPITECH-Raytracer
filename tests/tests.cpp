@@ -19,5 +19,5 @@ testing::AssertionResult IsEven(int n)
 TEST(TestType, IsEven)
 {
     EXPECT_TRUE(IsEven(8));
-    EXPECT_TRUE(IsEven(7));
+    EXPECT_FALSE(IsEven(7));
 }
