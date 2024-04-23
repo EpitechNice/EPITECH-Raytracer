@@ -12,5 +12,6 @@
     #include "Exceptions.hpp"
 
     #include "Image.hpp"
+    #include "Math.hpp"
 
 #endif

@@ -39,6 +39,8 @@ namespace Exceptions
 
     std::ostream& operator<<(std::ostream& os, const Exceptions::Exception& obj);
 
+    // ========== Errors ==========
+
     class InvalidSizeError: public Exceptions::Exception
     {
         public:
@@ -47,6 +49,17 @@ namespace Exceptions
             Exceptions::Exception(what, position)
             {}
     };
+
+    class LogicError: public Exceptions::Exception
+    {
+        public:
+            LogicError(std::string what = "Asked action is not logical",
+                               std::pair<std::string, std::size_t> position = {"", 0}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
+    // ========== Warnings ==========
 
     class FileExtensionWarning: public Exceptions::Exception
     {
