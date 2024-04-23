@@ -98,7 +98,7 @@ jobs:
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          content: "||@everyone||"
+          content: ""
           username: "Github - ${{ github.actor }}"
           avatar-url: "https://github.com/${{ github.actor }}.png"
           embed-title: ":white_check_mark: **Action Successful** :white_check_mark:"
@@ -132,7 +132,7 @@ Unit testing time: `${{ steps.unit-tests-time.outputs.TIME_TAKEN }}`"
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          content: "||@everyone||"
+          content: ""
           username: "Github - ${{ github.actor }}"
           avatar-url: "https://github.com/${{ github.actor }}.png"
           embed-title: ":x: **Action failed** :x:"

@@ -1,5 +1,5 @@
 .vscode/
 build/
+raytracer
 *.a
 *.o
-BIN
