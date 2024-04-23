@@ -7,6 +7,10 @@ set(
     CMAKE_CXX_STANDARD 20
 )
 
+set(
+    CMAKE_CXX_ABI_COMPILED ON
+)
+
 add_compile_options(
     -Wall -Wextra -Werror
 )
@@ -17,6 +21,10 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 )
 
 add_executable(raytracer
+    src/Exceptions.cpp
+    src/Image.cpp
+    src/Math.cpp
+    src/Ray.cpp
     src/main.cpp
 )
 

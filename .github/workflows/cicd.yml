@@ -46,8 +46,8 @@ jobs:
             make clean
             echo "=== Building project ==="
             make
+            make clean
             echo EOF
-            make clean >/dev/null 2>&1
             if [ '${{ steps.check-type.outputs.PROJECT_TYPE }}' == 'cmake' ]; then
               cd ..
             fi
@@ -159,4 +159,10 @@ Compilation time: `${{ steps.build-time.outputs.TIME_TAKEN }}`
 Unit testing output: ```${{ steps.unit-tests.outputs.UNIT_TESTS_OUTPUT }}
 ```
 
-Unit testing time: `${{ steps.unit-tests-time.outputs.TIME_TAKEN }}`"
+Unit testing time: `${{ steps.unit-tests-time.outputs.TIME_TAKEN }}`
+
+Coding style output: ```${{ steps.coding-style.outputs.CODING_STYLE_OUTPUT }}
+```
+
+Coding style time: `${{ steps.coding-style-time.outputs.TIME_TAKEN }}`"
+

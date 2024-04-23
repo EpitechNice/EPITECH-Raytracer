@@ -9,5 +9,8 @@
     #define INCLUDED_INCLUDES_HPP
 
     #include "headers.hpp"
+    #include "Exceptions.hpp"
+
+    #include "Image.hpp"
 
 #endif
