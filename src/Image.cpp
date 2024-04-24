@@ -40,6 +40,12 @@ Image::Image(std::vector<std::vector<Image::color_t>> colors)
     this->getSize();
 }
 
+Image::Image(const Image& other)
+{
+    this->_colors = other._colors;
+    this->getSize();
+}
+
 std::pair<std::size_t, std::size_t> Image::getSize()
 {
     if (!this->_colors.size())
@@ -64,11 +70,11 @@ void Image::setPos(std::pair<std::size_t, std::size_t> position, Image::color_t 
 {
     if (position.first >= this->_size.first || position.second >= this->_size.second)
         throw Exceptions::InvalidSizeError("Trying to access position (" +
-                                            std::to_string(position.first) + ", " +
-                                            std::to_string(position.second) +
-                                            ") where image is of size (" +
-                                            std::to_string(this->_size.first) + ", " +
-                                            std::to_string(this->_size.second) + ").",
+                                           std::to_string(position.first) + ", " +
+                                           std::to_string(position.second) +
+                                           ") while image is of size (" +
+                                           std::to_string(this->_size.first) + ", " +
+                                           std::to_string(this->_size.second) + ").",
             FILE_INFOS);
     this->_colors[position.second][position.first] = color;
 }
@@ -95,14 +101,14 @@ bool Image::save(std::string filename)
     file << this->_size.first << " " << this->_size.second << std::endl;
     file << "255" << std::endl;
     for (std::size_t i = 0; i < this->_colors.size(); i++) {
-        file << "# ===== START " << i << " =====" << std::endl;
+        file << "# ===== START LINE " << i << " =====" << std::endl;
         for (std::size_t j = 0; j < this->_colors[i].size(); j++)
             file << static_cast<int>(this->_colors[i][j].colors[0]) << "\t" <<
                     static_cast<int>(this->_colors[i][j].colors[1]) << "\t" <<
                     static_cast<int>(this->_colors[i][j].colors[2]) << "\t" << std::endl;
                     // this->_colors[i][j].colors[3] << "\t";
                     // Seems like alpha ain't used in PPM format
-        file << "# ===== END " << i << " =====" << std::endl;
+        file << "# ===== END LINE " << i << " =====" << std::endl;
     }
     return true;
 }

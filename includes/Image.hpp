@@ -40,7 +40,7 @@ class Image
         Image(std::pair<std::size_t, std::size_t> size);
         Image(std::pair<std::size_t, std::size_t> size, color_t color);
         Image(std::vector<std::vector<Image::color_t>> colors);
-        Image(const Image& colors);
+        Image(const Image& other);
         ~Image() = default;
 
         std::pair<std::size_t, std::size_t> getSize();
