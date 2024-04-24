@@ -24,12 +24,20 @@
 namespace Raytracer
 {
     class Ray {
-        public:
+        private:
             Math::Point3D _origin;
-             Math::Vector3D _direction;
-             Ray();
-             Ray(Math::Point3D origin, Math::Vector3D direction);
-             ~Ray();
+            Math::Vector3D _direction;
+
+        public:
+            Ray();
+            Ray(Math::Point3D origin, Math::Vector3D direction);
+            ~Ray() = default;
+
+            Math::Point3D getOrigin() const;
+            Math::Vector3D getdirection() const;
+            void setOrigin(Math::Point3D origin);
+            void setDirection(Math::Vector3D origin);
+
     };
 }
 #endif

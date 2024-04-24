@@ -36,10 +36,15 @@ namespace Math
             double y = 0;
             double z = 0;
             Point3D();
-            Point3D(double x, double y, double z);
+            Point3D(double _zx, double _y, double _z);
+            Point3D(const Point3D& other);
 
             std::string str() const;
             Vector3D translation(const Point3D& other) const;
+
+            Point3D& operator=(const Point3D& other);
+
+            Point3D operator-() const;
 
             Point3D operator+(const Vector3D& other) const;
             Point3D operator-(const Vector3D& other) const;
@@ -62,11 +67,16 @@ namespace Math
             double y = 0;
             double z = 0;
             Vector3D();
-            Vector3D(double x, double y, double z);
+            Vector3D(double _x, double _y, double _z);
+            Vector3D(const Vector3D& other);
 
             std::string str() const;
             double length() const;
             Vector3D normalised();
+
+            Vector3D& operator=(const Vector3D& other);
+
+            Vector3D operator-() const;
 
             Vector3D operator+(const Vector3D& other) const;
             Vector3D operator-(const Vector3D& other) const;

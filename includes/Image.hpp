@@ -47,6 +47,8 @@ class Image
         void fill(std::pair<std::size_t, std::size_t> size, Image::color_t color);
         void setPos(std::pair<std::size_t, std::size_t> position, Image::color_t color);
         bool save(std::string filename);
+
+        Image& operator=(const Image& other);
 };
 
 #endif

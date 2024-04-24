@@ -22,12 +22,13 @@ namespace Math
     Point3D::Point3D()
     {}
 
-    Point3D::Point3D(double x, double y, double z)
-    {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
+    Point3D::Point3D(double _x, double _y, double _z):
+        x(_x), y(_y), z(_z)
+    {}
+
+    Point3D::Point3D(const Point3D& other):
+        x(other.x), y(other.y), z(other.z)
+    {}
 
     std::string Point3D::get_class_name() const
     {
@@ -57,6 +58,19 @@ namespace Math
     Vector3D Point3D::translation(const Point3D& other) const
     {
         return Vector3D(other.x - this->x, other.y - this->y, other.z - this->z);
+    }
+
+    Point3D& Point3D::operator=(const Point3D& other)
+    {
+        this->x = other.x;
+        this->y = other.y;
+        this->z = other.z;
+        return *this;
+    }
+
+    Point3D Point3D::operator-() const
+    {
+        return Point3D(-this->x, -this->y, -this->z);
     }
 
     Vector3D Point3D::operator+(const Point3D& other) const
@@ -100,15 +114,17 @@ namespace Math
     Vector3D::Vector3D()
     {}
 
-    Vector3D::Vector3D(double x, double y, double z)
-    {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
+    Vector3D::Vector3D(double _x, double _y, double _z):
+        x(_x), y(_y), z(_z)
+    {}
+
+    Vector3D::Vector3D(const Vector3D& other):
+        x(other.x), y(other.y), z(other.z)
+    {}
 
     // Feels like shit to write the same code again and again, but it's either that or make a "Class" abstract class, as yall don't seem in the mood for a Utils namespace
     // No worries love, I'll make the "Class" abstract for the Zappy
+    // Well if the group is okay for that type of thing
     std::string Vector3D::get_class_name() const
     {
         int status = -4;
@@ -144,6 +160,19 @@ namespace Math
     {
         double length = this->length();
         return Vector3D(this->x / length, this->y / length, this->z / length);
+    }
+
+    Vector3D& Vector3D::operator=(const Vector3D& other)
+    {
+        this->x = other.x;
+        this->y = other.y;
+        this->z = other.z;
+        return *this;
+    }
+
+    Vector3D Vector3D::operator-() const
+    {
+        return Vector3D(-this->x, -this->y, -this->z);
     }
 
     Vector3D Vector3D::operator+(const Vector3D& other) const

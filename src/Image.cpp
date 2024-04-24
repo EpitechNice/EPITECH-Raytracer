@@ -106,3 +106,10 @@ bool Image::save(std::string filename)
     }
     return true;
 }
+
+Image& Image::operator=(const Image& other)
+{
+    this->_colors = other._colors;
+    this->getSize();
+    return *this;
+}
