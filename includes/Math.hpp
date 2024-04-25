@@ -29,7 +29,7 @@ namespace Math
     class Point3D
     {
         private:
-            std::string get_class_name() const;
+            std::string getClassName() const;
 
         public:
             double x = 0;
@@ -60,7 +60,7 @@ namespace Math
     class Vector3D
     {
         private:
-            std::string get_class_name() const;
+            std::string getClassName() const;
 
         public:
             double x = 0;

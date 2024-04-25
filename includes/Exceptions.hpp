@@ -32,7 +32,7 @@ namespace Exceptions
         public:
             Exception(std::string what = "An exception occured !",
                       std::pair<std::string, std::size_t> position = {"", 0});
-            std::string get_class_name() const;
+            std::string getClassName() const;
             std::pair<std::string, std::size_t> get_position() const;
             const char* what() const noexcept override;
     };

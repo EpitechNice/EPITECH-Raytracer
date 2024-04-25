@@ -30,7 +30,7 @@ namespace Math
         x(other.x), y(other.y), z(other.z)
     {}
 
-    std::string Point3D::get_class_name() const
+    std::string Point3D::getClassName() const
     {
         int status = -4;
         const char* name = typeid(*this).name();
@@ -47,9 +47,9 @@ namespace Math
     std::string Point3D::str() const
     {
         std::stringstream ss;
-        ss <<   "<" << this->get_class_name() << " at " <<
+        ss <<   "<" << this->getClassName() << " at " <<
                 std::hex << this <<
-                " (" << std::to_string(this->x) << ", " <<
+                ": (" << std::to_string(this->x) << ", " <<
                 std::to_string(this->y) << ", " <<
                 std::to_string(this->z) << ")>";
         return ss.str();
@@ -125,7 +125,7 @@ namespace Math
     // Feels like shit to write the same code again and again, but it's either that or make a "Class" abstract class, as yall don't seem in the mood for a Utils namespace
     // No worries love, I'll make the "Class" abstract for the Zappy
     // Well if the group is okay for that type of thing
-    std::string Vector3D::get_class_name() const
+    std::string Vector3D::getClassName() const
     {
         int status = -4;
         const char* name = typeid(*this).name();
@@ -142,12 +142,12 @@ namespace Math
     std::string Vector3D::str() const
     {
         std::stringstream ss;
-        ss <<   "<" << this->get_class_name() << " at " <<
+        ss <<   "<" << this->getClassName() << " at " <<
                 std::hex << this <<
-                " ((" << std::to_string(this->x) << ", " <<
+                ": direction=(" << std::to_string(this->x) << ", " <<
                 std::to_string(this->y) << ", " <<
                 std::to_string(this->z) << "), length=" <<
-                std::to_string(this->length()) << ")>";
+                std::to_string(this->length()) << ">";
         return ss.str();
     }
 

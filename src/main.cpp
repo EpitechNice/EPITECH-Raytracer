@@ -11,5 +11,7 @@ int main(int argc, char** argv)
 {
     (void)argc;
     (void)argv;
+    Raytracer::Objects::Sphere s;
+    std::cout << s << std::endl;
     return 0;
 }

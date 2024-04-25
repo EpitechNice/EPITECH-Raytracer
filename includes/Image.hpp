@@ -34,7 +34,6 @@ class Image
 
     private:
         std::vector<std::vector<Image::color_t>> _colors;
-        std::pair<std::size_t, std::size_t> _size;
     public:
         Image();
         Image(std::pair<std::size_t, std::size_t> size);
@@ -43,12 +42,20 @@ class Image
         Image(const Image& other);
         ~Image() = default;
 
-        std::pair<std::size_t, std::size_t> getSize();
+        std::string getClassName() const;
+        std::string str() const;
+
+        Image::color_t getMedianColor() const;
+
+        std::pair<std::size_t, std::size_t> getSize() const;
         void fill(std::pair<std::size_t, std::size_t> size, Image::color_t color);
         void setPos(std::pair<std::size_t, std::size_t> position, Image::color_t color);
         bool save(std::string filename);
+        double ratio() const;
 
         Image& operator=(const Image& other);
 };
+
+std::ostream& operator<<(std::ostream& os, const Image& obj);
 
 #endif

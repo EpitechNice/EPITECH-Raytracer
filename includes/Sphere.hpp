@@ -21,29 +21,35 @@
     #define INCLUDED_SPHERE_HPP
 
 #include "headers.hpp"
+#include "Object.hpp"
 #include "Math.hpp"
 #include "Ray.hpp"
 
 namespace Raytracer
 {
-    class Sphere {
-        private:
-            const double _radius;
-        public:
-            Math::Point3D _origin;
+    namespace Objects
+    {
+        class Sphere: public Raytracer::AObject
+        {
+            private:
+                double _radius;
 
-            //Construct, Destruct
-            Sphere();
-            Sphere(Math::Point3D origin, double radius);
-            ~Sphere();
+            public:
+                Sphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
+                       Raytracer::Material material = Raytracer::Material(),
+                       double radius = 1);
+                ~Sphere() = default;
 
-//Return True if ray intersects with the sphere
-            bool hits(Raytracer::Ray ray);
+                std::string str() const;
 
-            //Getter
-            double getRadius();
+                double getRadius() const;
 
-    };
+                bool does_hit(const Ray& other) const;
+                Ray bounce(const Ray& other) const;
+        };
+
+        std::ostream& operator<<(std::ostream& os, const Sphere& obj);
+    }
 }
 
 #endif

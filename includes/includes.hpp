@@ -13,5 +13,9 @@
 
     #include "Image.hpp"
     #include "Math.hpp"
+    #include "Object.hpp"
+
+    #include "Ray.hpp"
+    #include "Sphere.hpp"
 
 #endif

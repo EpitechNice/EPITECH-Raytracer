@@ -22,9 +22,12 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 
 add_executable(raytracer
     src/Exceptions.cpp
+    src/Material.cpp
+    src/Object.cpp
     src/Image.cpp
     src/Math.cpp
     src/Ray.cpp
+    src/Sphere.cpp
     src/main.cpp
 )
 
