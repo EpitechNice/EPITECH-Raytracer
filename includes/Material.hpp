@@ -20,6 +20,7 @@
 #ifndef INCLUDED_MATERIAL_HPP
     #define INCLUDED_MATERIAL_HPP
 
+#include "configs.hpp"
 #include "headers.hpp"
 #include "Math.hpp"
 #include "Image.hpp"

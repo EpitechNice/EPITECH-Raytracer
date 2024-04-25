@@ -22,7 +22,7 @@ namespace Raytracer
     Material::Material()
     {
         Image::color_t color;
-        color._value = 0xfffb00ff;
+        color._value = DEFAULT_COLOR;
         this->_patern = Image({10, 10}, color);
     }
 

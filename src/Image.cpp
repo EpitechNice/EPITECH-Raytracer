@@ -125,6 +125,21 @@ void Image::setPos(std::pair<std::size_t, std::size_t> position, Image::color_t 
     this->_colors[position.second][position.first] = color;
 }
 
+void Image::resize(std::pair<std::size_t, std::size_t> size, Image::color_t background)
+{
+    std::vector<std::vector<Image::color_t>> colors = this->_colors;
+
+    this->fill(size, background);
+    for (std::size_t i = 0; i < colors.size(); i++) {
+        for (std::size_t j = 0; j < colors[i].size(); j++) {
+            try {
+                this->setPos({j, i}, colors[i][j]);
+            } catch (const Exceptions::Exception& e)
+            {}
+        }
+    }
+}
+
 bool Image::save(std::string filename)
 {
     std::size_t ext_pos = filename.find_last_of('.');
@@ -165,6 +180,17 @@ double Image::ratio() const
 {
     std::pair<std::size_t, std::size_t> size = this->getSize();
     return double(size.first) / double(size.second);
+}
+
+void Image::setRatio(double ratio)
+{
+    std::pair<std::size_t, std::size_t> size = this->getSize();
+    int height = int(size.first / ratio);
+    Image::color_t color;
+
+    color._value = DEFAULT_COLOR;
+    height = (height < 1) ? 1 : height;
+    this->resize({size.first, height}, color);
 }
 
 Image& Image::operator=(const Image& other)

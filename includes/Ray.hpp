@@ -33,11 +33,11 @@ namespace Raytracer
             Ray(Math::Point3D origin, Math::Vector3D direction);
             ~Ray() = default;
 
-            Math::Point3D getOrigin() const;
-            Math::Vector3D getdirection() const;
             void setOrigin(Math::Point3D origin);
             void setDirection(Math::Vector3D origin);
 
+            const Math::Point3D& getOrigin() const;
+            const Math::Vector3D& getdirection() const;
     };
 }
 #endif

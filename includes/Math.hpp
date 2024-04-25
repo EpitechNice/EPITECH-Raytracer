@@ -72,7 +72,9 @@ namespace Math
 
             std::string str() const;
             double length() const;
-            Vector3D normalised();
+            Vector3D normalised() const;
+
+            static Vector3D makeFromNormalized(const Vector3D& obj, double length);
 
             Vector3D& operator=(const Vector3D& other);
 

@@ -20,6 +20,7 @@
 #ifndef INCLUDED_IMAGE_HPP
     #define INCLUDED_IMAGE_HPP
 
+    #include "configs.hpp"
     #include "headers.hpp"
     #include "Exceptions.hpp"
 
@@ -50,8 +51,10 @@ class Image
         std::pair<std::size_t, std::size_t> getSize() const;
         void fill(std::pair<std::size_t, std::size_t> size, Image::color_t color);
         void setPos(std::pair<std::size_t, std::size_t> position, Image::color_t color);
+        void resize(std::pair<std::size_t, std::size_t> size, Image::color_t background);
         bool save(std::string filename);
         double ratio() const;
+        void setRatio(double ratio);
 
         Image& operator=(const Image& other);
 };

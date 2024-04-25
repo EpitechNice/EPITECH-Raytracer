@@ -156,11 +156,17 @@ namespace Math
         return std::cbrt((std::pow(this->x, 3) + std::pow(this->y, 3) + std::pow(this->z, 3)));
     }
 
-    Vector3D Vector3D::normalised()
+    Vector3D Vector3D::normalised() const
     {
         double length = this->length();
         return Vector3D(this->x / length, this->y / length, this->z / length);
     }
+
+    Vector3D Vector3D::makeFromNormalized(const Vector3D& obj, double length)
+    {
+        return obj.normalised() * length;
+    }
+
 
     Vector3D& Vector3D::operator=(const Vector3D& other)
     {
