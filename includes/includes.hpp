@@ -11,7 +11,9 @@
     #include "headers.hpp"
     #include "Exceptions.hpp"
 
+    #include "Camera.hpp"
     #include "Image.hpp"
     #include "Math.hpp"
+    #include "Sphere.hpp"
 
 #endif

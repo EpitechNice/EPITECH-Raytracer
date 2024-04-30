@@ -26,6 +26,8 @@ add_executable(raytracer
     src/Math.cpp
     src/Ray.cpp
     src/main.cpp
+    src/Sphere.cpp
+    src/Camera.cpp
 )
 
 target_include_directories(raytracer PUBLIC
