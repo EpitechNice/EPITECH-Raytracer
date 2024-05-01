@@ -26,6 +26,7 @@ add_executable(raytracer
     src/Image.cpp
     src/Ray.cpp
     src/Core.cpp
+    src/Camera.cpp
     # src/main.cpp
     src/mmain.cpp
     src/Materials/Material.cpp

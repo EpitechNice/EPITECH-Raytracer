@@ -20,23 +20,26 @@
 
 #include "headers.hpp"
 #include "includes.hpp"
+#include "Camera.hpp"
 
-class Core
-{
-    private:
-        libconfig::Config _config;
-        std::vector<Raytracer::IObject> _objectList;
-    protected:
-    public:
-        Core(const std::string sceneFilePath);
-        ~Core() = default;
+namespace Raytracer {
+    class Core
+    {
+        private:
+            libconfig::Config _config;
+            // std::vector<Raytracer::IObject> _objectList;
+            Raytracer::Camera _camera;
+        protected:
+        public:
+            Core(const std::string sceneFilePath);
+            ~Core() = default;
 
-        //Config
-        void setConfig(const std::string sceneFilePath);
-        void loadConfig();
-        libconfig::Config getConfig() const;
-
-};
+            //Config
+            void setConfig(const std::string sceneFilePath);
+            void loadConfig(const std::string sceneFilePath);
+            void createCamera();
+    };
+}
 
 #endif
 

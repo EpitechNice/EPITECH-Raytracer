@@ -11,6 +11,9 @@
     #include "headers.hpp"
     #include "Exceptions.hpp"
 
+    #include "Core.hpp"
+    #include "Camera.hpp"
+
     #include "Image.hpp"
     #include "Math.hpp"
     #include "Objects/Object.hpp"
