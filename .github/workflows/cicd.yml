@@ -16,7 +16,7 @@ jobs:
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake make g++ gcc
+          sudo apt-get install -y build-essential cmake make g++ gcc libconfig++-dev
 
       - name: Check for compilation type
         id: check-type
