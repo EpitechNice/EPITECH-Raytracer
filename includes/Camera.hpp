@@ -25,13 +25,21 @@ namespace Raytracer
 {
     class Camera {
     private:
-        int _width;
-        int _height;
+        typedef struct {
+            int width;
+            int height;
+        } resolution;
+
         Math::Point3D _position;
         Math::Point3D _rotation;
         double _fieldOfView;
 
     public:
+//TODO: width and height to delete for _res
+//TODO: make private attribut => Make Setter
+        int _width;
+        int _height;
+        resolution _res;
         Camera(int width, int height, Math::Point3D position, Math::Point3D rotation, double fieldOfView);
         ~Camera();
 
