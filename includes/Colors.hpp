@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Wed, Apr, 2024                                                     *
+ * EPITECH PROJECT - Thu, May, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Sphere                                                                           *
+ *     Colors                                                                           *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -17,39 +17,31 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_SPHERE_HPP
-    #define INCLUDED_SPHERE_HPP
+#ifndef INCLUDED_COLORS_HPP
+    #define INCLUDED_COLORS_HPP
 
-#include "headers.hpp"
-#include "Object.hpp"
-#include "Math.hpp"
-#include "Ray.hpp"
+    #include "headers.hpp"
+    #include "Exceptions.hpp"
+    #include "Matrix.hpp"
 
 namespace Raytracer
 {
-    namespace Objects
+    class Color: public Math::Matrix<unsigned int>
     {
-        class Sphere: public Raytracer::AObject
-        {
-            private:
-                double _radius;
+        public:
+            Color();
+            Color(std::vector<unsigned int> values);
+            Color(std::vector<std::vector<unsigned int>> values);
+            Color(unsigned int r, unsigned int g, unsigned int b);
+            Color(const Color& other);
+            ~Color() = default;
 
-            public:
-                Sphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
-                       Raytracer::Material material = Raytracer::Material(),
-                       double radius = 1);
-                ~Sphere() = default;
+            Color& operator=(const Color& other);
 
-                std::string str() const;
-
-                double getRadius() const;
-
-                bool does_hit(const Ray& other) const;
-                Ray bounce(const Ray& other) const;
-        };
-
-        std::ostream& operator<<(std::ostream& os, const Sphere& obj);
-    }
+            std::string str() const;
+    };
 }
+
+std::ostream& operator<<(std::ostream&, const Raytracer::Color&);
 
 #endif

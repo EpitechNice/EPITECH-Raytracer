@@ -25,7 +25,7 @@ namespace Raytracer
         return this->_origin;
     }
 
-    const Math::Vector3D& Ray::getdirection() const
+    const Math::Vector3D& Ray::getDirection() const
     {
         return this->_direction;
     }

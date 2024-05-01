@@ -13,9 +13,10 @@
 
     #include "Image.hpp"
     #include "Math.hpp"
-    #include "Object.hpp"
+    #include "Objects/Object.hpp"
 
     #include "Ray.hpp"
-    #include "Sphere.hpp"
+    #include "Materials/Material.hpp"
+    #include "Objects/Sphere.hpp"
 
 #endif

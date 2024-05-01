@@ -18,6 +18,6 @@
 #ifndef INCLUDED_CONFIGS_HPP
     #define INCLUDED_CONFIGS_HPP
 
-    #define DEFAULT_COLOR 0xfffb00ff
+    #define DEFAULT_COLOR 0xfb, 0x00, 0xff
 
 #endif

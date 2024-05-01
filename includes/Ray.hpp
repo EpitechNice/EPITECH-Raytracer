@@ -37,7 +37,7 @@ namespace Raytracer
             void setDirection(Math::Vector3D origin);
 
             const Math::Point3D& getOrigin() const;
-            const Math::Vector3D& getdirection() const;
+            const Math::Vector3D& getDirection() const;
     };
 }
 #endif

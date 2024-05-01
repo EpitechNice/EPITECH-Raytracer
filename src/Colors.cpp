@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Wed, Apr, 2024                                                     *
+ * EPITECH PROJECT - Thu, May, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Image                                                                            *
+ *     Colors                                                                           *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -17,38 +17,55 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_IMAGE_HPP
-    #define INCLUDED_IMAGE_HPP
+#include "Colors.hpp"
 
-    #include "configs.hpp"
-    #include "headers.hpp"
-    #include "Matrix.hpp"
-    #include "Colors.hpp"
-    #include "Exceptions.hpp"
-
-class Image: public Math::Matrix<Raytracer::Color>
+namespace Raytracer
 {
-    public:
-        Image();
-        Image(std::pair<std::size_t, std::size_t> size);
-        Image(std::pair<std::size_t, std::size_t> size, Raytracer::Color color);
-        Image(std::vector<std::vector<Raytracer::Color>> colors);
-        Image(const Image& other);
-        ~Image() = default;
+    Color::Color()
+    {}
 
-        std::string str() const;
+    Color::Color(std::vector<unsigned int> values)
+    {
+        if (values.size() != 3)
+            throw Exceptions::InvalidSizeError("Awaiting 3 points but got " + values.size(),
+                EXCEPTION_INFOS);
+        this->_values = {values};
+    }
 
-        Raytracer::Color getMedianColor() const;
+    Color::Color(std::vector<std::vector<unsigned int>> values)
+    {
+        if (values.size() != 1 || values[0].size() != 3)
+            throw Exceptions::InvalidSizeError("Awaiting 1x3 array but got " +
+                                               std::to_string(values.size()) + "x" +
+                                               std::to_string(values.size() ? values[0].size() : 0),
+                EXCEPTION_INFOS);
+        this->_values = values;
+    }
 
-        void setPos(std::pair<std::size_t, std::size_t> position, Raytracer::Color color);
-        void resize(std::pair<std::size_t, std::size_t> size, Raytracer::Color background);
-        bool save(std::string filename);
-        double ratio() const;
-        void setRatio(double ratio);
+    Color::Color(unsigned int r, unsigned int g, unsigned int b):
+        Matrix({r, g, b})
+    {}
 
-        Image& operator=(const Image& other);
-};
+    Color::Color(const Color& other):
+        Matrix(other._values)
+    {}
 
-std::ostream& operator<<(std::ostream& os, const Image& obj);
+    Color& Color::operator=(const Color& other)
+    {
+        this->_values = other._values;
+        return *this;
+    }
 
-#endif
+    std::string Color::str() const
+    {
+        std::stringstream ss;
+        ss <<   "<" << this->getClassName() << " at " <<
+                std::hex << this <<
+                ": color=(" <<
+                std::to_string(this->_values[0][0]) << ", " <<
+                std::to_string(this->_values[0][1]) << ", " <<
+                std::to_string(this->_values[0][2]) << ")>";
+        return ss.str();
+    }
+
+}

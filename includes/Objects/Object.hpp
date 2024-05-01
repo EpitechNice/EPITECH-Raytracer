@@ -21,21 +21,21 @@
 
 #include "headers.hpp"
 #include "Math.hpp"
-#include "Material.hpp"
 #include "Ray.hpp"
+#include "../Materials/Material.hpp"
 
 namespace Raytracer
 {
     class IObject
     {
         protected:
-            Math::Point3D _position;
+            Math::Point3D _origin;
             Raytracer::Material _material;
         public:
             virtual std::string getClassName() const = 0;
             virtual std::string str() const = 0;
-            virtual bool does_hit(const Ray& other) const = 0;
-            virtual Ray bounce(const Ray& other) const = 0;
+            virtual bool doesHit(const Raytracer::Ray& other) const = 0;
+            virtual Raytracer::Ray bounce(const Raytracer::Ray& other) const = 0;
             virtual void setPosition(Math::Point3D position) = 0;
             virtual void setMaterial(Raytracer::Material material) = 0;
             virtual const Math::Point3D& getPosition() const = 0;

@@ -3,7 +3,7 @@
  * EPITECH PROJECT - Wed, Apr, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Image                                                                            *
+ *     Sphere                                                                           *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -17,38 +17,39 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_IMAGE_HPP
-    #define INCLUDED_IMAGE_HPP
+#ifndef INCLUDED_SPHERE_HPP
+    #define INCLUDED_SPHERE_HPP
 
-    #include "configs.hpp"
-    #include "headers.hpp"
-    #include "Matrix.hpp"
-    #include "Colors.hpp"
-    #include "Exceptions.hpp"
+#include "headers.hpp"
+#include "Object.hpp"
+#include "Math.hpp"
+#include "Ray.hpp"
 
-class Image: public Math::Matrix<Raytracer::Color>
+namespace Raytracer
 {
-    public:
-        Image();
-        Image(std::pair<std::size_t, std::size_t> size);
-        Image(std::pair<std::size_t, std::size_t> size, Raytracer::Color color);
-        Image(std::vector<std::vector<Raytracer::Color>> colors);
-        Image(const Image& other);
-        ~Image() = default;
+    namespace Objects
+    {
+        class Sphere: public Raytracer::AObject
+        {
+            private:
+                double _radius;
 
-        std::string str() const;
+            public:
+                Sphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
+                       Raytracer::Material material = Raytracer::Material(),
+                       double radius = 1);
+                ~Sphere() = default;
 
-        Raytracer::Color getMedianColor() const;
+                std::string str() const;
 
-        void setPos(std::pair<std::size_t, std::size_t> position, Raytracer::Color color);
-        void resize(std::pair<std::size_t, std::size_t> size, Raytracer::Color background);
-        bool save(std::string filename);
-        double ratio() const;
-        void setRatio(double ratio);
+                double getRadius() const;
 
-        Image& operator=(const Image& other);
-};
+                bool doesHit(const Raytracer::Ray& other) const;
+                Raytracer::Ray bounce(const Raytracer::Ray& other) const;
+        };
 
-std::ostream& operator<<(std::ostream& os, const Image& obj);
+        std::ostream& operator<<(std::ostream& os, const Sphere& obj);
+    }
+}
 
 #endif

@@ -15,30 +15,28 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#include "Material.hpp"
+#include "Materials/Material.hpp"
 
 namespace Raytracer
 {
     Material::Material()
     {
-        Image::color_t color;
-        color._value = DEFAULT_COLOR;
-        this->_patern = Image({10, 10}, color);
+        this->_pattern = Image({10, 10}, Raytracer::Color(DEFAULT_COLOR));
     }
 
-    Material::Material(Image patern)
+    Material::Material(Image pattern)
     {
-        this->_patern = patern;
+        this->_pattern = pattern;
     }
 
-    Material::Material(Image::color_t color)
+    Material::Material(Raytracer::Color color)
     {
-        this->_patern = Image({10, 10}, color);
+        this->_pattern = Image({10, 10}, color);
     }
 
     Material::Material(const Material& other)
     {
-        this->_patern = other._patern;
+        this->_pattern = other._pattern;
     }
 
     std::string Material::getClassName() const
@@ -60,13 +58,13 @@ namespace Raytracer
         std::stringstream ss;
         ss <<   "<" << this->getClassName() <<
                 " at " << std::hex << this <<
-                ": image=" << this->_patern << ">";
+                ": image=" << this->_pattern << ">";
         return ss.str();
     }
 
     Material& Material::operator=(const Material& other)
     {
-        this->_patern = other._patern;
+        this->_pattern = other._pattern;
         return *this;
     }
 

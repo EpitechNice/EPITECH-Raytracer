@@ -20,21 +20,22 @@
 #ifndef INCLUDED_MATERIAL_HPP
     #define INCLUDED_MATERIAL_HPP
 
-#include "configs.hpp"
-#include "headers.hpp"
-#include "Math.hpp"
-#include "Image.hpp"
+    #include "configs.hpp"
+    #include "headers.hpp"
+    #include "Colors.hpp"
+    #include "Math.hpp"
+    #include "Image.hpp"
 
 namespace Raytracer
 {
     class Material
     {
         private:
-            Image _patern;
+            Image _pattern;
         public:
             Material();
-            Material(Image patern);
-            Material(Image::color_t color);
+            Material(Image pattern);
+            Material(Raytracer::Color color);
             Material(const Material& other);
             ~Material() = default;
 

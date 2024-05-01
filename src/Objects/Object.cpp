@@ -38,16 +38,16 @@ namespace Raytracer
         std::stringstream ss;
         ss <<   "<" << this->getClassName() << " at " <<
                 std::hex << this <<
-                ": position=(" << std::to_string(this->_position.x) << ", " <<
-                std::to_string(this->_position.y) << ", " <<
-                std::to_string(this->_position.z) << "), material=" <<
+                ": origin=(" << std::to_string(this->_origin[0][0]) << ", " <<
+                std::to_string(this->_origin[0][1]) << ", " <<
+                std::to_string(this->_origin[0][2]) << "), material=" <<
                 this->_material << ">";
         return ss.str();
     }
 
     void AObject::setPosition(Math::Point3D position)
     {
-        this->_position = position;
+        this->_origin = position;
     }
 
     void AObject::setMaterial(Raytracer::Material material)
@@ -57,7 +57,7 @@ namespace Raytracer
 
     const Math::Point3D& AObject::getPosition() const
     {
-        return this->_position;
+        return this->_origin;
     }
 
     const Raytracer::Material& AObject::getMaterial() const

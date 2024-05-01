@@ -19,7 +19,7 @@
 
 namespace Exceptions
 {
-    Exception::Exception(std::string what, std::pair<std::string, std::size_t> position):
+    Exception::Exception(std::string what, std::pair<std::string, std::pair<std::string, std::size_t>> position):
         _what(what), _position(position)
     {}
 
@@ -37,7 +37,7 @@ namespace Exceptions
         return out;
     }
 
-    std::pair<std::string, std::size_t> Exception::get_position() const
+    std::pair<std::string, std::pair<std::string, std::size_t>> Exception::getInfos() const
     {
         return this->_position;
     }
@@ -50,8 +50,11 @@ namespace Exceptions
     std::ostream& operator<<(std::ostream& os, const Exceptions::Exception& obj)
     {
         os << "[" << obj.getClassName();
-        if (obj.get_position().first != "")
-            os << " - " << obj.get_position().first.substr(obj.get_position().first.find_last_of("/\\") + 1) << ":" << obj.get_position().second;
+        if (obj.getInfos().first != "")
+            os << " - " <<
+            obj.getInfos().second.first.substr(obj.getInfos().second.first.find_last_of("/\\") + 1) <<
+            ":" << obj.getInfos().second.second <<
+            " in " << obj.getInfos().first;
         os << "] " << obj.what();
         return os;
     }
