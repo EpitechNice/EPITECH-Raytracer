@@ -39,6 +39,9 @@ namespace Raytracer {
         setConfig(sceneFilePath);
 
         createCamera();
+        DEBUGPrintCameraInfo();
+        createPrimitive();
+        DEBUGPrintAllObject();
     }
 
     void Core::createCamera() {
@@ -48,23 +51,16 @@ namespace Raytracer {
             int width = resolutionSetting["width"];
             int height = resolutionSetting["height"];
             Raytracer::Resolution resolution{width, height};
-            std::cout << "Resolution Width: " << width << ", Height: " << height << std::endl;
-            // Position de la caméra
             libconfig::Setting& positionSetting = cameraSetting["position"];
             double posX = positionSetting["x"];
             double posY = positionSetting["y"];
             double posZ = positionSetting["z"];
-            std::cout << "Camera Position X: " << posX << ", Y: " << posY << ", Z: " << posZ << std::endl;
-            // Rotation de la caméra
             libconfig::Setting& rotationSetting = cameraSetting["rotation"];
             double rotX = rotationSetting["x"];
             double rotY = rotationSetting["y"];
             double rotZ = rotationSetting["z"];
-            std::cout << "Camera Rotation X: " << rotX << ", Y: " << rotY << ", Z: " << rotZ << std::endl;
-            // Champ de vision de la caméra
             double fieldOfView = cameraSetting["fieldOfView"];
-            std::cout << "Field of View: " << fieldOfView << std::endl;
-            // Créer l'objet Camera avec les paramètres extraits
+            // Créer la Camera avec les paramètres extraits
             _camera = Raytracer::Camera(resolution, {posX, posY, posZ}, {rotX, rotY, rotZ}, fieldOfView);
         } catch (const libconfig::SettingNotFoundException &nfex) {
             std::cerr << "Error: Setting not found in configuration file." << std::endl;
@@ -72,6 +68,60 @@ namespace Raytracer {
             std::cerr << "Error: Incorrect setting type in configuration file." << std::endl;
         } catch (const std::exception &ex) {
             std::cerr << "Error: " << ex.what() << std::endl;
+        }
+    }
+    void Core::createPrimitive() {
+        try {
+            libconfig::Setting& primitiveSetting = _config.lookup("primitives");
+
+            if (primitiveSetting.exists("spheres")) {
+                libconfig::Setting& spheresSetting = primitiveSetting["spheres"];
+                for (int i = 0; i < spheresSetting.getLength(); ++i) {
+                    libconfig::Setting& sphereSetting = spheresSetting[i];
+                    double x = sphereSetting["x"];
+                    double y = sphereSetting["y"];
+                    double z = sphereSetting["z"];
+                    double radius = sphereSetting["radius"];
+                    // Créer une sphère avec les paramètres extraits
+                    Raytracer::Objects::Sphere sphere({x, y, z}, Raytracer::Material(), radius);
+                    _objectList.push_back(std::make_shared<Raytracer::Objects::Sphere>(sphere));
+                }
+            }
+        } catch (const libconfig::SettingNotFoundException &nfex) {
+            std::cerr << "Error: Setting not found in configuration file." << std::endl;
+        } catch (const libconfig::SettingTypeException &tex) {
+            std::cerr << "Error: Incorrect setting type in configuration file." << std::endl;
+        } catch (const std::exception &ex) {
+            std::cerr << "Error: " << ex.what() << std::endl;
+        }
+    }
+
+    void Core::DEBUGPrintAllObject() {
+        for (const auto& objPtr : _objectList) {
+            if (auto spherePtr = std::dynamic_pointer_cast<Raytracer::Objects::Sphere>(objPtr)) {
+                const Raytracer::Objects::Sphere& sphere = *spherePtr;
+                const Math::Point3D& center = sphere.getPosition();
+                double radius = sphere.getRadius();
+
+                std::cout << "Sphere - Center: (" << center.getX() << ", " << center.getY() << ", " << center.getZ() << "), Radius: " << radius << std::endl;
+            } else {
+                std::cerr << "Error: Object in _objectList is not a Sphere." << std::endl;
+            }
+        }
+    }
+
+    void Core::DEBUGPrintCameraInfo() {
+        try {
+            const Resolution& resolution = _camera.getResolution();
+            const Math::Point3D& position = _camera.getPosition();
+            double fieldOfView = _camera.getFieldOfView();
+
+            std::cout << "Camera Info: ";
+            std::cout << "Resolution: " << resolution.width << "x" << resolution.height << ", ";
+            std::cout << "Position: (" << position.getX() << ", " << position.getY() << ", " << position.getZ() << "), ";
+            std::cout << "Field of View: " << fieldOfView << " degrees" << std::endl;
+        } catch (const std::exception& ex) {
+            std::cerr << "Error printing camera info: " << ex.what() << std::endl;
         }
     }
 }

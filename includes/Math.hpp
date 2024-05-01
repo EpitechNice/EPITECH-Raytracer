@@ -31,6 +31,10 @@ namespace Math
     class Point3D: public Math::Matrix<double>
     {
         public:
+            double x;
+            double y;
+            double z;
+
             Point3D();
             Point3D(double x, double y, double z);
             Point3D(std::vector<double> values);
@@ -45,11 +49,19 @@ namespace Math
 
             Vector3D operator+(const Point3D& other) const;
             Vector3D operator-(const Point3D& other) const;
+
+            double getX() const { return x; }
+            double getY() const { return y; }
+            double getZ() const { return z; }
     };
 
     class Vector3D: public Math::Matrix<double>
     {
         public:
+            double x;
+            double y;
+            double z;
+
             Vector3D();
             Vector3D(double x, double y, double z);
             Vector3D(std::vector<double> values);
@@ -73,6 +85,10 @@ namespace Math
             double dot(const Vector3D& other) const;
 
             Vector3D cross(const Vector3D& other) const;
+
+            double getX() const { return x; }
+            double getY() const { return y; }
+            double getZ() const { return z; }
     };
 };
 

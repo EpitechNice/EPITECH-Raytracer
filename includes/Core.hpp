@@ -21,13 +21,14 @@
 #include "headers.hpp"
 #include "includes.hpp"
 #include "Camera.hpp"
+#include "Object.hpp"
 
 namespace Raytracer {
     class Core
     {
         private:
             libconfig::Config _config;
-            // std::vector<Raytracer::IObject> _objectList;
+            std::vector<std::shared_ptr<Raytracer::AObject>> _objectList;
             Raytracer::Camera _camera;
         protected:
         public:
@@ -38,6 +39,9 @@ namespace Raytracer {
             void setConfig(const std::string sceneFilePath);
             void loadConfig(const std::string sceneFilePath);
             void createCamera();
+            void createPrimitive();
+            void DEBUGPrintAllObject();
+            void DEBUGPrintCameraInfo();
     };
 }
 

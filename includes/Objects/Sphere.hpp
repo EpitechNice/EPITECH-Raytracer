@@ -25,31 +25,29 @@
 #include "Math.hpp"
 #include "Ray.hpp"
 
-namespace Raytracer
-{
-    namespace Objects
-    {
-        class Sphere: public Raytracer::AObject
-        {
-            private:
-                double _radius;
+namespace Raytracer::Objects {
 
-            public:
-                Sphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
-                       Raytracer::Material material = Raytracer::Material(),
-                       double radius = 1);
-                ~Sphere() = default;
+    class Sphere : public Raytracer::AObject {
+    private:
+        Math::Point3D _origin;
+        double _radius;
 
-                std::string str() const;
+    public:
+        Sphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
+               Raytracer::Material material = Raytracer::Material(),
+               double radius = 1);
+        ~Sphere() = default;
 
-                double getRadius() const;
+        std::string str() const override;
 
-                bool doesHit(const Raytracer::Ray& other) const;
-                Raytracer::Ray bounce(const Raytracer::Ray& other) const;
-        };
+        // Getter
+        double getRadius() const;
+        const Math::Point3D& getPosition() const override { return _origin;}
 
-        std::ostream& operator<<(std::ostream& os, const Sphere& obj);
-    }
+        bool doesHit(const Raytracer::Ray& other) const override;
+        Raytracer::Ray bounce(const Raytracer::Ray& other) const override;
+    };
+
 }
 
 #endif
