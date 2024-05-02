@@ -23,32 +23,32 @@
 
 namespace Raytracer
 {
+    struct Resolution
+    {
+        int width;
+        int height;
+    };
     class Camera {
     private:
-        typedef struct {
-            int width;
-            int height;
-        } resolution;
-
+        Resolution _resolution;
         Math::Point3D _position;
         Math::Point3D _rotation;
         double _fieldOfView;
 
     public:
-//TODO: width and height to delete for _res
-//TODO: make private attribut => Make Setter
-        int _width;
-        int _height;
-        resolution _res;
-        Camera(int width, int height, Math::Point3D position, Math::Point3D rotation, double fieldOfView);
+        Camera();
+        Camera(const Resolution& resolution, Math::Point3D position, Math::Point3D rotation, double fieldOfView);
         ~Camera();
 
-        // Getter
-        int getWidth() const;
-        int getHeight() const;
-        const Math::Point3D& getPosition() const;
+        //Setter
+        void setResolution(const Resolution& resolution);
+        void setPosition(const Math::Point3D& position);
+        void setRotation(const Math::Point3D& rotation);
+        void setFieldOfView(double fieldOfView);
 
-        // Getter pour l'angle de champ
+        // Getter
+        const Resolution& getResolution() const;
+        const Math::Point3D& getPosition() const;
         double getFieldOfView() const;
     };
 }

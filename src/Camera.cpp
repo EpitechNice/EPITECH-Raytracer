@@ -19,17 +19,35 @@
 
 namespace Raytracer
 {
-    Camera::Camera(int width, int height, Math::Point3D position, Math::Point3D rotation, double fieldOfView)
-        : _position(position), _rotation(rotation), _fieldOfView(fieldOfView), _width(width), _height(height){}
+    Camera::Camera() : _resolution{1920, 1080}, _position{0, 0, 0}, _rotation{0, 0, 0}, _fieldOfView{70.0}{}
+
+    Camera::Camera(const Resolution& resolution, Math::Point3D position, Math::Point3D rotation, double fieldOfView)
+        : _resolution(resolution), _position(position), _rotation(rotation), _fieldOfView(fieldOfView)
+    {
+    }
 
     Camera::~Camera(){}
 
-    int Camera::getWidth() const{
-        return _width;
+    void Camera::setResolution(const Resolution& resolution)
+    {
+        _resolution = resolution;
     }
 
-    int Camera::getHeight() const{
-        return _height;
+    // Setter pour la position
+    void Camera::setPosition(const Math::Point3D& position)
+    {
+        _position = position;
+    }
+
+    // Setter pour le champ de vision
+    void Camera::setFieldOfView(double fieldOfView)
+    {
+        _fieldOfView = fieldOfView;
+    }
+
+    const Resolution& Camera::getResolution() const
+    {
+        return _resolution;
     }
 
     const Math::Point3D& Camera::getPosition() const{

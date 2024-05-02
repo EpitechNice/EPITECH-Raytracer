@@ -20,7 +20,7 @@
 
 #include "headers.hpp"
 
-#define FILE_INFOS {std::string(__FILE__), __LINE__}
+#define EXCEPTION_INFOS {std::string(__FUNCTION__), {std::string(__FILE__), __LINE__}}
 
 namespace Exceptions
 {
@@ -28,12 +28,12 @@ namespace Exceptions
     {
         protected:
             std::string _what;
-            std::pair<std::string, std::size_t> _position;
+            std::pair<std::string, std::pair<std::string, std::size_t>> _position;
         public:
             Exception(std::string what = "An exception occured !",
-                      std::pair<std::string, std::size_t> position = {"", 0});
-            std::string get_class_name() const;
-            std::pair<std::string, std::size_t> get_position() const;
+                      std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}});
+            std::string getClassName() const;
+            std::pair<std::string, std::pair<std::string, std::size_t>> getInfos() const;
             const char* what() const noexcept override;
     };
 
@@ -45,7 +45,7 @@ namespace Exceptions
     {
         public:
             InvalidSizeError(std::string what = "Provided position is not valid !",
-                               std::pair<std::string, std::size_t> position = {"", 0}):
+                             std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
             Exceptions::Exception(what, position)
             {}
     };
@@ -54,7 +54,25 @@ namespace Exceptions
     {
         public:
             LogicError(std::string what = "Asked action is not logical",
-                               std::pair<std::string, std::size_t> position = {"", 0}):
+                       std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
+    class InvalidPositionError: public Exceptions::Exception
+    {
+        public:
+            InvalidPositionError(std::string what = "The position does not belong in the matrix",
+                       std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
+    class MatrixSizeError: public Exceptions::Exception
+    {
+        public:
+            MatrixSizeError(std::string what = "The Matrix sizes doesn't match for the asked operation",
+                       std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
             Exceptions::Exception(what, position)
             {}
     };
@@ -65,7 +83,7 @@ namespace Exceptions
     {
         public:
             FileExtensionWarning(std::string what = "Provided file have an unexpected extension.",
-                               std::pair<std::string, std::size_t> position = {"", 0}):
+                                 std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
             Exceptions::Exception(what, position)
             {}
     };

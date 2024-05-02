@@ -10,16 +10,6 @@ namespace Raytracer
         _origin(origin), _direction(direction)
     {}
 
-    Math::Point3D Ray::getOrigin() const
-    {
-        return this->_origin;
-    }
-
-    Math::Vector3D Ray::getdirection() const
-    {
-        return this->_direction;
-    }
-
     void Ray::setOrigin(Math::Point3D origin)
     {
         this->_origin = origin;
@@ -30,4 +20,13 @@ namespace Raytracer
         this->_direction = direction;
     }
 
+    const Math::Point3D& Ray::getOrigin() const
+    {
+        return this->_origin;
+    }
+
+    const Math::Vector3D& Ray::getDirection() const
+    {
+        return this->_direction;
+    }
 }

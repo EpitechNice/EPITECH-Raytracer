@@ -20,27 +20,32 @@
 
 #include "headers.hpp"
 #include "includes.hpp"
+#include "Camera.hpp"
+#include "Object.hpp"
 
-//TODO: implement Camera class with
-//  - resolution ((int)width, (int)height)
-//  - position ((int)x, (int)y, (int)z)
-//  - rotation ((int)x, (int)y, (int)z)
-//  - fieldOfView (double)
-class Core
-{
-    private:
-        libconfig::Config _config;
-        // std::vector<Raytracer::IObject> _objectList;
-        Raytracer::Camera _camera;
-    protected:
-    public:
-        Core(const std::string sceneFilePath);
-        ~Core() = default;
+namespace Raytracer {
+    class Core
+    {
+        private:
+            libconfig::Config _config;
+            std::vector<std::shared_ptr<Raytracer::AObject>> _objectList;
+            std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
+            Raytracer::Camera _camera;
+        protected:
+        public:
+            Core(const std::string sceneFilePath);
+            ~Core() = default;
 
-        //Config
-        void setConfig(const std::string sceneFilePath);
-        void loadConfig(const std::string sceneFilePath);
-};
+            //Config
+            void setConfig(const std::string sceneFilePath);
+            void loadConfig(const std::string sceneFilePath);
+            void createCamera();
+            void createPrimitive();
+            void createLight();
+            void DEBUGPrintAllObject();
+            void DEBUGPrintCameraInfo();
+    };
+}
 
 #endif
 

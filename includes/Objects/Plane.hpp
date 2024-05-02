@@ -3,7 +3,7 @@
  * EPITECH PROJECT - Wed, Apr, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Image                                                                            *
+ *     Plane                                                                           *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -17,38 +17,35 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_IMAGE_HPP
-    #define INCLUDED_IMAGE_HPP
+#ifndef PLANE_HPP
+    #define PLANE_HPP
 
-    #include "configs.hpp"
-    #include "headers.hpp"
-    #include "Matrix.hpp"
-    #include "Colors.hpp"
-    #include "Exceptions.hpp"
+#include "Object.hpp"
+#include "Math.hpp"
 
-class Image: public Math::Matrix<Raytracer::Color>
-{
+namespace Raytracer::Objects {
+
+    class Plane : public Raytracer::AObject {
+    private:
+        Math::Point3D _origin;
+        double _size;
+
     public:
-        Image();
-        Image(std::pair<std::size_t, std::size_t> size);
-        Image(std::pair<std::size_t, std::size_t> size, Raytracer::Color color);
-        Image(std::vector<std::vector<Raytracer::Color>> colors);
-        Image(const Image& other);
-        ~Image() = default;
+        Plane(Math::Point3D origin = Math::Point3D(0, 1, 0),
+              Raytracer::Material material = Raytracer::Material(),
+              double size = 0.0);
+        ~Plane() = default;
 
-        std::string str() const;
+        std::string str() const override;
 
-        Raytracer::Color getMedianColor() const;
+        // Getter
+        const Math::Point3D& getPosition() const override { return this->_origin;};
+        double getSize() const { return this->_size;};
 
-        void setPos(std::pair<std::size_t, std::size_t> position, Raytracer::Color color);
-        void resize(std::pair<std::size_t, std::size_t> size, Raytracer::Color background);
-        bool save(std::string filename);
-        double ratio() const;
-        void setRatio(double ratio);
+        bool doesHit(const Raytracer::Ray& ray) const override;
+        Raytracer::Ray bounce(const Raytracer::Ray& other) const override;
+    };
 
-        Image& operator=(const Image& other);
-};
+}
 
-std::ostream& operator<<(std::ostream& os, const Image& obj);
-
-#endif
+#endif // PLANE_HPP

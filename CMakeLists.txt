@@ -15,23 +15,35 @@ add_compile_options(
     -Wall -Wextra -Werror
 )
 
-
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
     ${PROJECT_SOURCE_DIR}/raytracer
 )
 
 add_executable(raytracer
     src/Exceptions.cpp
-    src/Image.cpp
     src/Math.cpp
+    src/Colors.cpp
+    src/Image.cpp
     src/Ray.cpp
-    src/main.cpp
-    src/Sphere.cpp
+    src/Core.cpp
     src/Camera.cpp
+    # src/main.cpp
+    src/mmain.cpp
+    src/Materials/Material.cpp
+    src/Objects/Object.cpp
+    src/Objects/Sphere.cpp
+    src/Objects/Light.cpp
+    src/Objects/Plane.cpp
 )
 
 target_include_directories(raytracer PUBLIC
+    ./includes/Materials/
+    ./includes/Objects/
     ./includes/
+)
+
+target_link_libraries(raytracer
+    config++
 )
 
 add_custom_command(TARGET raytracer

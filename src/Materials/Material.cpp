@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Wed, Apr, 2024                                                     *
+ * EPITECH PROJECT - Fri, Apr, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Exceptions                                                                       *
+ *     Material                                                                         *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -15,15 +15,31 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#include "Exceptions.hpp"
+#include "Materials/Material.hpp"
 
-namespace Exceptions
+namespace Raytracer
 {
-    Exception::Exception(std::string what, std::pair<std::string, std::pair<std::string, std::size_t>> position):
-        _what(what), _position(position)
-    {}
+    Material::Material()
+    {
+        this->_pattern = Image({10, 10}, Raytracer::Color(DEFAULT_COLOR));
+    }
 
-    std::string Exception::getClassName() const
+    Material::Material(Image pattern)
+    {
+        this->_pattern = pattern;
+    }
+
+    Material::Material(Raytracer::Color color)
+    {
+        this->_pattern = Image({10, 10}, color);
+    }
+
+    Material::Material(const Material& other)
+    {
+        this->_pattern = other._pattern;
+    }
+
+    std::string Material::getClassName() const
     {
         int status = -4;
         const char* name = typeid(*this).name();
@@ -37,25 +53,24 @@ namespace Exceptions
         return out;
     }
 
-    std::pair<std::string, std::pair<std::string, std::size_t>> Exception::getInfos() const
+    std::string Material::str() const
     {
-        return this->_position;
+        std::stringstream ss;
+        ss <<   "<" << this->getClassName() <<
+                " at " << std::hex << this <<
+                ": image=" << this->_pattern << ">";
+        return ss.str();
     }
 
-    const char* Exception::what() const noexcept
+    Material& Material::operator=(const Material& other)
     {
-        return this->_what.c_str();
+        this->_pattern = other._pattern;
+        return *this;
     }
 
-    std::ostream& operator<<(std::ostream& os, const Exceptions::Exception& obj)
+    std::ostream& operator<<(std::ostream& os, const Material& obj)
     {
-        os << "[" << obj.getClassName();
-        if (obj.getInfos().first != "")
-            os << " - " <<
-            obj.getInfos().second.first.substr(obj.getInfos().second.first.find_last_of("/\\") + 1) <<
-            ":" << obj.getInfos().second.second <<
-            " in " << obj.getInfos().first;
-        os << "] " << obj.what();
+        os << obj.str();
         return os;
     }
 }
