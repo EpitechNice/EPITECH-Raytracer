@@ -16,7 +16,7 @@ jobs:
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake make g++ gcc
+          sudo apt-get install -y build-essential cmake make g++ gcc libconfig++-dev
 
       - name: Check for compilation type
         id: check-type
@@ -88,6 +88,9 @@ jobs:
           time_diff=$((end_time - start_time))
           echo "Time Difference: $time_diff seconds"
           echo "TIME_TAKEN=$time_diff seconds" >> "$GITHUB_OUTPUT"
+
+      - name: Ignore Github Action on the target repository
+        run: echo ".github/" >> .gitignore
 
       - name: Mirror project to school repository
         uses: pixta-dev/repository-mirroring-action@v1

@@ -1,45 +1,54 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Wed, Apr, 2024                                                     *
+ * EPITECH PROJECT - Fri, Apr, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Ray                                                                              *
+ *     Material                                                                         *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
- *         ░        ░       ░░        ░        ░        ░░      ░░  ░░░░  ░             *
- *         ▒  ▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒▒▒  ▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒▒▒▒▒▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒             *
- *         ▓      ▓▓▓       ▓▓▓▓▓  ▓▓▓▓▓▓▓  ▓▓▓▓      ▓▓▓  ▓▓▓▓▓▓▓        ▓             *
- *         █  ███████  ██████████  ███████  ████  ███████  ████  █  ████  █             *
- *         █        █  ███████        ████  ████        ██      ██  ████  █             *
+ *       ▄▀▀█▄▄▄▄  ▄▀▀▄▀▀▀▄  ▄▀▀█▀▄    ▄▀▀▀█▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▄▄▄▄   ▄▀▀▄ ▄▄             *
+ *      ▐  ▄▀   ▐ █   █   █ █   █  █  █    █  ▐ ▐  ▄▀   ▐ █ █    ▌ █  █   ▄▀            *
+ *        █▄▄▄▄▄  ▐  █▀▀▀▀  ▐   █  ▐  ▐   █       █▄▄▄▄▄  ▐ █      ▐  █▄▄▄█             *
+ *        █    ▌     █          █        █        █    ▌    █         █   █             *
+ *       ▄▀▄▄▄▄    ▄▀        ▄▀▀▀▀▀▄   ▄▀        ▄▀▄▄▄▄    ▄▀▄▄▄▄▀   ▄▀  ▄▀             *
+ *       █    ▐   █         █       █ █          █    ▐   █     ▐   █   █               *
+ *       ▐        ▐         ▐       ▐ ▐          ▐        ▐         ▐   ▐               *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_RAY_HPP
-    #define INCLUDED_RAY_HPP
+#ifndef INCLUDED_MATERIAL_HPP
+    #define INCLUDED_MATERIAL_HPP
 
-#include "headers.hpp"
-#include "Math.hpp"
+    #include "configs.hpp"
+    #include "headers.hpp"
+    #include "Colors.hpp"
+    #include "Math.hpp"
+    #include "Image.hpp"
 
 namespace Raytracer
 {
-    class Ray {
+    class Material
+    {
         private:
-            Math::Point3D _origin;
-            Math::Vector3D _direction;
-
+            Image _pattern;
         public:
-            Ray();
-            Ray(Math::Point3D origin, Math::Vector3D direction);
-            ~Ray() = default;
+            Material();
+            Material(Image pattern);
+            Material(Raytracer::Color color);
+            Material(const Material& other);
+            ~Material() = default;
 
-            void setOrigin(Math::Point3D origin);
-            void setDirection(Math::Vector3D origin);
+            std::string getClassName() const;
 
-            const Math::Point3D& getOrigin() const;
-            const Math::Vector3D& getDirection() const;
+            std::string str() const;
+
+            Material& operator=(const Material& other);
     };
+
+    std::ostream& operator<<(std::ostream& os, const Material& obj);
 }
+
 #endif
 
 /* ------------------------------------------------------------------------------------ *

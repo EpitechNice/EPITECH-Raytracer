@@ -1,45 +1,65 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Wed, Apr, 2024                                                     *
+ * EPITECH PROJECT - Thu, Apr, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Ray                                                                              *
+ *     Object                                                                           *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
- *         ░        ░       ░░        ░        ░        ░░      ░░  ░░░░  ░             *
- *         ▒  ▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒▒▒  ▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒▒▒▒▒▒  ▒▒▒▒  ▒  ▒▒▒▒  ▒             *
- *         ▓      ▓▓▓       ▓▓▓▓▓  ▓▓▓▓▓▓▓  ▓▓▓▓      ▓▓▓  ▓▓▓▓▓▓▓        ▓             *
- *         █  ███████  ██████████  ███████  ████  ███████  ████  █  ████  █             *
- *         █        █  ███████        ████  ████        ██      ██  ████  █             *
+ *             ███████╗██████╗ ██╗████████╗███████╗ ██████╗██╗  ██╗                     *
+ *             ██╔════╝██╔══██╗██║╚══██╔══╝██╔════╝██╔════╝██║  ██║                     *
+ *             █████╗  ██████╔╝██║   ██║   █████╗  ██║     ███████║                     *
+ *             ██╔══╝  ██╔═══╝ ██║   ██║   ██╔══╝  ██║     ██╔══██║                     *
+ *             ███████╗██║     ██║   ██║   ███████╗╚██████╗██║  ██║                     *
+ *             ╚══════╝╚═╝     ╚═╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝                     *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_RAY_HPP
-    #define INCLUDED_RAY_HPP
+#ifndef INCLUDED_OBJECT_HPP
+    #define INCLUDED_OBJECT_HPP
 
 #include "headers.hpp"
 #include "Math.hpp"
+#include "Ray.hpp"
+#include "../Materials/Material.hpp"
 
 namespace Raytracer
 {
-    class Ray {
-        private:
+    class IObject
+    {
+        protected:
             Math::Point3D _origin;
-            Math::Vector3D _direction;
-
+            Raytracer::Material _material;
         public:
-            Ray();
-            Ray(Math::Point3D origin, Math::Vector3D direction);
-            ~Ray() = default;
-
-            void setOrigin(Math::Point3D origin);
-            void setDirection(Math::Vector3D origin);
-
-            const Math::Point3D& getOrigin() const;
-            const Math::Vector3D& getDirection() const;
+            virtual std::string getClassName() const = 0;
+            virtual std::string str() const = 0;
+            virtual bool doesHit(const Raytracer::Ray& other) const = 0;
+            virtual Raytracer::Ray bounce(const Raytracer::Ray& other) const = 0;
+            virtual void setPosition(Math::Point3D position) = 0;
+            virtual void setMaterial(Raytracer::Material material) = 0;
+            virtual const Math::Point3D& getPosition() const = 0;
+            virtual const Raytracer::Material& getMaterial() const = 0;
     };
+
+    class AObject: public IObject
+    {
+        public:
+            ~AObject() = default;
+
+            std::string getClassName() const final;
+            virtual std::string str() const;
+
+            void setPosition(Math::Point3D position);
+            void setMaterial(Raytracer::Material material);
+
+            const Math::Point3D& getPosition() const;
+            const Raytracer::Material& getMaterial() const;
+    };
+
+    std::ostream& operator<<(std::ostream& os, const AObject& obj);
 }
+
 #endif
 
 /* ------------------------------------------------------------------------------------ *

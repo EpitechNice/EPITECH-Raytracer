@@ -3,7 +3,7 @@
  * EPITECH PROJECT - Wed, Apr, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Exceptions                                                                       *
+ *     Camera                                                                           *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -15,47 +15,46 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#include "Exceptions.hpp"
+#include "Camera.hpp"
 
-namespace Exceptions
+namespace Raytracer
 {
-    Exception::Exception(std::string what, std::pair<std::string, std::pair<std::string, std::size_t>> position):
-        _what(what), _position(position)
-    {}
+    Camera::Camera() : _resolution{1920, 1080}, _position{0, 0, 0}, _rotation{0, 0, 0}, _fieldOfView{70.0}{}
 
-    std::string Exception::getClassName() const
+    Camera::Camera(const Resolution& resolution, Math::Point3D position, Math::Point3D rotation, double fieldOfView)
+        : _resolution(resolution), _position(position), _rotation(rotation), _fieldOfView(fieldOfView)
     {
-        int status = -4;
-        const char* name = typeid(*this).name();
-        char* _out = abi::__cxa_demangle(name, NULL, NULL, &status);
-        if (status != 0 && _out)
-            free(_out);
-        if (status != 0)
-            return std::string(name);
-        std::string out(_out);
-        free(_out);
-        return out;
     }
 
-    std::pair<std::string, std::pair<std::string, std::size_t>> Exception::getInfos() const
+    Camera::~Camera(){}
+
+    void Camera::setResolution(const Resolution& resolution)
     {
-        return this->_position;
+        _resolution = resolution;
     }
 
-    const char* Exception::what() const noexcept
+    // Setter pour la position
+    void Camera::setPosition(const Math::Point3D& position)
     {
-        return this->_what.c_str();
+        _position = position;
     }
 
-    std::ostream& operator<<(std::ostream& os, const Exceptions::Exception& obj)
+    // Setter pour le champ de vision
+    void Camera::setFieldOfView(double fieldOfView)
     {
-        os << "[" << obj.getClassName();
-        if (obj.getInfos().first != "")
-            os << " - " <<
-            obj.getInfos().second.first.substr(obj.getInfos().second.first.find_last_of("/\\") + 1) <<
-            ":" << obj.getInfos().second.second <<
-            " in " << obj.getInfos().first;
-        os << "] " << obj.what();
-        return os;
+        _fieldOfView = fieldOfView;
+    }
+
+    const Resolution& Camera::getResolution() const
+    {
+        return _resolution;
+    }
+
+    const Math::Point3D& Camera::getPosition() const{
+        return _position;
+    }
+
+    double Camera::getFieldOfView() const{
+        return _fieldOfView;
     }
 }

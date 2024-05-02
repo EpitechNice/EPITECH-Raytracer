@@ -2,26 +2,21 @@
 
 namespace Raytracer
 {
-    Sphere::Sphere()
+    Sphere::Sphere(): _radius(1), _origin(Math::Point3D(0, 0, 10))
     {
-        this->_radius = 1;
-        this->_origin = Math::Point3D(0, 0, 0);
     }
 
-    Sphere::Sphere(Math::Point3D origin, double radius)
+    Sphere::Sphere(Math::Point3D origin, double radius) : _radius(radius), _origin(origin)
     {
-        this->_radius = radius;
-        this->_origin = origin;
     }
 
     Sphere::~Sphere()
-    {}
+    {
+    }
 
     //GETTER
-    Sphere::getRadius()
+    double Sphere::getRadius()
     {
         return this->_radius;
     }
-    
-
 }
