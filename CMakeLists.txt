@@ -32,6 +32,8 @@ add_executable(raytracer
     src/Materials/Material.cpp
     src/Objects/Object.cpp
     src/Objects/Sphere.cpp
+    src/Objects/Light.cpp
+    src/Objects/Plane.cpp
 )
 
 target_include_directories(raytracer PUBLIC

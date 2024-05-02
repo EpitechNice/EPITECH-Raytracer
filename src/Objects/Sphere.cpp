@@ -11,11 +11,6 @@ namespace Raytracer
             this->_radius = radius;
         }
 
-        double Sphere::getRadius() const
-        {
-            return this->_radius;
-        }
-
         std::string Sphere::str() const
         {
             std::stringstream ss;

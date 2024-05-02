@@ -29,6 +29,7 @@ namespace Raytracer {
         private:
             libconfig::Config _config;
             std::vector<std::shared_ptr<Raytracer::AObject>> _objectList;
+            std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
             Raytracer::Camera _camera;
         protected:
         public:
@@ -40,6 +41,7 @@ namespace Raytracer {
             void loadConfig(const std::string sceneFilePath);
             void createCamera();
             void createPrimitive();
+            void createLight();
             void DEBUGPrintAllObject();
             void DEBUGPrintCameraInfo();
     };

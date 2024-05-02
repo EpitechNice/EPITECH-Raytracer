@@ -21,6 +21,8 @@
     #include "Ray.hpp"
     #include "Materials/Material.hpp"
     #include "Objects/Sphere.hpp"
+    #include "Objects/Plane.hpp"
     #include "Objects/Object.hpp"
+    #include "Objects/Light.hpp"
 
 #endif

@@ -130,7 +130,6 @@ namespace Math
         return obj.normalised() * length;
     }
 
-
     Vector3D& Vector3D::operator=(const Vector3D& other)
     {
         this->_values = other._values;
@@ -165,7 +164,6 @@ namespace Math
         this->_values[0][2] *= other;
         return *this;
     }
-
 
     double Vector3D::dot(const Vector3D& other) const
     {
