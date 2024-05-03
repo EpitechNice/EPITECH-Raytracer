@@ -1,11 +1,10 @@
-/* ------------------------------------------------------------------------------------ *
- *                                                                                      *
- * EPITECH PROJECT - Thu, Apr, 2024                                                     *
- * Title           - Raytracer                                                          *
+/*                                                                                      *
+ * EPITECH PROJECT - Wed, Apr, 2024                                                     *
+ * Title           - Visual Studio Live Share (Workspace)                               *
  * Description     -                                                                    *
- *     Object                                                                           *
+ *     Core                                                                             *
  *                                                                                      *
- * ------------------------------------------------------------------------------------ *
+ * -----------------------------------------------------------------------------------  *
  *                                                                                      *
  *             ███████╗██████╗ ██╗████████╗███████╗ ██████╗██╗  ██╗                     *
  *             ██╔════╝██╔══██╗██║╚══██╔══╝██╔════╝██╔════╝██║  ██║                     *
@@ -14,58 +13,48 @@
  *             ███████╗██║     ██║   ██║   ███████╗╚██████╗██║  ██║                     *
  *             ╚══════╝╚═╝     ╚═╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝                     *
  *                                                                                      *
- * ------------------------------------------------------------------------------------ */
+ * -----------------------------------------------------------------------------------  */
 
-#ifndef INCLUDED_OBJECT_HPP
-    #define INCLUDED_OBJECT_HPP
+#ifndef INCLUDED_CORE_HPP
+    #define INCLUDED_CORE_HPP
 
 #include "headers.hpp"
-#include "Math.hpp"
-#include "Ray.hpp"
-#include "../Materials/Material.hpp"
+#include "includes.hpp"
+#include "Camera.hpp"
+#include "Object.hpp"
 
 namespace Raytracer
 {
-    class IObject
+    class Core
     {
+        private:
+            libconfig::Config _config;
+            std::vector<std::shared_ptr<Raytracer::AObject>> _objectList;
+            std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
+            Raytracer::Camera _camera;
         protected:
-            Math::Point3D _origin;
-            Raytracer::Material _material;
         public:
-            virtual std::string getClassName() const = 0;
-            virtual std::string str() const = 0;
-            virtual bool doesHit(const Raytracer::Ray& other) const = 0;
-            virtual Raytracer::Ray bounce(const Raytracer::Ray& other) const = 0;
-            virtual void setPosition(Math::Point3D position) = 0;
-            virtual void setMaterial(Raytracer::Material material) = 0;
-            virtual const Math::Point3D& getPosition() const = 0;
-            virtual const Raytracer::Material& getMaterial() const = 0;
+            Core(int argc, char** argv);
+            ~Core() = default;
+
+            //Config
+            void usage(std::string filename = "./raytracer", int status = 0);
+            void setConfig(const std::string sceneFilePath);
+            void loadConfig(const std::string sceneFilePath);
+            void createCamera();
+            void createPrimitive();
+            void createLight();
+            void DEBUGPrintAllObject();
+            void DEBUGPrintCameraInfo();
+            void DEBUGPrintAllLight();
     };
-
-    class AObject: public IObject
-    {
-        public:
-            ~AObject() = default;
-
-            std::string getClassName() const final;
-            virtual std::string str() const;
-
-            void setPosition(Math::Point3D position);
-            void setMaterial(Raytracer::Material material);
-
-            const Math::Point3D& getPosition() const;
-            const Raytracer::Material& getMaterial() const;
-    };
-
-    std::ostream& operator<<(std::ostream& os, const AObject& obj);
 }
 
 #endif
 
-/* ------------------------------------------------------------------------------------ *
- *                                                                                      *
+/*                                                                                      *
  * MIT License                                                                          *
- * Copyright (c) 2024 Tech0ne                                                           *
+ * Copyright (c) 2024 Anonymous                                                         *
  *                                                                                      *
  * Permission is hereby granted, free of charge, to any person obtaining a copy         *
  * of this software and associated documentation files (the "Software"), to deal        *
@@ -84,5 +73,4 @@ namespace Raytracer
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,        *
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE        *
  * SOFTWARE.                                                                            *
- *                                                                                      *
- * ------------------------------------------------------------------------------------ */
+ *                                                                                      */

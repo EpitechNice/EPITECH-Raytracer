@@ -16,11 +16,34 @@
 
 #include "Core.hpp"
 
-namespace Raytracer {
-
-    Core::Core(const std::string sceneFilePath)
+namespace Raytracer
+{
+    Core::Core(int argc, char** argv)
     {
-        loadConfig(sceneFilePath);
+        if (argc != 2)
+            this->usage(argv[0], 1);
+        if (std::string(argv[0]) == "-h" ||
+            std::string(argv[0]) == "--help")
+            this->usage(argv[0], 0);
+        // if ()
+        this->loadConfig(argv[1]);
+    }
+
+    void Core::usage(std::string filename, int status)
+    {
+        std::cerr <<    "--------------------" << std::endl <<
+                        "  __                " << std::endl <<
+                        " /__)_  _/_ _ _ _ _ " << std::endl <<
+                        "/ ( (/(/// (/( (-/  " << std::endl <<
+                        "      /             " << std::endl <<
+                        "--------------------" << std::endl <<
+                        "Usage:" << std::endl <<
+                        "\t" << filename << " [-h|--help] [config_file]" << std::endl <<
+                        "\t\t-h | --help  Show this help and exit" << std::endl <<
+                        "\t\tconfig_file  Load the config file and render the scene." << std::endl <<
+                        "\t\t             Please visit https://github.com/EpitechNice/EPITECH-Raytracer for more infos." << std::endl;
+        std::exit(status);
+
     }
 
     void Core::setConfig(const std::string sceneFilePath)
@@ -36,32 +59,23 @@ namespace Raytracer {
     }
 
     void Core::loadConfig(const std::string sceneFilePath) {
-        setConfig(sceneFilePath);
+        this->setConfig(sceneFilePath);
 
-        createCamera();
-        DEBUGPrintCameraInfo();
-        createPrimitive();
-        DEBUGPrintAllObject();
+        this->createCamera();
+        this->DEBUGPrintCameraInfo();
+        this->createPrimitive();
+        this->DEBUGPrintAllObject();
     }
 
     void Core::createCamera() {
         try {
             libconfig::Setting& cameraSetting = _config.lookup("camera");
             libconfig::Setting& resolutionSetting = cameraSetting.lookup("resolution");
-            int width = resolutionSetting["width"];
-            int height = resolutionSetting["height"];
-            Raytracer::Resolution resolution{width, height};
-            libconfig::Setting& positionSetting = cameraSetting["position"];
-            double posX = positionSetting["x"];
-            double posY = positionSetting["y"];
-            double posZ = positionSetting["z"];
-            libconfig::Setting& rotationSetting = cameraSetting["rotation"];
-            double rotX = rotationSetting["x"];
-            double rotY = rotationSetting["y"];
-            double rotZ = rotationSetting["z"];
-            double fieldOfView = cameraSetting["fieldOfView"];
+            Raytracer::Resolution resolution{resolutionSetting["width"], resolutionSetting["height"]};
+            Math::Point3D origin(cameraSetting["position"]["x"], cameraSetting["position"]["y"], cameraSetting["position"]["z"]);
+            Math::Point3D rotation(cameraSetting["rotation"]["x"], cameraSetting["rotation"]["y"], cameraSetting["rotation"]["z"]);
             // Créer la Camera avec les paramètres extraits
-            _camera = Raytracer::Camera(resolution, {posX, posY, posZ}, {rotX, rotY, rotZ}, fieldOfView);
+            _camera = Raytracer::Camera(resolution, Math::Point3D(origin), Math::Point3D(rotation), cameraSetting["fieldOfView"]);
         } catch (const libconfig::SettingNotFoundException &nfex) {
             std::cerr << "Error: Setting not found in configuration file." << std::endl;
         } catch (const libconfig::SettingTypeException &tex) {
@@ -77,12 +91,10 @@ namespace Raytracer {
                 libconfig::Setting& spheresSetting = primitiveSetting["spheres"];
                 for (int i = 0; i < spheresSetting.getLength(); ++i) {
                     libconfig::Setting& sphereSetting = spheresSetting[i];
-                    double x = sphereSetting["x"];
-                    double y = sphereSetting["y"];
-                    double z = sphereSetting["z"];
-                    double radius = sphereSetting["radius"];
+                    Math::Point3D origin(sphereSetting["position"]["x"], sphereSetting["position"]["y"], sphereSetting["position"]["z"]);
+                    Raytracer::Color c(sphereSetting["color"]["r"], sphereSetting["color"]["g"], sphereSetting["color"]["b"]);
                     // Créer une sphère avec les paramètres extraits
-                    Raytracer::Objects::Sphere sphere({x, y, z}, Raytracer::Material(), radius);
+                    Raytracer::Objects::Sphere sphere(Math::Point3D(origin), Raytracer::Material(c), sphereSetting["radius"]);
                     _objectList.push_back(std::make_shared<Raytracer::Objects::Sphere>(sphere));
                 }
             }
@@ -90,12 +102,10 @@ namespace Raytracer {
                 libconfig::Setting& planesSetting = primitiveSetting["planes"];
                 for (int i = 0; i < planesSetting.getLength(); ++i) {
                     libconfig::Setting& planeSetting = planesSetting[i];
-                    double x = planeSetting["x"];
-                    double y = planeSetting["y"];
-                    double z = planeSetting["z"];
-                    double size = planeSetting["size"];
+                    Math::Point3D origin(planeSetting["position"]["x"], planeSetting["position"]["y"], planeSetting["position"]["z"]);
+                    Raytracer::Color c(planeSetting["color"]["r"], planeSetting["color"]["g"], planeSetting["color"]["b"]);
                     // Créer un Plane avec les paramètres extraits
-                    Raytracer::Objects::Plane plane({x, y, z}, Raytracer::Material(), size);
+                    Raytracer::Objects::Plane plane(Math::Point3D(origin), Raytracer::Material(c), planeSetting["size"]);
                     _objectList.push_back(std::make_shared<Raytracer::Objects::Plane>(plane));
                 }
             }
@@ -108,45 +118,41 @@ namespace Raytracer {
         }
     }
 
-    // void Core::createLight() {
-    //     try {
-    //         libconfig::Setting& lightSetting = _config.lookup("lights");
-    //         double ambient = lightSetting.lookup("ambient");
-    //         double diffuse = lightSetting.lookup("diffuse");
-    //         if (lightSetting.exists("point")) {
-    //             libconfig::Setting& pointSetting = lightSetting["point"];
-    //             for (int i = 0; i < pointSetting.getLength(); ++i) {
-    //                 libconfig::Setting& pointSetting = pointSetting[i];
-    //                 double x = pointSetting["x"];
-    //                 double y = pointSetting["y"];
-    //                 double z = pointSetting["z"];
-    //                 double radius = pointSetting["radius"];
-    //                 Raytracer::Objects::Light light(ambient, diffuse, {x, y, z});
-    //                 _objectList.push_back(std::make_shared<Raytracer::Objects::Light>(light));
-    //             }
-    //         }
-    //         // Créer la Camera avec les paramètres extraits
-    //     } catch (const libconfig::SettingNotFoundException &nfex) {
-    //         std::cerr << "Error: Setting not found in configuration file." << std::endl;
-    //     } catch (const libconfig::SettingTypeException &tex) {
-    //         std::cerr << "Error: Incorrect setting type in configuration file." << std::endl;
-    //     } catch (const std::exception &ex) {
-    //         std::cerr << "Error: " << ex.what() << std::endl;
-    //     }
-    // }
+    void Core::createLight() {
+        try {
+            libconfig::Setting& lightSetting = _config.lookup("lights");
+            double ambient = lightSetting.lookup("ambient");
+            double diffuse = lightSetting.lookup("diffuse");
+
+            if (lightSetting.exists("point_and_direction")) {
+                libconfig::Setting& pointSettings = lightSetting["point_and_direction"];
+                for (int i = 0; i < pointSettings.getLength(); ++i) {
+                    libconfig::Setting& lightSetting = pointSettings[i];
+                    Math::Point3D point(lightSetting["point"]["x"], lightSetting["point"]["y"], lightSetting["point"]["z"]);
+                    Math::Vector3D direction(lightSetting["direction"]["x"], lightSetting["direction"]["y"], lightSetting["direction"]["z"]);
+                    double angle = lightSetting["angle"];
+                    // Créer une lumière avec les paramètres extraits
+                    Raytracer::Objects::Light light(ambient, diffuse, point, direction, angle);
+                    _lightList.push_back(std::make_shared<Raytracer::Objects::Light>(light));
+                }
+            }
+        } catch (const libconfig::SettingNotFoundException &nfex) {
+            std::cerr << "Error: Setting not found in configuration file." << std::endl;
+        } catch (const libconfig::SettingTypeException &tex) {
+            std::cerr << "Error: Incorrect setting type in configuration file." << std::endl;
+        } catch (const std::exception &ex) {
+            std::cerr << "Error: " << ex.what() << std::endl;
+        }
+    }
 
     void Core::DEBUGPrintAllObject() {
         for (const auto& objPtr : _objectList) {
             if (auto spherePtr = std::dynamic_pointer_cast<Raytracer::Objects::Sphere>(objPtr)) {
                 const Raytracer::Objects::Sphere& sphere = *spherePtr;
-                const Math::Point3D& center = sphere.getPosition();
-                double radius = sphere.getRadius();
-                std::cout << "Sphere - Center: (" << center.str() << "), Radius: " << radius << std::endl;
+                std::cout << &sphere << std::endl;
             } else if (auto planePtr = std::dynamic_pointer_cast<Raytracer::Objects::Plane>(objPtr)) {
-                const Raytracer::Objects::Plane& plane = *planePtr;
-                const Math::Point3D& origin = plane.getPosition();
-                double size = plane.getSize();
-                std::cout << "Plane - Origin: (" << origin.str() << "), Size: " << size << std::endl;
+                Raytracer::Objects::Plane plane = *planePtr;
+                std::cout << &plane << std::endl;
             } else {
                 std::cerr << "Error: Object in _objectList is neither Sphere nor Plane." << std::endl;
             }
@@ -156,15 +162,22 @@ namespace Raytracer {
     void Core::DEBUGPrintCameraInfo() {
         try {
             const Resolution& resolution = _camera.getResolution();
-            const Math::Point3D& position = _camera.getPosition();
+            Math::Point3D position = _camera.getPosition();
             double fieldOfView = _camera.getFieldOfView();
 
-            std::cout << "Camera Info: ";
-            std::cout << "Resolution: " << resolution.width << "x" << resolution.height << ", ";
-            std::cout << "Position: (" << position.str() << ")";
+            std::cout << "Camera Info: " << std::endl;
+            std::cout << "Resolution: " << resolution.width << "x" << resolution.height << ", " << std::endl;
+            std::cout << "Position: (" << &position << ")" << std::endl;
             std::cout << "Field of View: " << fieldOfView << " degrees" << std::endl;
         } catch (const std::exception& ex) {
             std::cerr << "Error printing camera info: " << ex.what() << std::endl;
+        }
+    }
+
+    void Core::DEBUGPrintAllLight() {
+        std::cout << "List of Lights:" << std::endl;
+        for (const auto& light : _lightList) {
+            std::cout << light << std::endl;
         }
     }
 }

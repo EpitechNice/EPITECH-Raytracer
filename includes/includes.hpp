@@ -16,13 +16,13 @@
 
     #include "Image.hpp"
     #include "Math.hpp"
-    #include "Objects/Object.hpp"
+    #include "Object.hpp"
 
     #include "Ray.hpp"
-    #include "Materials/Material.hpp"
-    #include "Objects/Sphere.hpp"
-    #include "Objects/Plane.hpp"
-    #include "Objects/Object.hpp"
-    #include "Objects/Light.hpp"
+    #include "Material.hpp"
+    #include "Light.hpp"
+    #include "Object.hpp"
+    #include "Sphere.hpp"
+    #include "Plane.hpp"
 
 #endif

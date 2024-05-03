@@ -3,7 +3,7 @@
  * EPITECH PROJECT - Wed, Apr, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Sphere                                                                           *
+ *     Plane                                                                           *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -17,37 +17,36 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_SPHERE_HPP
-    #define INCLUDED_SPHERE_HPP
+#ifndef PLANE_HPP
+    #define PLANE_HPP
 
-#include "headers.hpp"
 #include "Object.hpp"
 #include "Math.hpp"
-#include "Ray.hpp"
 
-namespace Raytracer::Objects {
+namespace Raytracer::Objects
+{
+    class Plane:
+        public Raytracer::APrimitive
+    {
+        private:
+            double _size;
 
-    class Sphere : public Raytracer::AObject {
-    private:
-        Math::Point3D _origin;
-        double _radius;
+        public:
+            Plane(Math::Point3D origin = Math::Point3D(0, 1, 0),
+                Raytracer::Material material = Raytracer::Material(),
+                double size = 0.0);
+            ~Plane() = default;
 
-    public:
-        Sphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
-               Raytracer::Material material = Raytracer::Material(),
-               double radius = 1);
-        ~Sphere() = default;
+            std::string str() const override;
 
-        std::string str() const override;
+            // Getter
+            double getSize() const { return this->_size;};
 
-        // Getter
-        double getRadius() const { return this->_radius; }
-        const Math::Point3D& getPosition() const override { return this->_origin;}
-
-        bool doesHit(const Raytracer::Ray& other) const override;
-        Raytracer::Ray bounce(const Raytracer::Ray& other) const override;
+            bool doesHit(const Raytracer::Ray& ray) const;
+            const Raytracer::Ray& bounce(const Raytracer::Ray& other) const;
     };
-
 }
 
-#endif
+std::ostream& operator<<(std::ostream& os, const Raytracer::Objects::Plane& obj);
+
+#endif // PLANE_HPP

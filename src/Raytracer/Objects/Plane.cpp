@@ -16,10 +16,10 @@
  * ------------------------------------------------------------------------------------ */
 
 
-#include "Plane.hpp"
+#include "Objects/Primitives/Plane.hpp"
 
-namespace Raytracer::Objects {
-
+namespace Raytracer::Objects
+{
     Plane::Plane(Math::Point3D origin, Raytracer::Material material, double size)
     {
         this->_origin = origin;
@@ -55,11 +55,10 @@ namespace Raytracer::Objects {
         (void)other;
         return Ray();
     }
+}
 
-    std::ostream& operator<<(std::ostream& os, const Plane& obj)
-    {
-        os << obj.str();
-        return os;
-    }
-
+std::ostream& operator<<(std::ostream& os, const Raytracer::Objects::Plane& obj)
+{
+    os << obj.str();
+    return os;
 }

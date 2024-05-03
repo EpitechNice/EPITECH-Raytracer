@@ -19,7 +19,8 @@
 
 namespace Math
 {
-    Point3D::Point3D()
+    Point3D::Point3D():
+        Matrix({0, 0, 0})
     {}
 
     Point3D::Point3D(double x, double y, double z):
@@ -68,7 +69,8 @@ namespace Math
 
     // ==========
 
-    Vector3D::Vector3D()
+    Vector3D::Vector3D():
+        Matrix({0, 0, 0})
     {}
 
     Vector3D::Vector3D(double x, double y, double z):
@@ -180,3 +182,15 @@ namespace Math
         return Vector3D(_x, _y, _z);
     }
 }
+
+std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj)
+{
+    os << obj.str();
+    return os;
+}
+std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj)
+{
+    os << obj.str();
+    return os;
+}
+

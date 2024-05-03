@@ -95,7 +95,15 @@ namespace Math
                         ": size=(" <<
                         size.first << ", " << size.second <<
                         "), values={";
-                if (!size.first) {
+                if (!size.first || !size.second) {
+                    ss << "}>";
+                    return ss.str();
+                }
+                if (size.first == 1) {
+                    ss << this->_values[0][0];
+                    for (std::size_t i = 1; i < size.second; i++) {
+                        ss << ", " << this->_values[0][i];
+                    }
                     ss << "}>";
                     return ss.str();
                 }

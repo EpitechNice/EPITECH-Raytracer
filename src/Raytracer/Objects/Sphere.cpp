@@ -1,10 +1,10 @@
-#include "Objects/Sphere.hpp"
+#include "Sphere.hpp"
 
 namespace Raytracer
 {
     namespace Objects
     {
-        Sphere::Sphere(Math::Point3D origin, Raytracer::Material material, double radius)
+        Sphere::Sphere(Math::Point3D origin, Raytracer::Material material, double radius):
         {
             this->_origin = origin;
             this->_material = material;
@@ -16,9 +16,7 @@ namespace Raytracer
             std::stringstream ss;
             ss <<   "<" << this->getClassName() << " at " <<
                     std::hex << this <<
-                    ": origin=(" << std::to_string(this->_origin[0][0]) << ", " <<
-                    std::to_string(this->_origin[0][1]) << ", " <<
-                    std::to_string(this->_origin[0][2]) << "), radius=" <<
+                    ": origin=(" << this->_origin << "), radius=" <<
                     this->_radius << ", material=" <<
                     this->_material << ">";
             return ss.str();

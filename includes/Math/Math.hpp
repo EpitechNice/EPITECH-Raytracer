@@ -74,7 +74,5 @@ namespace Math
 
 std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj);
 std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const Math::Matrix<T>& obj);
 
 #endif

@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Thu, May, 2024                                                     *
+ * EPITECH PROJECT - Wed, Apr, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Colors                                                                           *
+ *     Sphere                                                                           *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -17,55 +17,37 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#include "Colors.hpp"
+#ifndef INCLUDED_SPHERE_HPP
+    #define INCLUDED_SPHERE_HPP
 
-namespace Raytracer
+#include "headers.hpp"
+#include "Object.hpp"
+#include "Math.hpp"
+#include "Ray.hpp"
+
+namespace Raytracer::Objects
 {
-    Color::Color()
-    {}
-
-    Color::Color(std::vector<unsigned int> values)
+    class Sphere:
+        public Raytracer::APrimitive
     {
-        if (values.size() != 3)
-            throw Exceptions::InvalidSizeError("Awaiting 3 points but got " + values.size(),
-                EXCEPTION_INFOS);
-        this->_values = {values};
-    }
+        private:
+            double _radius;
 
-    Color::Color(std::vector<std::vector<unsigned int>> values)
-    {
-        if (values.size() != 1 || values[0].size() != 3)
-            throw Exceptions::InvalidSizeError("Awaiting 1x3 array but got " +
-                                               std::to_string(values.size()) + "x" +
-                                               std::to_string(values.size() ? values[0].size() : 0),
-                EXCEPTION_INFOS);
-        this->_values = values;
-    }
+        public:
+            Sphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
+                Raytracer::Material material = Raytracer::Material(),
+                double radius = 1);
+            ~Sphere() = default;
 
-    Color::Color(unsigned int r, unsigned int g, unsigned int b):
-        Matrix({r, g, b})
-    {}
+            std::string str() const override;
 
-    Color::Color(const Color& other):
-        Matrix(other._values)
-    {}
+            double getRadius() const { return this->_radius; }
 
-    Color& Color::operator=(const Color& other)
-    {
-        this->_values = other._values;
-        return *this;
-    }
-
-    std::string Color::str() const
-    {
-        std::stringstream ss;
-        ss <<   "<" << this->getClassName() << " at " <<
-                std::hex << this <<
-                ": color=(" <<
-                std::to_string(this->_values[0][0]) << ", " <<
-                std::to_string(this->_values[0][1]) << ", " <<
-                std::to_string(this->_values[0][2]) << ")>";
-        return ss.str();
-    }
-
+            bool doesHit(const Raytracer::Ray& other) const;
+            const Raytracer::Ray& bounce(const Raytracer::Ray& other) const;
+    };
 }
+
+std::ostream& operator<<(std::ostream& os, const Raytracer::Objects::Sphere& obj);
+
+#endif

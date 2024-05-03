@@ -23,11 +23,12 @@
 
 namespace Raytracer
 {
-    struct Resolution
+    typedef struct resolution_s
     {
         int width;
         int height;
-    };
+    } Resolution;
+
     class Camera {
     private:
         Resolution _resolution;

@@ -22,25 +22,28 @@
 
 #include "Object.hpp"
 
-namespace Raytracer::Objects{
+namespace Raytracer::Objects
+{
+    class Light:
+        public Raytracer::AObject
+    {
+        private:
+            double _ambient;
+            double _diffuse;
+            Math::Point3D _pointLights;
+            Math::Vector3D _directional;
+            double _angle;
 
-    class Light : public Raytracer::AObject {
-    private:
-        double _ambient;
-        double _diffuse;
-        Math::Point3D _pointLights;
-        Math::Vector3D _directional;
+        public:
+            Light();
+            Light(double ambient, double diffuse, const Math::Point3D& pointLights, const Math::Vector3D& directional, double angle);
+            ~Light();
 
-    public:
-        Light();
-        Light(double ambient, double diffuse, const Math::Point3D& pointLights, const Math::Vector3D& directional);
-        ~Light();
-
-        // Getters
-        double getAmbient() const;
-        double getDiffuse() const;
-        const Math::Point3D& getPointLights() const;
-        const Math::Vector3D& getDirectional() const;
+            // Getters
+            double getAmbient() const;
+            double getDiffuse() const;
+            const Math::Point3D& getPointLights() const;
+            const Math::Vector3D& getDirectional() const;
     };
 }
 

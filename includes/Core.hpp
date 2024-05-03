@@ -23,7 +23,8 @@
 #include "Camera.hpp"
 #include "Object.hpp"
 
-namespace Raytracer {
+namespace Raytracer
+{
     class Core
     {
         private:
@@ -33,10 +34,11 @@ namespace Raytracer {
             Raytracer::Camera _camera;
         protected:
         public:
-            Core(const std::string sceneFilePath);
+            Core(int argc, char** argv);
             ~Core() = default;
 
             //Config
+            void usage(std::string filename = "./raytracer", int status = 0);
             void setConfig(const std::string sceneFilePath);
             void loadConfig(const std::string sceneFilePath);
             void createCamera();
@@ -44,6 +46,7 @@ namespace Raytracer {
             void createLight();
             void DEBUGPrintAllObject();
             void DEBUGPrintCameraInfo();
+            void DEBUGPrintAllLight();
     };
 }
 

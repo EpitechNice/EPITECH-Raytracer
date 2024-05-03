@@ -38,10 +38,8 @@ namespace Raytracer
         std::stringstream ss;
         ss <<   "<" << this->getClassName() << " at " <<
                 std::hex << this <<
-                ": origin=(" << std::to_string(this->_origin[0][0]) << ", " <<
-                std::to_string(this->_origin[0][1]) << ", " <<
-                std::to_string(this->_origin[0][2]) << "), material=" <<
-                this->_material << ">";
+                ": origin=" << this->_origin <<
+                ", direction=" << this->_direction << ">";
         return ss.str();
     }
 
@@ -50,9 +48,9 @@ namespace Raytracer
         this->_origin = position;
     }
 
-    void AObject::setMaterial(Raytracer::Material material)
+    void AObject::setDirection(Math::Vector3D direction)
     {
-        this->_material = material;
+        this->_direction = direction;
     }
 
     const Math::Point3D& AObject::getPosition() const
@@ -60,14 +58,35 @@ namespace Raytracer
         return this->_origin;
     }
 
-    const Raytracer::Material& AObject::getMaterial() const
+    const Math::Vector3D& AObject::getDirection() const
+    {
+        return this->_direction;
+    }
+
+    void APrimitive::setMaterial(Raytracer::Material material)
+    {
+        this->_material = material;
+    }
+
+    const Raytracer::Material& APrimitive::getMaterial() const
     {
         return this->_material;
     }
 
-    std::ostream& operator<<(std::ostream& os, const AObject& obj)
+    std::string APrimitive::str() const
     {
-        os << obj.str();
-        return os;
+        std::stringstream ss;
+        ss <<   "<" << this->getClassName() << " at " <<
+                std::hex << this <<
+                ": origin=" << this->_origin <<
+                ", direction=" << this->_direction <<
+                ", material=" << this->_material << ">";
+        return ss.str();
     }
+}
+
+std::ostream& operator<<(std::ostream& os, const Raytracer::AObject& obj)
+{
+    os << obj.str();
+    return os;
 }

@@ -7,9 +7,8 @@
 
 #include "includes.hpp"
 
-int main(int argc, char** argv) {
-    argc = argc;
-    std::string sceneConfigFile = argv[1];
-    Raytracer::Core core(sceneConfigFile);
+int main(int argc, char** argv)
+{
+    Raytracer::Core core(argc, argv);
     return 0;
 }
