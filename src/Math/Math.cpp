@@ -67,6 +67,11 @@ namespace Math
         return other.translation(*this);
     }
 
+    Vector3D Point3D::operator+(const Point3D& other) const
+    {
+        return other.translation(*this);
+    }
+
     // ==========
 
     Vector3D::Vector3D():

@@ -36,14 +36,14 @@ add_executable(raytracer
     src/Raytracer/Ray.cpp
 )
 
-# target_include_directories(raytracer PUBLIC
-#     ./includes/
-#     ./includes/Exceptions/
-#     ./includes/Materials/
-#     ./includes/Math/
-#     ./includes/Raytracer/
-#     ./includes/Raytracer/Objects/
-# )
+target_include_directories(raytracer PUBLIC
+    ./includes/
+    ./includes/Exceptions/
+    ./includes/Materials/
+    ./includes/Math/
+    ./includes/Raytracer/
+    ./includes/Raytracer/Objects/
+)
 
 target_link_libraries(raytracer
     config++

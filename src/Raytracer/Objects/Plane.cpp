@@ -50,10 +50,9 @@ namespace Raytracer::Objects
         return (discriminant >= 0);
     }
 
-    Ray Plane::bounce(const Ray& other) const
+    const Raytracer::Ray& Plane::bounce(const Raytracer::Ray& other) const
     {
-        (void)other;
-        return Ray();
+        return other;
     }
 }
 

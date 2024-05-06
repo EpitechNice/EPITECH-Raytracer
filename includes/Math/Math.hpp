@@ -73,7 +73,7 @@ namespace Math
     };
 };
 
-// std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj);
-// std::ostream& operator<<(std::ostream& os, const Math::Point3D* obj);
-// std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
+std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj);
+std::ostream& operator<<(std::ostream& os, const Math::Point3D* obj);
+std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
 #endif

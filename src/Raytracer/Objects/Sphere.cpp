@@ -4,7 +4,7 @@ namespace Raytracer
 {
     namespace Objects
     {
-        Sphere::Sphere(Math::Point3D origin, Raytracer::Material material, double radius):
+        Sphere::Sphere(Math::Point3D origin, Raytracer::Material material, double radius)
         {
             this->_origin = origin;
             this->_material = material;
@@ -34,13 +34,13 @@ namespace Raytracer
             return (discriminant >= 0);
         }
 
-        Ray Sphere::bounce(const Ray& other) const
+        const Raytracer::Ray& Sphere::bounce(const Raytracer::Ray& other) const
         {
-            (void)other;
-            return Ray();
+            // (void)other;
+            return other;
         }
 
-        std::ostream& operator<<(std::ostream& os, const Sphere& obj)
+        std::ostream& operator<<(std::ostream& os, const Raytracer::Objects::Sphere& obj)
         {
             os << obj.str();
             return os;

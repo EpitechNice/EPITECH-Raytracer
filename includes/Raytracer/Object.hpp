@@ -69,6 +69,8 @@ namespace Raytracer
 
             const Math::Point3D& getPosition() const;
             const Math::Vector3D& getDirection() const;
+
+            
     };
 
     class APrimitive:
@@ -82,5 +84,7 @@ namespace Raytracer
             virtual std::string str() const;
     };
 }
+
+std::ostream& operator<<(std::ostream& os, const Raytracer::AObject& obj);
 
 #endif
