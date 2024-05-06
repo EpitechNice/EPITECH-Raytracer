@@ -77,20 +77,29 @@ namespace Exceptions
             {}
     };
 
-    class FileInteractionError: public::Exceptions::Exception
+    class InvalidParsingSettingNotFound: public Exceptions::Exception
     {
         public:
-            FileInteractionError(std::string what = "An error occured while interacting with the file",
-                       std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            InvalidParsingSettingNotFound(std::string what = "Setting not found in configuration file.",
+                             std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
             Exceptions::Exception(what, position)
             {}
     };
 
-    class ParsingError: public::Exceptions::Exception
+    class InvalidParsingSettingInvalid: public Exceptions::Exception
     {
         public:
-            ParsingError(std::string what = "An error occured while interacting with the file",
-                       std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            InvalidParsingSettingInvalid(std::string what = "Incorrect setting type in configuration file.",
+                             std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
+    class OtherParsingError: public Exceptions::Exception
+    {
+        public:
+            OtherParsingError(std::string what = "Error at line",
+                             std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
             Exceptions::Exception(what, position)
             {}
     };
