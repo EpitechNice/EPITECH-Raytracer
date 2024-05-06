@@ -25,7 +25,6 @@ namespace Raytracer
         if (std::string(argv[0]) == "-h" ||
             std::string(argv[0]) == "--help")
             this->usage(argv[0], 0);
-        // if ()
         this->loadConfig(argv[1]);
     }
 
@@ -51,15 +50,20 @@ namespace Raytracer
         try {
             this->_config.readFile(sceneFilePath.c_str());
         } catch (const libconfig::FileIOException &fioex) {
-            std::cerr << "I/O error while reading file." << std::endl;
+            throw Exceptions::FileInteractionError("An IO error occured while processing the config file", EXCEPTION_INFOS);
         } catch (const libconfig::ParseException &pex) {
-            std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
-                      << " - " << pex.getError() << std::endl;
+            throw Exceptions::ParsingError("An error occured while parsing the file : " + sceneFilePath +
+                ":" + std::to_string(pex.getLine()) + "\n" + pex.getError());
         }
     }
 
     void Core::loadConfig(const std::string sceneFilePath) {
-        this->setConfig(sceneFilePath);
+        try {
+            this->setConfig(sceneFilePath);
+        } catch(const Exceptions::Exception& e) {
+            std::cerr << e << std::endl;
+            std::exit(1);
+        }
 
         this->createCamera();
         this->DEBUGPrintCameraInfo();
@@ -77,6 +81,7 @@ namespace Raytracer
             // Créer la Camera avec les paramètres extraits
             _camera = Raytracer::Camera(resolution, Math::Point3D(origin), Math::Point3D(rotation), cameraSetting["fieldOfView"]);
         } catch (const libconfig::SettingNotFoundException &nfex) {
+            throw Exceptions::ParsingError("", EXCEPTION_INFOS);
             std::cerr << "Error: Setting not found in configuration file." << std::endl;
         } catch (const libconfig::SettingTypeException &tex) {
             std::cerr << "Error: Incorrect setting type in configuration file." << std::endl;
@@ -84,6 +89,7 @@ namespace Raytracer
             std::cerr << "Error: " << ex.what() << std::endl;
         }
     }
+
     void Core::createPrimitive() {
         try {
             libconfig::Setting& primitiveSetting = _config.lookup("primitives");

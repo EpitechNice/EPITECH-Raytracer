@@ -77,6 +77,24 @@ namespace Exceptions
             {}
     };
 
+    class FileInteractionError: public::Exceptions::Exception
+    {
+        public:
+            FileInteractionError(std::string what = "An error occured while interacting with the file",
+                       std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
+    class ParsingError: public::Exceptions::Exception
+    {
+        public:
+            ParsingError(std::string what = "An error occured while interacting with the file",
+                       std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
     // ========== Warnings ==========
 
     class FileExtensionWarning: public Exceptions::Exception
