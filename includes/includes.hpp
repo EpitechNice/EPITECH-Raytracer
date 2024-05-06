@@ -5,24 +5,13 @@
 ** main
 */
 
-#ifndef INCLUDED_INCLUDES_HPP
-    #define INCLUDED_INCLUDES_HPP
+#ifndef INCLUDES_HPP
+    #define INCLUDES_HPP
 
+    #include "configs.hpp"
     #include "headers.hpp"
-    #include "Exceptions.hpp"
 
-    #include "Core.hpp"
-    #include "Camera.hpp"
-
-    #include "Image.hpp"
-    #include "Math.hpp"
-    #include "Object.hpp"
-
-    #include "Ray.hpp"
-    #include "Material.hpp"
-    #include "Light.hpp"
-    #include "Object.hpp"
-    #include "Sphere.hpp"
-    #include "Plane.hpp"
+    #include "Interface/IObject.hpp"
+    #include "Interface/IPrimitive.hpp"
 
 #endif

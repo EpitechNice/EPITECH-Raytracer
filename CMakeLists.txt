@@ -20,30 +20,26 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 )
 
 add_executable(raytracer
-    # src/main.cpp
-    src/Core.cpp
+    src/Abstract/AObject.cpp
+    src/Abstract/APrimitive.cpp
+    src/Core/Core.cpp
     src/Exceptions/Exceptions.cpp
-    src/Image.cpp
-    src/Materials/Material.cpp
-    src/Math/Math.cpp
+    src/Image/Colors.cpp
+    src/Image/Image.cpp
+    src/Material/Material.cpp
+    src/Math/Point3D.cpp
+    src/Math/Ray.cpp
+    src/Math/Vector3D.cpp
     src/mmain.cpp
-    src/Raytracer/Camera.cpp
-    src/Raytracer/Colors.cpp
-    src/Raytracer/Objects/Light.cpp
-    src/Raytracer/Objects/Object.cpp
-    src/Raytracer/Objects/Plane.cpp
-    src/Raytracer/Objects/Sphere.cpp
-    src/Raytracer/Ray.cpp
+    src/Objects/Camera.cpp
+    src/Objects/Light.cpp
+    src/Primitives/Plane.cpp
+    src/Primitives/Sphere.cpp
 )
 
-# target_include_directories(raytracer PUBLIC
-#     ./includes/
-#     ./includes/Exceptions/
-#     ./includes/Materials/
-#     ./includes/Math/
-#     ./includes/Raytracer/
-#     ./includes/Raytracer/Objects/
-# )
+target_include_directories(raytracer PUBLIC
+    ./includes/
+)
 
 target_link_libraries(raytracer
     config++

@@ -5,7 +5,8 @@
 ** main
 */
 
-#include "includes.hpp"
+    #include "includes.hpp"
+    #include "./Core/Core.hpp"
 
 int main(int argc, char** argv)
 {
