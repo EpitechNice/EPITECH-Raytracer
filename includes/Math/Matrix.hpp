@@ -402,11 +402,11 @@ namespace Math
     };
 }
 
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const Math::Matrix<T>& obj)
-{
-    os << obj.str();
-    return os;
-}
+// template <typename T>
+// std::ostream& operator<<(std::ostream& os, const Math::Matrix<T>& obj)
+// {
+//     os << obj.str();
+//     return os;
+// }
 
 #endif

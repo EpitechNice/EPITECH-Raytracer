@@ -43,7 +43,7 @@ namespace Raytracer
     };
 
     class IPrimitive:
-        public Raytracer::IObject
+        virtual public Raytracer::IObject
     {
         protected:
             Raytracer::Material _material;
@@ -56,24 +56,24 @@ namespace Raytracer
     };
 
     class AObject:
-        public Raytracer::IObject
+        virtual public Raytracer::IObject
     {
         public:
             ~AObject() = default;
 
-            virtual std::string getClassName() const;
-            virtual std::string str() const;
+            std::string getClassName() const;
+            std::string str() const;
 
-            virtual void setPosition(const Math::Point3D& position);
-            virtual void setDirection(const Math::Vector3D& direction);
+            void setPosition(const Math::Point3D& position) override;
+            void setDirection(const Math::Vector3D& direction) override;
 
-            virtual const Math::Point3D& getPosition() const;
-            virtual const Math::Vector3D& getDirection() const;
+            const Math::Point3D& getPosition() const;
+            const Math::Vector3D& getDirection() const;
     };
 
     class APrimitive:
-        public Raytracer::AObject,
-        public Raytracer::IPrimitive
+        public Raytracer::IPrimitive,
+        public Raytracer::AObject
     {
         public:
             virtual void setMaterial(Raytracer::Material material);

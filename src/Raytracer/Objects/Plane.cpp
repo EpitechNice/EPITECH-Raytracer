@@ -16,7 +16,7 @@
  * ------------------------------------------------------------------------------------ */
 
 
-#include "Objects/Primitives/Plane.hpp"
+#include "Plane.hpp"
 
 namespace Raytracer::Objects
 {

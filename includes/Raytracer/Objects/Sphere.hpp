@@ -28,7 +28,7 @@
 namespace Raytracer::Objects
 {
     class Sphere:
-        public Raytracer::APrimitive
+       public Raytracer::APrimitive
     {
         private:
             double _radius;

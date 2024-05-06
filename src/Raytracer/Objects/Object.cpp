@@ -43,12 +43,12 @@ namespace Raytracer
         return ss.str();
     }
 
-    void AObject::setPosition(Math::Point3D position)
+    void AObject::setPosition(const Math::Point3D& position)
     {
         this->_origin = position;
     }
 
-    void AObject::setDirection(Math::Vector3D direction)
+    void AObject::setDirection(const Math::Vector3D& direction)
     {
         this->_direction = direction;
     }
@@ -63,6 +63,8 @@ namespace Raytracer
         return this->_direction;
     }
 
+    // ==========
+
     void APrimitive::setMaterial(Raytracer::Material material)
     {
         this->_material = material;
@@ -76,10 +78,10 @@ namespace Raytracer
     std::string APrimitive::str() const
     {
         std::stringstream ss;
-        ss <<   "<" << this->getClassName() << " at " <<
+        ss <<   "<" << AObject::getClassName() << " at " <<
                 std::hex << this <<
-                ": origin=" << this->_origin <<
-                ", direction=" << this->_direction <<
+                ": origin=" << AObject::_origin <<
+                ", direction=" << AObject::_direction <<
                 ", material=" << this->_material << ">";
         return ss.str();
     }

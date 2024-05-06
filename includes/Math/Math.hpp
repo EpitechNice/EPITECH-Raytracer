@@ -25,9 +25,7 @@
 
 namespace Math
 {
-    class Point3D;
     class Vector3D;
-
     class Point3D: public Math::Matrix<double>
     {
         public:
@@ -43,7 +41,9 @@ namespace Math
             Point3D operator-(const Vector3D& other) const;
             Vector3D operator+(const Point3D& other) const;
             Vector3D operator-(const Point3D& other) const;
+            friend std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj);
     };
+
 
     class Vector3D: public Math::Matrix<double>
     {
@@ -60,6 +60,7 @@ namespace Math
 
             static Vector3D makeFromNormalized(const Vector3D& obj, double length);
 
+            friend std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
             Vector3D& operator=(const Vector3D& other);
             Point3D operator+ (const Point3D& other) const;
             Point3D operator- (const Point3D& other) const;
@@ -72,7 +73,7 @@ namespace Math
     };
 };
 
-std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj);
-std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
-
+// std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj);
+// std::ostream& operator<<(std::ostream& os, const Math::Point3D* obj);
+// std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
 #endif

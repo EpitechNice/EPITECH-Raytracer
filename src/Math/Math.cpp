@@ -188,9 +188,21 @@ std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj)
     os << obj.str();
     return os;
 }
+
+std::ostream& operator<<(std::ostream& os, const Math::Point3D* obj)
+{
+    os << obj->str();
+    return os;
+}
+
 std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj)
 {
     os << obj.str();
     return os;
 }
 
+std::ostream& operator<<(std::ostream& os, const Math::Vector3D* obj)
+{
+    os << obj->str();
+    return os;
+}
