@@ -104,6 +104,15 @@ namespace Exceptions
             {}
     };
 
+    class CantOpenConfigFile: public Exceptions::Exception
+    {
+        public:
+            CantOpenConfigFile(std::string what = "I/O error while reading file.",
+                             std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
     // ========== Warnings ==========
 
     class FileExtensionWarning: public Exceptions::Exception

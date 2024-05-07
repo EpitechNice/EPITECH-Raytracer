@@ -30,6 +30,7 @@
     #include "../Objects/Light.hpp"
     #include "../Primitives/Plane.hpp"
     #include "../Primitives/Sphere.hpp"
+    #include "../Abstract/Factory.hpp"
 
 namespace Raytracer
 {
@@ -39,7 +40,7 @@ namespace Raytracer
             libconfig::Config _config;
             std::vector<std::shared_ptr<Raytracer::AObject>> _objectList;
             std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
-            Raytracer::Camera _camera;
+            std::unique_ptr<Raytracer::Camera> _camera;
         protected:
         public:
             Core(int argc, char** argv);

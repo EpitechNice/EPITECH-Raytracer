@@ -51,31 +51,28 @@ namespace Raytracer
         try {
             this->_config.readFile(sceneFilePath.c_str());
         } catch (const libconfig::FileIOException &fioex) {
-            std::cerr << "I/O error while reading file." << std::endl;
-        } catch (const libconfig::ParseException &pex) {
-            std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
-                      << " - " << pex.getError() << std::endl;
+            throw Exceptions::CantOpenConfigFile("I/O error while reading file. " + std::string(fioex.what()), EXCEPTION_INFOS);
         }
     }
 
-void Core::loadConfig(const std::string sceneFilePath) {
-    try {
-        this->setConfig(sceneFilePath);
-        this->createCamera();
-        this->DEBUGPrintCameraInfo();
-        this->createPrimitive();
-        this->DEBUGPrintAllObject();
-        this->createLight();
-        this->DEBUGPrintAllLight();
+    void Core::loadConfig(const std::string sceneFilePath) {
+        try {
+            this->setConfig(sceneFilePath);
+            this->createCamera();
+            this->DEBUGPrintCameraInfo();
+            this->createPrimitive();
+            this->DEBUGPrintAllObject();
+            this->createLight();
+            this->DEBUGPrintAllLight();
 
-    } catch (const libconfig::SettingNotFoundException &ex) {
-        throw Exceptions::InvalidParsingSettingNotFound("Setting not found in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
-    } catch (const libconfig::SettingTypeException &ex) {
-        throw Exceptions::InvalidParsingSettingInvalid("Incorrect setting type in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
-    } catch (const std::exception &ex) {
-        throw Exceptions::OtherParsingError("Error at line " + std::string(ex.what()) + " : Invalid syntax", EXCEPTION_INFOS);
+        } catch (const libconfig::SettingNotFoundException &ex) {
+            throw Exceptions::InvalidParsingSettingNotFound("Setting not found in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
+        } catch (const libconfig::SettingTypeException &ex) {
+            throw Exceptions::InvalidParsingSettingInvalid("Incorrect setting type in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
+        } catch (const std::exception &ex) {
+            throw Exceptions::OtherParsingError("Error at line " + std::string(ex.what()) + " : Invalid syntax", EXCEPTION_INFOS);
+        }
     }
-}
 
     void Core::createCamera() {
         libconfig::Setting& cameraSetting = _config.lookup("camera");
@@ -84,7 +81,7 @@ void Core::loadConfig(const std::string sceneFilePath) {
         Math::Point3D origin(cameraSetting["position"]["x"], cameraSetting["position"]["y"], cameraSetting["position"]["z"]);
         Math::Point3D rotation(cameraSetting["rotation"]["x"], cameraSetting["rotation"]["y"], cameraSetting["rotation"]["z"]);
         // Créer la Camera avec les paramètres extraits
-        _camera = Raytracer::Camera(resolution, Math::Point3D(origin), Math::Point3D(rotation), cameraSetting["fieldOfView"]);
+        _camera = Factory::createCameras(resolution, Math::Point3D(origin), Math::Point3D(rotation), cameraSetting["fieldOfView"]);
     }
     void Core::createPrimitive() {
         libconfig::Setting& primitiveSetting = _config.lookup("primitives");
@@ -95,8 +92,7 @@ void Core::loadConfig(const std::string sceneFilePath) {
                 Math::Point3D origin(sphereSetting["position"]["x"], sphereSetting["position"]["y"], sphereSetting["position"]["z"]);
                 Raytracer::Color c(sphereSetting["color"]["r"], sphereSetting["color"]["g"], sphereSetting["color"]["b"]);
                 // Créer une sphère avec les paramètres extraits
-                Raytracer::Objects::Sphere sphere(Math::Point3D(origin), Raytracer::Material(c), sphereSetting["radius"]);
-                _objectList.push_back(std::make_shared<Raytracer::Objects::Sphere>(sphere));
+                _objectList.push_back(Factory::createSpheres(Math::Point3D(origin), Raytracer::Material(c), sphereSetting["radius"]));
             }
         }
         if (primitiveSetting.exists("planes")) {
@@ -106,8 +102,7 @@ void Core::loadConfig(const std::string sceneFilePath) {
                 Math::Point3D origin(planeSetting["position"]["x"], planeSetting["position"]["y"], planeSetting["position"]["z"]);
                 Raytracer::Color c(planeSetting["color"]["r"], planeSetting["color"]["g"], planeSetting["color"]["b"]);
                 // Créer un Plane avec les paramètres extraits
-                Raytracer::Objects::Plane plane(Math::Point3D(origin), Raytracer::Material(c), planeSetting["size"]);
-                _objectList.push_back(std::make_shared<Raytracer::Objects::Plane>(plane));
+                _objectList.push_back(Factory::createPlanes(Math::Point3D(origin), Raytracer::Material(c), planeSetting["size"]));
             }
         }
     }
@@ -124,8 +119,7 @@ void Core::loadConfig(const std::string sceneFilePath) {
                 Math::Vector3D direction(lightSetting["direction"]["x"], lightSetting["direction"]["y"], lightSetting["direction"]["z"]);
                 double angle = lightSetting["angle"];
                 // Créer une lumière avec les paramètres extraits
-                Raytracer::Objects::Light light(ambient, diffuse, point, direction, angle);
-                _lightList.push_back(std::make_shared<Raytracer::Objects::Light>(light));
+                _lightList.push_back(Factory::createLights(ambient, diffuse, point, direction, angle));
             }
         }
     }
@@ -146,14 +140,7 @@ void Core::loadConfig(const std::string sceneFilePath) {
 
     void Core::DEBUGPrintCameraInfo() {
         try {
-            const Resolution& resolution = _camera.getResolution();
-            Math::Point3D position = _camera.getPosition();
-            double fieldOfView = _camera.getFieldOfView();
-
-            std::cout << "Camera Info: " << std::endl;
-            std::cout << "Resolution: " << resolution.width << "x" << resolution.height << ", " << std::endl;
-            std::cout << "Position: (" << &position << ")" << std::endl;
-            std::cout << "Field of View: " << fieldOfView << " degrees" << std::endl;
+            std::cout << &_camera << std::endl;
         } catch (const std::exception& ex) {
             std::cerr << "Error printing camera info: " << ex.what() << std::endl;
         }
