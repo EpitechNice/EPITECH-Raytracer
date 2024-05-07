@@ -44,6 +44,9 @@ namespace Raytracer
 
             std::string str() const;
 
+            const Raytracer::Image& getPattern() const;
+            void setPattern(Raytracer::Image pattern);
+
             Material& operator=(const Material& other);
 
             friend std::ostream& operator<<(std::ostream& os, const Material& obj);

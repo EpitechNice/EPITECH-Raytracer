@@ -46,6 +46,7 @@ namespace Raytracer::Objects
             double getRadius() const { return this->_radius; }
 
             bool doesHit(const Math::Ray& other) const;
+            Raytracer::Color hitColor(const Math::Ray& ray) const;
             Math::Ray bounce(const Math::Ray& other) const;
     };
 }

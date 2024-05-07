@@ -15,6 +15,7 @@
  * -----------------------------------------------------------------------------------  */
 
 #include "Core.hpp"
+#include "includes.hpp"
 
 namespace Raytracer
 {
@@ -25,8 +26,12 @@ namespace Raytracer
         if (std::string(argv[0]) == "-h" ||
             std::string(argv[0]) == "--help")
             this->usage(argv[0], 0);
+        
         // if ()
         this->loadConfig(argv[1]);
+        _image = Raytracer::Image({1920, 1080});
+        _image.save("my_file.ppm");
+        return;
     }
 
     void Core::usage(std::string filename, int status)
@@ -133,10 +138,11 @@ namespace Raytracer
         for (const auto& objPtr : _objectList) {
             if (auto spherePtr = std::dynamic_pointer_cast<Raytracer::Objects::Sphere>(objPtr)) {
                 const Raytracer::Objects::Sphere& sphere = *spherePtr;
-                std::cout << &sphere << std::endl;
+                std::cout << "Sphere: " << &sphere << std::endl;
             } else if (auto planePtr = std::dynamic_pointer_cast<Raytracer::Objects::Plane>(objPtr)) {
-                Raytracer::Objects::Plane plane = *planePtr;
-                std::cout << &plane << std::endl;
+                // Utilisez un pointeur ou une référence pour travailler avec l'objet polymorphe
+                const Raytracer::Objects::Plane& plane = *planePtr;
+                std::cout << "Plane: " << &plane << std::endl;
             } else {
                 std::cerr << "Error: Object in _objectList is neither Sphere nor Plane." << std::endl;
             }

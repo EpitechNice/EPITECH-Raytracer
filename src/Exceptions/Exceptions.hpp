@@ -113,6 +113,15 @@ namespace Exceptions
             {}
     };
 
+    class InvalidRayError: public Exceptions::Exception
+    {
+        public:
+            InvalidRayError(std::string what = "The ray does not belong here !",
+                             std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
     // ========== Warnings ==========
 
     class FileExtensionWarning: public Exceptions::Exception

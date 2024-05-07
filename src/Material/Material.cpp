@@ -62,6 +62,16 @@ namespace Raytracer
         return ss.str();
     }
 
+    const Raytracer::Image& Material::getPattern() const
+    {
+        return this->_pattern;
+    }
+
+    void Material::setPattern(Raytracer::Image pattern)
+    {
+        this->_pattern = pattern;
+    }
+
     Material& Material::operator=(const Material& other)
     {
         this->_pattern = other._pattern;

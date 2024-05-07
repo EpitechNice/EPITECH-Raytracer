@@ -52,6 +52,14 @@ namespace Raytracer
             return (discriminant >= 0);
         }
 
+        Raytracer::Color Sphere::hitColor(const Math::Ray& other) const
+        {
+            if (!this->doesHit(other))
+                throw Exceptions::InvalidRayError("The " + other.str() + " does not hit " + this->str(),
+                    EXCEPTION_INFOS);
+            return this->_material.getPattern()[0][0];
+        }
+
         Math::Ray Sphere::bounce(const Math::Ray& other) const
         {
             (void)other;

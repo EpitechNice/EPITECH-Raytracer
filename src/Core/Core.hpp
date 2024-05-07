@@ -41,6 +41,8 @@ namespace Raytracer
             std::vector<std::shared_ptr<Raytracer::AObject>> _objectList;
             std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
             std::unique_ptr<Raytracer::Camera> _camera;
+
+            Image _image;
         protected:
         public:
             Core(int argc, char** argv);

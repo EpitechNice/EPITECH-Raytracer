@@ -40,9 +40,9 @@ namespace Raytracer::Objects
             // Getter
             double getSize() const { return this->_size;};
 
-            bool doesHit(const Math::Ray& ray) const;
-            Math::Ray bounce(const Math::Ray& other) const;
-
+            bool doesHit(const Math::Ray& ray) const override;
+            Raytracer::Color hitColor(const Math::Ray& ray) const override;
+            Math::Ray bounce(const Math::Ray& other) const override;
             std::string str() const override;
 
             friend std::ostream& operator<<(std::ostream& os, const Plane& obj);

@@ -20,14 +20,11 @@ int main(int argc, char** argv)
     (void)argc;
     (void)argv;
 
-    Raytracer::Image img({1920, 1080});
-
-    img.save("my_file.ppm");
-    // try {
-    //     Raytracer::Core core(argc, argv);
-    // } catch (const Exceptions::Exception& e) {
-    //     std::cerr << e << std::endl;
-    //     return 84;
-    // }
+    try {
+        Raytracer::Core core(argc, argv);
+    } catch (const Exceptions::Exception& e) {
+        std::cerr << e << std::endl;
+        return 84;
+    }
     return 0;
 }
