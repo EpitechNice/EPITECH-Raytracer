@@ -26,6 +26,18 @@ namespace Raytracer
     Image::Image(std::pair<std::size_t, std::size_t> size)
     {
         this->fill(size, Raytracer::Color(DEFAULT_COLOR));
+        Raytracer::Color startValue(0x45, 0xa8, 0xff);
+        Raytracer::Color   endValue(0x9d, 0xd1, 0xff);
+        Raytracer::Color currentValue;
+
+        for (std::size_t i = 0; i < size.first; i++) {
+            double a = double(i) / double(size.first);
+            currentValue = Raytracer::Color((1.0 - a) * startValue[0][0] + a * endValue[0][0],
+                                            (1.0 - a) * startValue[0][1] + a * endValue[0][1],
+                                            (1.0 - a) * startValue[0][2] + a * endValue[0][2]);
+            for (std::size_t j = 0; j < size.second; j++)
+                this->set({i, j}, currentValue);
+        }
     }
 
     Image::Image(std::pair<std::size_t, std::size_t> size, Raytracer::Color color)
@@ -73,20 +85,6 @@ namespace Raytracer
         return out;
     }
 
-    void Image::setPos(std::pair<std::size_t, std::size_t> position, Raytracer::Color color)
-    {
-        std::pair<std::size_t, std::size_t> size = this->getSize();
-        if (position.first >= size.first || position.second >= size.second)
-            throw Exceptions::InvalidSizeError("Trying to access position (" +
-                                            std::to_string(position.first) + ", " +
-                                            std::to_string(position.second) +
-                                            ") while image is of size (" +
-                                            std::to_string(size.first) + ", " +
-                                            std::to_string(size.second) + ").",
-                EXCEPTION_INFOS);
-        this->_values[position.second][position.first] = color;
-    }
-
     void Image::resize(std::pair<std::size_t, std::size_t> size, Raytracer::Color background)
     {
         std::vector<std::vector<Raytracer::Color>> colors = this->_values;
@@ -95,7 +93,7 @@ namespace Raytracer
         for (std::size_t i = 0; i < colors.size(); i++) {
             for (std::size_t j = 0; j < colors[i].size(); j++) {
                 try {
-                    this->setPos({j, i}, colors[i][j]);
+                    this->set({j, i}, colors[i][j]);
                 } catch (const Exceptions::Exception& e)
                 {}
             }

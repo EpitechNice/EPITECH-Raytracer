@@ -22,9 +22,9 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 add_executable(raytracer
     src/Abstract/AObject.cpp
     src/Abstract/APrimitive.cpp
-    src/Abstract/Factory.cpp
     src/Core/Core.cpp
     src/Exceptions/Exceptions.cpp
+    src/Factory/ObjectFactory.cpp
     src/Image/Colors.cpp
     src/Image/Image.cpp
     src/Material/Material.cpp

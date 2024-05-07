@@ -35,7 +35,7 @@ namespace Raytracer::Objects
 
         public:
             Light();
-            Light(double ambient, double diffuse, const Math::Point3D& pointLights, const Math::Vector3D& directional, double angle);
+            Light(double ambient, double diffuse, Math::Point3D pointLights, Math::Vector3D directional, double angle);
             ~Light();
 
             std::string getClassName() const;

@@ -55,7 +55,8 @@ namespace Raytracer
         }
     }
 
-    void Core::loadConfig(const std::string sceneFilePath) {
+    void Core::loadConfig(const std::string sceneFilePath)
+    {
         try {
             this->setConfig(sceneFilePath);
             this->createCamera();
@@ -74,16 +75,19 @@ namespace Raytracer
         }
     }
 
-    void Core::createCamera() {
+    void Core::createCamera()
+    {
         libconfig::Setting& cameraSetting = _config.lookup("camera");
         libconfig::Setting& resolutionSetting = cameraSetting.lookup("resolution");
         Raytracer::Resolution resolution{resolutionSetting["width"], resolutionSetting["height"]};
         Math::Point3D origin(cameraSetting["position"]["x"], cameraSetting["position"]["y"], cameraSetting["position"]["z"]);
-        Math::Point3D rotation(cameraSetting["rotation"]["x"], cameraSetting["rotation"]["y"], cameraSetting["rotation"]["z"]);
+        Math::Vector3D rotation(cameraSetting["rotation"]["x"], cameraSetting["rotation"]["y"], cameraSetting["rotation"]["z"]);
         // Créer la Camera avec les paramètres extraits
-        _camera = Factory::createCameras(resolution, Math::Point3D(origin), Math::Point3D(rotation), cameraSetting["fieldOfView"]);
+        _camera = ObjectFactory::createCamera(resolution, origin, rotation, cameraSetting["fieldOfView"]);
     }
-    void Core::createPrimitive() {
+    
+    void Core::createPrimitive()
+    {
         libconfig::Setting& primitiveSetting = _config.lookup("primitives");
         if (primitiveSetting.exists("spheres")) {
             libconfig::Setting& spheresSetting = primitiveSetting["spheres"];
@@ -92,7 +96,7 @@ namespace Raytracer
                 Math::Point3D origin(sphereSetting["position"]["x"], sphereSetting["position"]["y"], sphereSetting["position"]["z"]);
                 Raytracer::Color c(sphereSetting["color"]["r"], sphereSetting["color"]["g"], sphereSetting["color"]["b"]);
                 // Créer une sphère avec les paramètres extraits
-                _objectList.push_back(Factory::createSpheres(Math::Point3D(origin), Raytracer::Material(c), sphereSetting["radius"]));
+                _objectList.push_back(ObjectFactory::createSphere(Math::Point3D(origin), Raytracer::Material(c), sphereSetting["radius"]));
             }
         }
         if (primitiveSetting.exists("planes")) {
@@ -102,7 +106,7 @@ namespace Raytracer
                 Math::Point3D origin(planeSetting["position"]["x"], planeSetting["position"]["y"], planeSetting["position"]["z"]);
                 Raytracer::Color c(planeSetting["color"]["r"], planeSetting["color"]["g"], planeSetting["color"]["b"]);
                 // Créer un Plane avec les paramètres extraits
-                _objectList.push_back(Factory::createPlanes(Math::Point3D(origin), Raytracer::Material(c), planeSetting["size"]));
+                _objectList.push_back(ObjectFactory::createPlane(Math::Point3D(origin), Raytracer::Material(c), planeSetting["size"]));
             }
         }
     }
@@ -119,12 +123,13 @@ namespace Raytracer
                 Math::Vector3D direction(lightSetting["direction"]["x"], lightSetting["direction"]["y"], lightSetting["direction"]["z"]);
                 double angle = lightSetting["angle"];
                 // Créer une lumière avec les paramètres extraits
-                _lightList.push_back(Factory::createLights(ambient, diffuse, point, direction, angle));
+                _lightList.push_back(ObjectFactory::createLight(ambient, diffuse, point, direction, angle));
             }
         }
     }
 
-    void Core::DEBUGPrintAllObject() {
+    void Core::DEBUGPrintAllObject()
+    {
         for (const auto& objPtr : _objectList) {
             if (auto spherePtr = std::dynamic_pointer_cast<Raytracer::Objects::Sphere>(objPtr)) {
                 const Raytracer::Objects::Sphere& sphere = *spherePtr;
@@ -138,7 +143,8 @@ namespace Raytracer
         }
     }
 
-    void Core::DEBUGPrintCameraInfo() {
+    void Core::DEBUGPrintCameraInfo()
+    {
         try {
             std::cout << &_camera << std::endl;
         } catch (const std::exception& ex) {
@@ -146,7 +152,8 @@ namespace Raytracer
         }
     }
 
-    void Core::DEBUGPrintAllLight() {
+    void Core::DEBUGPrintAllLight()
+    {
         for (const auto& light : _lightList) {
             std::cout << light << std::endl;
         }

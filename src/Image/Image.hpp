@@ -43,7 +43,6 @@ namespace Raytracer
 
             Raytracer::Color getMedianColor() const;
 
-            void setPos(std::pair<std::size_t, std::size_t> position, Raytracer::Color color);
             void resize(std::pair<std::size_t, std::size_t> size, Raytracer::Color background);
             bool save(std::string filename);
             double ratio() const;

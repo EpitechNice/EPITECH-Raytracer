@@ -26,7 +26,7 @@ namespace Raytracer::Objects
         this->_direction = Math::Vector3D(0, 0, 0);
     }
 
-    Light::Light(double ambient, double diffuse, const Math::Point3D& pointLights, const Math::Vector3D& directional, double angle):
+    Light::Light(double ambient, double diffuse, Math::Point3D pointLights, Math::Vector3D directional, double angle):
         _ambient(ambient), _diffuse(diffuse), _angle(angle)
     {
         this->_origin = pointLights;

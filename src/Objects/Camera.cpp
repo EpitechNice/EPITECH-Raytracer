@@ -19,18 +19,18 @@
 
 namespace Raytracer
 {
-    Camera::Camera() : _resolution{1920, 1080}, _position{0, 0, 0}, _rotation{0, 0, 0}, _fieldOfView{70.0}{}
-
-    Camera::Camera(const Resolution& resolution, Math::Point3D position, Math::Point3D rotation, double fieldOfView)
-        : _resolution(resolution), _position(position), _rotation(rotation), _fieldOfView(fieldOfView)
+    Camera::Camera():
+        _resolution({1920, 1080}), _fieldOfView(70.0)
     {
+        this->_origin = Math::Point3D(0, 0, 0);
+        this->_direction = Math::Vector3D(0, 0, 0);
     }
 
-    Camera::~Camera(){}
-
-    void Camera::setResolution(const Resolution& resolution)
+    Camera::Camera(Math::Point3D origin, Math::Vector3D direction, Resolution resolution, double fieldOfView):
+        _resolution(resolution), _fieldOfView(fieldOfView)
     {
-        _resolution = resolution;
+        this->_origin = origin;
+        this->_direction = direction;
     }
 
     std::string Camera::getClassName() const
@@ -47,10 +47,9 @@ namespace Raytracer
         return out;
     }
 
-    // Setter pour la position
-    void Camera::setPosition(const Math::Point3D& position)
+    void Camera::setResolution(Resolution resolution)
     {
-        _position = position;
+        _resolution = resolution;
     }
 
     // Setter pour le champ de vision
@@ -64,10 +63,6 @@ namespace Raytracer
         return _resolution;
     }
 
-    const Math::Point3D& Camera::getPosition() const{
-        return _position;
-    }
-
     double Camera::getFieldOfView() const{
         return _fieldOfView;
     }
@@ -79,8 +74,8 @@ namespace Raytracer
             " at " << std::hex << *this <<
             ": resolution=(" << this->_resolution.width << ", " <<
             this->_resolution.height << "), FOV=" << this->_fieldOfView <<
-            ", position=" << this->_position << ", rotation=" <<
-            this->_rotation << ">";
+            ", position=" << this->_origin << ", rotation=" <<
+            this->_direction << ">";
 
         return ss.str();
     }

@@ -8,8 +8,26 @@
     #include "includes.hpp"
     #include "./Core/Core.hpp"
 
+
+// color ray_color(const ray& r) {
+    // vec3 unit_direction = unit_vector(r.direction());
+    // auto a = 0.5*(unit_direction.y() + 1.0);
+    // return (1.0-a)*color(1.0, 1.0, 1.0) + a*color(0.5, 0.7, 1.0);
+// }
+
 int main(int argc, char** argv)
 {
-    Raytracer::Core core(argc, argv);
+    (void)argc;
+    (void)argv;
+
+    Raytracer::Image img({1920, 1080});
+
+    img.save("my_file.ppm");
+    // try {
+    //     Raytracer::Core core(argc, argv);
+    // } catch (const Exceptions::Exception& e) {
+    //     std::cerr << e << std::endl;
+    //     return 84;
+    // }
     return 0;
 }

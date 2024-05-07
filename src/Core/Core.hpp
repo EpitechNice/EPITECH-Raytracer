@@ -30,7 +30,7 @@
     #include "../Objects/Light.hpp"
     #include "../Primitives/Plane.hpp"
     #include "../Primitives/Sphere.hpp"
-    #include "../Abstract/Factory.hpp"
+    #include "../Factory/ObjectFactory.hpp"
 
 namespace Raytracer
 {
