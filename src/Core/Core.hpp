@@ -31,6 +31,7 @@
     #include "../Primitives/Plane.hpp"
     #include "../Primitives/Sphere.hpp"
     #include "../Factory/ObjectFactory.hpp"
+    #include "../Math/Ray.hpp"
 
 namespace Raytracer
 {
@@ -58,6 +59,8 @@ namespace Raytracer
             void DEBUGPrintAllObject();
             void DEBUGPrintCameraInfo();
             void DEBUGPrintAllLight();
+            void generateRaysForImage(int imageWidth, int imageHeight);
+            void checkAllHits(Math::Ray& ray, int x, int y);
     };
 }
 

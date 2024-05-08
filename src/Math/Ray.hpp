@@ -44,7 +44,7 @@ namespace Math
             const Math::Vector3D& getDirection() const;
 
             std::string str() const;
-        
+
             friend std::ostream& operator<<(std::ostream& os, const Ray& obj);
     };
 }

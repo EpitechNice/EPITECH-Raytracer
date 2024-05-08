@@ -85,4 +85,27 @@ namespace Raytracer
         os << obj.str();
         return os;
     }
+
+    Math::Vector3D Camera::computeRayDirection(double x, double y) const
+    {
+        //auto aspectRatio = _resolution.width / _resolution.height;
+        // double halfHeight = std::tan(_fieldOfView * 0.5 * M_PI / 180.0);
+        // double halfWidth = aspectRatio * halfHeight;
+
+        // Math::Vector3D right = _direction.cross(Math::Vector3D(0, 1, 0)).normalised();
+        // Math::Vector3D up = right.cross(_direction).normalised();
+        // Math::Vector3D rayDirection = _direction + (right * (2.0 * x * halfWidth)) + (up * (2.0 * y * halfHeight));
+
+        Math::Vector3D rayDirection(0, 0, 0);
+        Math::Point3D screenPosition = _origin;
+        screenPosition += _direction;
+        double worldUnit = _fieldOfView / 100;
+
+        screenPosition -= Math::Vector3D(_resolution.width * worldUnit, _resolution.height * worldUnit, -2) / 2;
+
+        screenPosition += Math::Vector3D(x * worldUnit, y * worldUnit, 0);
+        rayDirection = _origin.translation(screenPosition);
+
+        return rayDirection.normalised();
+    }
 }

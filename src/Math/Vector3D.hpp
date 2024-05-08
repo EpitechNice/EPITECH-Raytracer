@@ -46,9 +46,13 @@ namespace Math
             friend std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
             Vector3D& operator=(const Vector3D& other);
             Point3D operator+ (const Point3D& other) const;
+            Vector3D operator+ (const Vector3D& other) const;
             Point3D operator- (const Point3D& other) const;
+            Vector3D operator- (const Vector3D& other) const;
             Vector3D operator* (double other) const;
             Vector3D& operator*= (double other);
+            Vector3D operator/ (double other) const;
+            Vector3D& operator/= (double other);
 
             double dot(const Vector3D& other) const;
 

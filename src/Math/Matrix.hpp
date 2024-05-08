@@ -189,10 +189,10 @@ namespace Math
                 std::pair<std::size_t, std::size_t> size = this->getSize();
 
                 if (other.getSize() != size)
-                    throw Exceptions::MatrixSizeError("Trying to add matrix of size " +
-                                                      other.getSize() +
-                                                      " with matrix of size " +
-                                                      size,
+                    throw Exceptions::MatrixSizeError("Trying to add matrix of size (" +
+                                                      std::to_string(other.getSize().first) + ", " + std::to_string(other.getSize().second) +
+                                                      ") with matrix of size (" +
+                                                      std::to_string(size.first) + ", " + std::to_string(size.second) + ")",
                         EXCEPTION_INFOS);
                 for (std::size_t i = 0; i < size.first; i++)
                     for (std::size_t j = 0; j < size.second; j++)
@@ -227,10 +227,10 @@ namespace Math
                 Matrix<T> obj = this;
 
                 if (other.getSize() != size)
-                    throw Exceptions::MatrixSizeError("Trying to substract matrix of size " +
-                                                      other.getSize() +
-                                                      " with matrix of size " +
-                                                      size,
+                    throw Exceptions::MatrixSizeError("Trying to substract matrix of size (" +
+                                                      std::to_string(other.getSize().first) + ", " + std::to_string(other.getSize().second) +
+                                                      ") with matrix of size (" +
+                                                      std::to_string(size.first) + ", " + std::to_string(size.second) + ")",
                         EXCEPTION_INFOS);
                 for (std::size_t i = 0; i < size.first; i++)
                     for (std::size_t j = 0; j < size.second; j++)
@@ -243,10 +243,10 @@ namespace Math
                 std::pair<std::size_t, std::size_t> size = this->getSize();
 
                 if (other.getSize() != size)
-                    throw Exceptions::MatrixSizeError("Trying to substract matrix of size " +
-                                                      other.getSize() +
-                                                      " with matrix of size " +
-                                                      size,
+                    throw Exceptions::MatrixSizeError("Trying to substract matrix of size (" +
+                                                      std::to_string(other.getSize().first) + ", " + std::to_string(other.getSize().second) +
+                                                      ") with matrix of size (" +
+                                                      std::to_string(size.first) + ", " + std::to_string(size.second) + ")",
                         EXCEPTION_INFOS);
                 for (std::size_t i = 0; i < size.first; i++)
                     for (std::size_t j = 0; j < size.second; j++)

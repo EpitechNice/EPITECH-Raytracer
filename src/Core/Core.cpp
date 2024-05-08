@@ -26,12 +26,37 @@ namespace Raytracer
         if (std::string(argv[0]) == "-h" ||
             std::string(argv[0]) == "--help")
             this->usage(argv[0], 0);
-        
+
         // if ()
+        int res_x = 1920;
+        int res_y = 1080;
         this->loadConfig(argv[1]);
-        _image = Raytracer::Image({1920, 1080});
+        _image = Raytracer::Image({res_x, res_y});
+        generateRaysForImage(res_x, res_y);
         _image.save("my_file.ppm");
         return;
+    }
+
+    void Core::generateRaysForImage(int imageWidth, int imageHeight)
+    {
+        for (int x = 0; x < imageWidth; x++) {
+            for (int y = 0; y < imageHeight; y++) {
+                Math::Vector3D rayDirection = _camera->computeRayDirection(x, y);
+                Math::Ray ray(_camera->getPosition(), rayDirection);
+                checkAllHits(ray, x, y);
+            }
+        }
+    }
+
+    void Core::checkAllHits(Math::Ray& ray, int x, int y)
+    {
+        size_t len = this->_objectList.size();
+        for (size_t i = 0; i < len; i++) {
+            std::shared_ptr<APrimitive> primitive = std::dynamic_pointer_cast<APrimitive>(_objectList[i]);
+            if (primitive->doesHit(ray)){
+                _image.set({x, y}, primitive->hitColor(ray));
+            }
+        }
     }
 
     void Core::usage(std::string filename, int status)
@@ -90,7 +115,7 @@ namespace Raytracer
         // Créer la Camera avec les paramètres extraits
         _camera = ObjectFactory::createCamera(resolution, origin, rotation, cameraSetting["fieldOfView"]);
     }
-    
+
     void Core::createPrimitive()
     {
         libconfig::Setting& primitiveSetting = _config.lookup("primitives");

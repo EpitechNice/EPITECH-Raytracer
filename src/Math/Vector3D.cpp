@@ -95,9 +95,23 @@ namespace Math
                        other[0][2] + this->_values[0][2]);
     }
 
+    Vector3D Vector3D::operator+(const Vector3D& other) const
+    {
+        return Vector3D(other[0][0] + this->_values[0][0],
+                       other[0][1] + this->_values[0][1],
+                       other[0][2] + this->_values[0][2]);
+    }
+
     Point3D Vector3D::operator-(const Point3D& other) const
     {
         return Point3D(other[0][0] - this->_values[0][0],
+                       other[0][1] - this->_values[0][1],
+                       other[0][2] - this->_values[0][2]);
+    }
+
+    Vector3D Vector3D::operator-(const Vector3D& other) const
+    {
+        return Vector3D(other[0][0] - this->_values[0][0],
                        other[0][1] - this->_values[0][1],
                        other[0][2] - this->_values[0][2]);
     }
@@ -114,6 +128,21 @@ namespace Math
         this->_values[0][0] *= other;
         this->_values[0][1] *= other;
         this->_values[0][2] *= other;
+        return *this;
+    }
+
+    Vector3D Vector3D::operator/ (double other) const
+    {
+        return Vector3D(this->_values[0][0] / other,
+                        this->_values[0][1] / other,
+                        this->_values[0][2] / other);
+    }
+
+    Vector3D& Vector3D::operator/= (double other)
+    {
+        this->_values[0][0] /= other;
+        this->_values[0][1] /= other;
+        this->_values[0][2] /= other;
         return *this;
     }
 
