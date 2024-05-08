@@ -1,5 +1,6 @@
 .vscode/
 build/
 raytracer
+my_file.ppm
 *.a
 *.o
