@@ -28,24 +28,39 @@ namespace Raytracer
             this->usage(argv[0], 0);
 
         // if ()
-        int res_x = 1920;
-        int res_y = 1080;
+        int screenWidth = 800;
+        int screenHeight = 400;
         this->loadConfig(argv[1]);
-        _image = Raytracer::Image({res_x, res_y});
-        generateRaysForImage(res_x, res_y);
+        _image = Raytracer::Image({screenWidth, screenHeight});
+        generateRaysForImage(screenWidth, screenHeight);
         _image.save("my_file.ppm");
         return;
     }
 
     void Core::generateRaysForImage(int imageWidth, int imageHeight)
     {
-        for (int x = 0; x < imageWidth; x++) {
-            for (int y = 0; y < imageHeight; y++) {
-                Math::Vector3D rayDirection = _camera->computeRayDirection(x, y);
-                Math::Ray ray(_camera->getPosition(), rayDirection);
+        Math::Vector3D lowerLeftCorner(-2.0, -1.0, -1.0);
+        Math::Vector3D horizontal(4.0, 0.0, 0.0);
+        Math::Vector3D vertical(0.0, 2.0, 0.0);
+
+        for (int y = imageHeight - 1; y >= 0; y--) {
+            for (int x = 0; x < imageWidth; x++) {
+                double u = double(x) / double(imageWidth);
+                double v = double(y) / double(imageHeight);
+                // Math::Vector3D rayDirection = _camera->computeRayDirection(x, y);
+                // Math::Ray ray(this->_camera->getPosition(), rayDirection);
+                Math::Ray ray(this->_camera->getPosition(), lowerLeftCorner + horizontal*u + vertical*v);
                 checkAllHits(ray, x, y);
             }
         }
+
+        // for (int x = 0; x < imageWidth; x++) {
+        //     for (int y = 0; y < imageHeight; y++) {
+        //         Math::Vector3D rayDirection = _camera->computeRayDirection(x, y);
+        //         Math::Ray ray(_camera->getPosition(), rayDirection);
+        //         checkAllHits(ray, x, y);
+        //     }
+        // }
     }
 
     void Core::checkAllHits(Math::Ray& ray, int x, int y)

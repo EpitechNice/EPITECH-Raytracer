@@ -108,4 +108,5 @@ namespace Raytracer
 
         return rayDirection.normalised();
     }
+
 }

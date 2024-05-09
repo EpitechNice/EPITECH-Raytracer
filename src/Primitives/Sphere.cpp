@@ -41,15 +41,20 @@ namespace Raytracer
         }
 
 
-        //TODO: Simplification of sphere_intersection (source: tuto)
-        bool Sphere::doesHit(const Math::Ray& other) const
+         bool Sphere::doesHit(const Math::Ray& other) const
         {
-            Math::Vector3D oc = this->_origin - other.getOrigin();
-            double a = std::pow(other.getDirection().length(), 2);
+            Math::Vector3D oc = other.getOrigin() - this->_origin;
+            double a = other.getDirection().dot(other.getDirection());
             double h = other.getDirection().dot(oc);
-            double c = std::pow(oc.length(), 2) - pow(this->_radius, 2);
+            double c = oc.dot(oc) - this->_radius * this->_radius;
             double discriminant = h*h - a*c;
             return (discriminant >= 0);
+            // Math::Vector3D oc = this->_origin - other.getOrigin();
+            // double a = std::pow(other.getDirection().length(), 2);
+            // double h = other.getDirection().dot(oc);
+            // double c = std::pow(oc.length(), 2) - pow(this->_radius, 2);
+            // double discriminant = h*h - a*c;
+            // return (discriminant >= 0);
         }
 
         Raytracer::Color Sphere::hitColor(const Math::Ray& other) const
@@ -57,7 +62,8 @@ namespace Raytracer
             if (!this->doesHit(other))
                 throw Exceptions::InvalidRayError("The " + other.str() + " does not hit " + this->str(),
                     EXCEPTION_INFOS);
-            return this->_material.getPattern()[0][0];
+            return Raytracer::Color(0xff, 0x91, 0x00);
+            // return this->_material.getPattern()[0][0];
         }
 
         Math::Ray Sphere::bounce(const Math::Ray& other) const
