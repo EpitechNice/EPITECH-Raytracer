@@ -39,16 +39,17 @@ namespace Raytracer
 
     void Core::generateRaysForImage(int imageWidth, int imageHeight)
     {
-        Math::Vector3D lowerLeftCorner(-2.0, -1.0, -1.0);
-        Math::Vector3D horizontal(4.0, 0.0, 0.0);
-        Math::Vector3D vertical(0.0, 4.0, 0.0);
+        Math::Vector3D lowerLeftCorner(-2.0, -2.0, -1.0);
+        Math::Vector3D horizontal(4.0, 0.0, -1.0);
+        Math::Vector3D vertical(0.0, 4.0, -1.0);
         for (int y = imageHeight - 1; y >= 0; y--) {
             for (int x = 0; x < imageWidth; x++) {
                 double u = double(x) / double(imageWidth);
                 double v = double(y) / double(imageHeight);
                 // Math::Vector3D rayDirection = _camera->computeRayDirection(x, y);
                 // Math::Ray ray(this->_camera->getPosition(), rayDirection);
-                Math::Ray ray(this->_camera->getPosition(), lowerLeftCorner + horizontal*u + vertical*v);
+                Math::Ray ray(this->_camera->getPosition(), lowerLeftCorner + horizontal * u + vertical * v);
+                // std::cout << ray << std::endl;
                 checkAllHits(ray, x, y);
             }
         }
@@ -65,9 +66,11 @@ namespace Raytracer
     void Core::checkAllHits(Math::Ray& ray, int x, int y)
     {
         size_t len = this->_objectList.size();
+
         for (size_t i = 0; i < len; i++) {
             std::shared_ptr<APrimitive> primitive = std::dynamic_pointer_cast<APrimitive>(_objectList[i]);
             if (primitive->doesHit(ray)){
+                std::cout << "X = " << x << " | Y = " << y << std::endl;
                 _image.set({x, y}, primitive->hitColor(ray));
             }
         }
@@ -87,7 +90,6 @@ namespace Raytracer
                         "\t\tconfig_file  Load the config file and render the scene." << std::endl <<
                         "\t\t             Please visit https://github.com/EpitechNice/EPITECH-Raytracer for more infos." << std::endl;
         std::exit(status);
-
     }
 
     void Core::setConfig(const std::string sceneFilePath)

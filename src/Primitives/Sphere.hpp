@@ -36,7 +36,7 @@ namespace Raytracer::Objects
             double _radius;
 
         public:
-            Sphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
+            Sphere(Math::Point3D origin = Math::Point3D(0, 0, -1),
                 Raytracer::Material material = Raytracer::Material(),
                 double radius = 1);
             ~Sphere() = default;

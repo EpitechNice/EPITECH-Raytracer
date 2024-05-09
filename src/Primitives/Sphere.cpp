@@ -45,10 +45,10 @@ namespace Raytracer
         {
             Math::Vector3D oc = other.getOrigin() - this->_origin;
             double a = other.getDirection().dot(other.getDirection());
-            double h = other.getDirection().dot(oc);
+            double h = oc.dot(other.getDirection());
             double c = oc.dot(oc) - this->_radius * this->_radius;
             double discriminant = h*h - a*c;
-            return (discriminant >= 0);
+            return (discriminant > 0);
             // Math::Vector3D oc = this->_origin - other.getOrigin();
             // double a = std::pow(other.getDirection().length(), 2);
             // double h = other.getDirection().dot(oc);
