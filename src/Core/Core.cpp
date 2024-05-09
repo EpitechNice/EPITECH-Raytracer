@@ -39,9 +39,9 @@ namespace Raytracer
 
     void Core::generateRaysForImage(int imageWidth, int imageHeight)
     {
-        Math::Vector3D lowerLeftCorner(-2.0, -2.0, -1.0);
-        Math::Vector3D horizontal(4.0, 0.0, -1.0);
-        Math::Vector3D vertical(0.0, 4.0, -1.0);
+        Math::Vector3D lowerLeftCorner(-2.0, -1.0, -1.0);
+        Math::Vector3D horizontal(4.0, 0.0, 0.0);
+        Math::Vector3D vertical(0.0, 2.0, 0.0);
         Math::Ray ray;
 
         for (int y = (imageHeight - 1); y >= 0; y--) {
