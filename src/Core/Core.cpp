@@ -42,14 +42,15 @@ namespace Raytracer
         Math::Vector3D lowerLeftCorner(-2.0, -2.0, -1.0);
         Math::Vector3D horizontal(4.0, 0.0, -1.0);
         Math::Vector3D vertical(0.0, 4.0, -1.0);
-        for (int y = imageHeight - 1; y >= 0; y--) {
+        Math::Ray ray;
+
+        for (int y = (imageHeight - 1); y >= 0; y--) {
             for (int x = 0; x < imageWidth; x++) {
                 double u = double(x) / double(imageWidth);
                 double v = double(y) / double(imageHeight);
                 // Math::Vector3D rayDirection = _camera->computeRayDirection(x, y);
                 // Math::Ray ray(this->_camera->getPosition(), rayDirection);
-                Math::Ray ray(this->_camera->getPosition(), lowerLeftCorner + horizontal * u + vertical * v);
-                // std::cout << ray << std::endl;
+                ray = Math::Ray(this->_camera->getPosition(), lowerLeftCorner + horizontal * u + vertical * v);
                 checkAllHits(ray, x, y);
             }
         }
@@ -69,9 +70,11 @@ namespace Raytracer
 
         for (size_t i = 0; i < len; i++) {
             std::shared_ptr<APrimitive> primitive = std::dynamic_pointer_cast<APrimitive>(_objectList[i]);
-            if (primitive->doesHit(ray)){
+            if (primitive->doesHit(ray)) {
+                // std::cout << "Does hit !" << std::endl;
                 std::cout << "X = " << x << " | Y = " << y << std::endl;
                 _image.set({x, y}, primitive->hitColor(ray));
+                return;
             }
         }
     }
@@ -116,6 +119,8 @@ namespace Raytracer
             throw Exceptions::InvalidParsingSettingNotFound("Setting not found in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
         } catch (const libconfig::SettingTypeException &ex) {
             throw Exceptions::InvalidParsingSettingInvalid("Incorrect setting type in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
+        } catch (const libconfig::ParseException& e) {
+            throw Exceptions::OtherParsingError("Error at line  " + std::to_string(e.getLine()) + ": " + e.getError());
         } catch (const std::exception &ex) {
             throw Exceptions::OtherParsingError("Error at line " + std::string(ex.what()) + " : Invalid syntax", EXCEPTION_INFOS);
         }
@@ -129,7 +134,7 @@ namespace Raytracer
         Math::Point3D origin(cameraSetting["position"]["x"], cameraSetting["position"]["y"], cameraSetting["position"]["z"]);
         Math::Vector3D rotation(cameraSetting["rotation"]["x"], cameraSetting["rotation"]["y"], cameraSetting["rotation"]["z"]);
         // Créer la Camera avec les paramètres extraits
-        _camera = ObjectFactory::createCamera(resolution, origin, rotation, cameraSetting["fieldOfView"]);
+        this->_camera = ObjectFactory::createCamera(resolution, origin, rotation, cameraSetting["fieldOfView"]);
     }
 
     void Core::createPrimitive()

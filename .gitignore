@@ -2,5 +2,6 @@
 build/
 raytracer
 my_file.ppm
+logs.txt
 *.a
 *.o

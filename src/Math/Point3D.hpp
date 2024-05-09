@@ -44,6 +44,8 @@ namespace Math
             Math::Vector3D operator+(const Point3D& other) const;
             Math::Vector3D operator-(const Point3D& other) const;
 
+            std::string str() const;
+
             friend std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj);
     };
 }

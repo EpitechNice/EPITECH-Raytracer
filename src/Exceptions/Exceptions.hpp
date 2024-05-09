@@ -24,6 +24,11 @@
 
 namespace Exceptions
 {
+    /**
+      * Class used to declare custom Exceptions
+      *
+      * @anchor exceptions
+      */
     class Exception: public std::exception
     {
         protected:

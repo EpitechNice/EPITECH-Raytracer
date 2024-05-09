@@ -37,7 +37,6 @@ namespace Math
             Vector3D(std::vector<std::vector<double>> values);
             Vector3D(const Vector3D& other);
 
-            std::string str() const;
             double length() const;
             Vector3D normalised() const;
 
@@ -57,6 +56,8 @@ namespace Math
             double dot(const Vector3D& other) const;
 
             Vector3D cross(const Vector3D& other) const;
+
+            std::string str() const;
 
             friend std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
     };

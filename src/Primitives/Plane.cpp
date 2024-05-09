@@ -27,6 +27,11 @@ namespace Raytracer::Objects
         this->_size = size;
     }
 
+    double Plane::getSize() const
+    {
+        return this->_size;
+    }
+
     bool Plane::doesHit(const Math::Ray& other) const
     {
         Math::Vector3D oc = this->_origin - other.getOrigin();

@@ -49,19 +49,6 @@ namespace Math
         Matrix(other._values)
     {}
 
-    std::string Vector3D::str() const
-    {
-        std::stringstream ss;
-        ss <<   "<" << this->getClassName() << " at " <<
-                std::hex << this <<
-                ": direction=(" <<
-                std::to_string(this->_values[0][0]) << ", " <<
-                std::to_string(this->_values[0][1]) << ", " <<
-                std::to_string(this->_values[0][2]) << "), length=" <<
-                std::to_string(this->length()) << ">";
-        return ss.str();
-    }
-
     double Vector3D::length() const
     {
         return std::cbrt((std::pow(this->_values[0][0], 3) +
@@ -159,6 +146,17 @@ namespace Math
         double _y = -(this->_values[0][0] * other._values[0][2] - this->_values[0][2] * other._values[0][0]);
         double _z =   this->_values[0][0] * other._values[0][1] - this->_values[0][1] * other._values[0][0];
         return Vector3D(_x, _y, _z);
+    }
+
+    std::string Vector3D::str() const
+    {
+        std::stringstream ss;
+        ss << "<Math::Vector3D" << " at " <<
+            std::hex << *this << ": x=" << this->_values[0][0] <<
+            ", y=" << this->_values[0][1] <<
+            ", z=" << this->_values[0][2] << ">";
+
+        return ss.str();
     }
 
     std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj)

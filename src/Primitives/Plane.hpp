@@ -37,8 +37,7 @@ namespace Raytracer::Objects
                 double size = 0.0);
             ~Plane() = default;
 
-            // Getter
-            double getSize() const { return this->_size;};
+            double getSize() const;
 
             bool doesHit(const Math::Ray& ray) const override;
             Raytracer::Color hitColor(const Math::Ray& ray) const override;

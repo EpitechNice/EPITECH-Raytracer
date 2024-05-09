@@ -67,6 +67,17 @@ namespace Math
         return other.translation(*this);
     }
 
+    std::string Point3D::str() const
+    {
+        std::stringstream ss;
+        ss << "<Math::Point3D" << " at " <<
+            std::hex << *this << ": x=" << this->_values[0][0] <<
+            ", y=" << this->_values[0][1] <<
+            ", z=" << this->_values[0][2] << ">";
+
+        return ss.str();
+    }
+
     std::ostream& operator<<(std::ostream& os, const Math::Point3D& obj)
     {
         os << obj.str();

@@ -123,12 +123,12 @@ namespace Raytracer
         file << "# Generated using our Raytracer" << std::endl;
         file << size.first << " " << size.second << std::endl;
         file << "255" << std::endl;
-        for (std::size_t i = 0; i < this->_values.size(); i++) {
+        for (std::size_t i = 0; i < size.second; i++) {
             file << "# ===== /LINE " << i << "/ =====" << std::endl;
-            for (std::size_t j = 0; j < this->_values[i].size(); j++)
-                file << this->_values[i][j][0][0] << "\t" <<
-                        this->_values[i][j][0][1] << "\t" <<
-                        this->_values[i][j][0][2] << "\t" << std::endl;
+            for (std::size_t j = 0; j < size.first; j++)
+                file << this->_values[j][i][0][0] << "\t" <<
+                        this->_values[j][i][0][1] << "\t" <<
+                        this->_values[j][i][0][2] << "\t" << std::endl;
         }
         return true;
     }
