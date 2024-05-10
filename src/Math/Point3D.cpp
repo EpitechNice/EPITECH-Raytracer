@@ -62,9 +62,42 @@ namespace Math
         return *this;
     }
 
+    Point3D Point3D::operator+(const Vector3D& other) const
+    {
+        return Point3D(this->_values[0][0] + other[0][0],
+                       this->_values[0][1] + other[0][1],
+                       this->_values[0][2] + other[0][2]);
+    }
+
     Vector3D Point3D::operator-(const Point3D& other) const
     {
         return other.translation(*this);
+    }
+
+    Point3D Point3D::operator-(const Math::Vector3D& other) const
+    {
+        double dx = other[0][0];
+        double dy = other[0][1];
+        double dz = other[0][2];
+        double newX = this->_values[0][0] - dx;
+        double newY = this->_values[0][1] - dy;
+        double newZ = this->_values[0][2] - dz;
+        return Point3D(newX, newY, newZ);
+    }
+
+    Math::Vector3D Math::Point3D::normalised() const {
+        // Calcul de la longueur du vecteur représenté par le point
+        double length = std::sqrt(_values[0][0] * _values[0][0] +
+                                  _values[0][1] * _values[0][1] +
+                                  _values[0][2] * _values[0][2]);
+
+        // Normalisation du vecteur (division de chaque composante par la longueur)
+        double xNormalized = _values[0][0] / length;
+        double yNormalized = _values[0][1] / length;
+        double zNormalized = _values[0][2] / length;
+
+        // Création et retour d'un nouveau vecteur normalisé
+        return Math::Vector3D(xNormalized, yNormalized, zNormalized);
     }
 
     std::string Point3D::str() const

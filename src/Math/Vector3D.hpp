@@ -52,6 +52,7 @@ namespace Math
             Vector3D& operator*= (double other);
             Vector3D operator/ (double other) const;
             Vector3D& operator/= (double other);
+            Vector3D translation(const Vector3D& translationVector) const;
 
             double dot(const Vector3D& other) const;
 

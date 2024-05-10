@@ -56,7 +56,6 @@ namespace Raytracer
             std::string str() const;
 
             friend std::ostream& operator<<(std::ostream& os, const Camera& obj);
-            Math::Vector3D computeRayDirection(double x, double y) const;
     };
 }
 

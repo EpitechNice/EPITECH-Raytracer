@@ -28,8 +28,8 @@ namespace Raytracer
             this->usage(argv[0], 0);
 
         // if ()
-        int screenWidth = 800;
-        int screenHeight = 400;
+        int screenWidth = 1920;
+        int screenHeight = 1080;
         this->loadConfig(argv[1]);
         _image = Raytracer::Image({screenWidth, screenHeight});
         generateRaysForImage(screenWidth, screenHeight);
@@ -39,29 +39,22 @@ namespace Raytracer
 
     void Core::generateRaysForImage(int imageWidth, int imageHeight)
     {
-        Math::Vector3D lowerLeftCorner(-2.0, -1.0, -1.0);
-        Math::Vector3D horizontal(4.0, 0.0, 0.0);
-        Math::Vector3D vertical(0.0, 2.0, 0.0);
+        double aspectRatio = static_cast<double>(imageWidth) / static_cast<double>(imageHeight);
+        Math::Vector3D lowerLeftCorner(-1.0, -1.0 / aspectRatio, -1.0 / aspectRatio);
+        Math::Vector3D horizontal(2.0, 0.0, 0.0);
+        Math::Vector3D vertical(0.0, 2.0 / aspectRatio, 0.0);
         Math::Ray ray;
 
-        for (int y = (imageHeight - 1); y >= 0; y--) {
-            for (int x = 0; x < imageWidth; x++) {
-                double u = double(x) / double(imageWidth);
-                double v = double(y) / double(imageHeight);
-                // Math::Vector3D rayDirection = _camera->computeRayDirection(x, y);
-                // Math::Ray ray(this->_camera->getPosition(), rayDirection);
-                ray = Math::Ray(this->_camera->getPosition(), lowerLeftCorner + horizontal * u + vertical * v);
+        for (int y = (imageHeight - 1); y >= 0; --y) {
+            for (int x = 0; x < imageWidth; ++x) {
+                double u = static_cast<double>(x) / static_cast<double>(imageWidth);
+                double vCoord = static_cast<double>(y) / static_cast<double>(imageHeight);
+                Math::Vector3D pixelPosition = lowerLeftCorner + horizontal * u + vertical * vCoord;
+                Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
+                ray = Math::Ray(this->_camera->getPosition(), direction);
                 checkAllHits(ray, x, y);
             }
         }
-
-        // for (int x = 0; x < imageWidth; x++) {
-        //     for (int y = 0; y < imageHeight; y++) {
-        //         Math::Vector3D rayDirection = _camera->computeRayDirection(x, y);
-        //         Math::Ray ray(_camera->getPosition(), rayDirection);
-        //         checkAllHits(ray, x, y);
-        //     }
-        // }
     }
 
     void Core::checkAllHits(Math::Ray& ray, int x, int y)
@@ -72,7 +65,7 @@ namespace Raytracer
             std::shared_ptr<APrimitive> primitive = std::dynamic_pointer_cast<APrimitive>(_objectList[i]);
             if (primitive->doesHit(ray)) {
                 // std::cout << "Does hit !" << std::endl;
-                std::cout << "X = " << x << " | Y = " << y << std::endl;
+                // std::cout << "X = " << x << " | Y = " << y << std::endl;
                 _image.set({x, y}, primitive->hitColor(ray));
                 return;
             }
@@ -109,11 +102,11 @@ namespace Raytracer
         try {
             this->setConfig(sceneFilePath);
             this->createCamera();
-            this->DEBUGPrintCameraInfo();
+            // this->DEBUGPrintCameraInfo();
             this->createPrimitive();
-            this->DEBUGPrintAllObject();
+            // this->DEBUGPrintAllObject();
             this->createLight();
-            this->DEBUGPrintAllLight();
+            // this->DEBUGPrintAllLight();
 
         } catch (const libconfig::SettingNotFoundException &ex) {
             throw Exceptions::InvalidParsingSettingNotFound("Setting not found in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
@@ -186,7 +179,6 @@ namespace Raytracer
                 const Raytracer::Objects::Sphere& sphere = *spherePtr;
                 std::cout << "Sphere: " << &sphere << std::endl;
             } else if (auto planePtr = std::dynamic_pointer_cast<Raytracer::Objects::Plane>(objPtr)) {
-                // Utilisez un pointeur ou une référence pour travailler avec l'objet polymorphe
                 const Raytracer::Objects::Plane& plane = *planePtr;
                 std::cout << "Plane: " << &plane << std::endl;
             } else {

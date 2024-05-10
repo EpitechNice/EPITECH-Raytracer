@@ -82,7 +82,7 @@ namespace Math
                                                            std::to_string(size.second) +
                                                            ")",
                         EXCEPTION_INFOS);
-                std::cout << "Just set a value at " << position.first << "-" << position.second << std::endl;
+                // std::cout << "Just set a value at " << position.first << "-" << position.second << std::endl;
                 this->_values[position.first][position.second] = value;
             }
 

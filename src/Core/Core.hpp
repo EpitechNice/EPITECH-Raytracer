@@ -32,6 +32,8 @@
     #include "../Primitives/Sphere.hpp"
     #include "../Factory/ObjectFactory.hpp"
     #include "../Math/Ray.hpp"
+    #include "../Math/Point3D.hpp"
+    #include "../Math/Vector3D.hpp"
 
 namespace Raytracer
 {
