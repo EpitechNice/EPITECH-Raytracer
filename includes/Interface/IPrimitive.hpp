@@ -27,6 +27,14 @@
 
 namespace Raytracer
 {
+    typedef struct hit_record_s
+    {
+        float distance;
+        Math::Point3D intersectionPoint;
+        Math::Vector3D normal;
+        std::shared_ptr<Raytracer::Material> material;
+    } hitRecord;
+
     class IPrimitive: virtual public Raytracer::IObject
     {
         public:

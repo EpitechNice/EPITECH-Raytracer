@@ -30,12 +30,12 @@ namespace Raytracer
         Raytracer::Color   endValue(0x9d, 0xd1, 0xff);
         Raytracer::Color currentValue;
 
-        for (std::size_t i = 0; i < size.first; i++) {
-            double a = double(i) / double(size.first);
+        for (std::size_t j = 0; j < size.second; j++) {
+            double a = double(j) / double(size.second);
             currentValue = Raytracer::Color((1.0 - a) * startValue[0][0] + a * endValue[0][0],
                                             (1.0 - a) * startValue[0][1] + a * endValue[0][1],
                                             (1.0 - a) * startValue[0][2] + a * endValue[0][2]);
-            for (std::size_t j = 0; j < size.second; j++)
+            for (std::size_t i = 0; i < size.first; i++)
                 this->set({i, j}, currentValue);
         }
     }

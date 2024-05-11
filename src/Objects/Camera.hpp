@@ -45,11 +45,9 @@ namespace Raytracer
 
             std::string getClassName() const;
 
-            //Setter
             void setResolution(Resolution resolution);
             void setFieldOfView(double fieldOfView);
 
-            // Getter
             const Resolution& getResolution() const;
             double getFieldOfView() const;
 

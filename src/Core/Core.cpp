@@ -21,35 +21,54 @@ namespace Raytracer
 {
     Core::Core(int argc, char** argv)
     {
+        double screenWidth;
+        double screenHeight;
+
         if (argc != 2)
             this->usage(argv[0], 1);
         if (std::string(argv[0]) == "-h" ||
             std::string(argv[0]) == "--help")
             this->usage(argv[0], 0);
 
-        // if ()
-        int screenWidth = 1000;
-        int screenHeight = 500;
         this->loadConfig(argv[1]);
-        _image = Raytracer::Image({screenWidth, screenHeight});
-        generateRaysForImage(screenWidth, screenHeight);
-        _image.save("my_file.ppm");
+        screenWidth = double(this->_camera->getResolution().width);
+        screenHeight = double(this->_camera->getResolution().height);
+        this->_image = Raytracer::Image({screenWidth, screenHeight});
+        this->render(screenWidth, screenHeight);
+        this->_image.save("raytracer.ppm");
+
         return;
     }
 
-    void Core::generateRaysForImage(int imageWidth, int imageHeight)
+    void Core::checkAllHits(Math::Ray& ray, int x, int y)
     {
-        double aspectRatio = static_cast<double>(imageWidth) / static_cast<double>(imageHeight);
-        Math::Vector3D lowerLeftCorner(-1.0, -1.0 / aspectRatio, -1.0 / aspectRatio);
-        Math::Vector3D horizontal(2.0, 0.0, 0.0);
-        Math::Vector3D vertical(0.0, 2.0 / aspectRatio, 0.0);
+        size_t len = this->_primitiveList.size();
+
+        for (size_t i = 0; i < len; i++) {
+            std::shared_ptr<APrimitive> primitive = std::dynamic_pointer_cast<APrimitive>(_primitiveList[i]);
+            float discriminant = primitive->doesHit(ray);
+            if (discriminant >= 0.0) {
+                _image.set({x, y}, primitive->hitColor(ray));
+                return;
+            }
+        }
+    }
+
+    void Core::render(double screenWidth, double screenHeight)
+    {
+        double aspectRatio = screenWidth / screenHeight;
+        Math::Vector3D lowerLeftCorner(-2.0, -2.0 / aspectRatio, -2.0 / aspectRatio);
+        Math::Vector3D horizontal(4.0, 0.0, 0.0);
+        Math::Vector3D vertical(0.0, 4.0 / aspectRatio, 0.0);
+        Math::Vector3D pixelPosition;
+        Math::Vector3D direction;
         Math::Ray ray;
 
-        for (int y = (imageHeight - 1); y >= 0; --y) {
-            for (int x = 0; x < imageWidth; ++x) {
-                double u = static_cast<double>(x) / static_cast<double>(imageWidth);
-                double vCoord = static_cast<double>(y) / static_cast<double>(imageHeight);
-                Math::Vector3D pixelPosition = lowerLeftCorner + horizontal * u + vertical * vCoord;
+        for (int y = (screenHeight - 1); y >= 0; y--) {
+            for (int x = 0; x < screenWidth; x++) {
+                double u = double(x) / double(screenWidth);
+                double v = double(y) / double(screenHeight);
+                pixelPosition = lowerLeftCorner + horizontal * u + vertical * v;
                 Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
                 ray = Math::Ray(this->_camera->getPosition(), direction);
                 checkAllHits(ray, x, y);
@@ -57,21 +76,6 @@ namespace Raytracer
         }
     }
 
-    void Core::checkAllHits(Math::Ray& ray, int x, int y)
-    {
-        size_t len = this->_objectList.size();
-
-        for (size_t i = 0; i < len; i++) {
-            std::shared_ptr<APrimitive> primitive = std::dynamic_pointer_cast<APrimitive>(_objectList[i]);
-            float discriminent = primitive->doesHit(ray);
-            if (discriminent >= 0.0) {
-                // std::cout << "Does hit !" << std::endl;
-                // std::cout << "X = " << x << " | Y = " << y << std::endl;
-                _image.set({x, y}, primitive->hitColor(ray));
-                return;
-            }
-        }
-    }
 
     void Core::usage(std::string filename, int status)
     {
@@ -138,7 +142,7 @@ namespace Raytracer
                 Math::Point3D origin(sphereSetting["position"]["x"], sphereSetting["position"]["y"], sphereSetting["position"]["z"]);
                 Raytracer::Color c(sphereSetting["color"]["r"], sphereSetting["color"]["g"], sphereSetting["color"]["b"]);
                 // Créer une sphère avec les paramètres extraits
-                _objectList.push_back(ObjectFactory::createSphere(Math::Point3D(origin), Raytracer::Material(c), sphereSetting["radius"]));
+                _primitiveList.push_back(ObjectFactory::createSphere(Math::Point3D(origin), Raytracer::Material(c), sphereSetting["radius"]));
             }
         }
         if (primitiveSetting.exists("planes")) {
@@ -148,7 +152,7 @@ namespace Raytracer
                 Math::Point3D origin(planeSetting["position"]["x"], planeSetting["position"]["y"], planeSetting["position"]["z"]);
                 Raytracer::Color c(planeSetting["color"]["r"], planeSetting["color"]["g"], planeSetting["color"]["b"]);
                 // Créer un Plane avec les paramètres extraits
-                _objectList.push_back(ObjectFactory::createPlane(Math::Point3D(origin), Raytracer::Material(c), planeSetting["size"]));
+                _primitiveList.push_back(ObjectFactory::createPlane(Math::Point3D(origin), Raytracer::Material(c), planeSetting["size"]));
             }
         }
     }

@@ -51,7 +51,7 @@ namespace Raytracer
             if (discriminant > 0 ){
                 return 1.0;
             } else {
-                return (-h - sqrt(discriminant) / (2.0*a));
+                return (-h - sqrt(discriminant) / (2.0 * a));
             }
         }
 

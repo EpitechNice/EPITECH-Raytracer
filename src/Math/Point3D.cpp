@@ -86,17 +86,14 @@ namespace Math
     }
 
     Math::Vector3D Math::Point3D::normalised() const {
-        // Calcul de la longueur du vecteur représenté par le point
         double length = std::sqrt(_values[0][0] * _values[0][0] +
                                   _values[0][1] * _values[0][1] +
                                   _values[0][2] * _values[0][2]);
 
-        // Normalisation du vecteur (division de chaque composante par la longueur)
         double xNormalized = _values[0][0] / length;
         double yNormalized = _values[0][1] / length;
         double zNormalized = _values[0][2] / length;
 
-        // Création et retour d'un nouveau vecteur normalisé
         return Math::Vector3D(xNormalized, yNormalized, zNormalized);
     }
 

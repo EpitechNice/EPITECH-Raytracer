@@ -41,7 +41,7 @@ namespace Raytracer
     {
         private:
             libconfig::Config _config;
-            std::vector<std::shared_ptr<Raytracer::AObject>> _objectList;
+            std::vector<std::shared_ptr<Raytracer::APrimitive>> _primitiveList;
             std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
             std::unique_ptr<Raytracer::Camera> _camera;
 
@@ -58,8 +58,10 @@ namespace Raytracer
             void createCamera();
             void createPrimitive();
             void createLight();
-            void generateRaysForImage(int imageWidth, int imageHeight);
+
+            //Renderer
             void checkAllHits(Math::Ray& ray, int x, int y);
+            void render(double screenWidth, double screenHeight);
     };
 }
 

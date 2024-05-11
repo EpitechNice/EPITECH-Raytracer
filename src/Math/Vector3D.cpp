@@ -161,9 +161,9 @@ namespace Math
 
     Vector3D Vector3D::translation(const Vector3D& translationVector) const
     {
-        return Vector3D(this->_values[0][0] + translationVector[0][0],
-                        this->_values[0][1] + translationVector[0][1],
-                        this->_values[0][2] + translationVector[0][2]);
+        return Vector3D(this->_values[0][0] + translationVector._values[0][0],
+                        this->_values[0][1] + translationVector._values[0][1],
+                        this->_values[0][2] + translationVector._values[0][2]);
     }
 
     std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj)
