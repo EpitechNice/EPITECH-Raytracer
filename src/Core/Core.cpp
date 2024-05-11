@@ -46,7 +46,9 @@ namespace Raytracer
         (void) ray;
         (void) depth;
         (void) record;
+        // Math::Point3D intersectionPoint = ray.pointAt(2.0);
         Math::Vector3D color = (record.normal + 1) * 0.5;
+
         int ir = color.getValues()[0][0]*255.99;
 		int ig = color.getValues()[0][1]*255.99;
 		int ib = color.getValues()[0][2]*255.99;
@@ -125,75 +127,63 @@ namespace Raytracer
         }
     }
 
-    void Core::loadConfig(const std::string sceneFilePath)
+    void Core::loadConfig(const std::string configFilePath)
     {
         try {
-            this->setConfig(sceneFilePath);
-            this->createCamera();
-            this->createPrimitive();
-            this->createLight();
-
-        } catch (const libconfig::SettingNotFoundException &ex) {
-            throw Exceptions::InvalidParsingSettingNotFound("Setting not found in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
-        } catch (const libconfig::SettingTypeException &ex) {
-            throw Exceptions::InvalidParsingSettingInvalid("Incorrect setting type in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
+            this->_config.readFile(configFilePath.c_str());
+            this->loadCamera();
+            this->loadPrimitive();
+            this->loadLight();
+        } catch (const libconfig::FileIOException &e) {
+            throw Exceptions::CantOpenConfigFile(std::string("I/O Error while reading file: ") + e.what(), EXCEPTION_INFOS);
+        } catch (const libconfig::SettingNotFoundException &e) {
+            throw Exceptions::InvalidParsingSettingNotFound("Missing required config in configuration file: " + std::string(e.what()), EXCEPTION_INFOS);
+        } catch (const libconfig::SettingTypeException &e) {
+            throw Exceptions::InvalidParsingSettingInvalid("Incorrect type in configuration file. Error: " + std::string(e.what()), EXCEPTION_INFOS);
         } catch (const libconfig::ParseException& e) {
-            throw Exceptions::OtherParsingError("Error at line  " + std::to_string(e.getLine()) + ": " + e.getError());
-        } catch (const std::exception &ex) {
-            throw Exceptions::OtherParsingError("Error at line " + std::string(ex.what()) + " : Invalid syntax", EXCEPTION_INFOS);
+            throw Exceptions::OtherParsingError("Error in configuration file, at line " + std::to_string(e.getLine()) + ": " + e.getError(), EXCEPTION_INFOS);
+        } catch (const std::exception &e) {
+            throw Exceptions::OtherParsingError("Another error was raised when parsing the config file: " + std::string(e.what()), EXCEPTION_INFOS);
         }
     }
 
-    void Core::createCamera()
+    void Core::loadCamera()
     {
         libconfig::Setting& cameraSetting = _config.lookup("camera");
         libconfig::Setting& resolutionSetting = cameraSetting.lookup("resolution");
         Raytracer::Resolution resolution{resolutionSetting["width"], resolutionSetting["height"]};
         Math::Point3D origin(cameraSetting["position"]["x"], cameraSetting["position"]["y"], cameraSetting["position"]["z"]);
         Math::Vector3D rotation(cameraSetting["rotation"]["x"], cameraSetting["rotation"]["y"], cameraSetting["rotation"]["z"]);
-        // Créer la Camera avec les paramètres extraits
         this->_camera = ObjectFactory::createCamera(resolution, origin, rotation, cameraSetting["fieldOfView"]);
     }
 
-    void Core::createPrimitive()
+    void Core::loadPrimitive()
     {
         libconfig::Setting& primitiveSetting = _config.lookup("primitives");
+        std::vector<std::shared_ptr<Raytracer::APrimitive>> objects;
+
         if (primitiveSetting.exists("spheres")) {
-            libconfig::Setting& spheresSetting = primitiveSetting["spheres"];
-            for (int i = 0; i < spheresSetting.getLength(); ++i) {
-                libconfig::Setting& sphereSetting = spheresSetting[i];
-                Math::Point3D origin(sphereSetting["position"]["x"], sphereSetting["position"]["y"], sphereSetting["position"]["z"]);
-                Raytracer::Color c(sphereSetting["color"]["r"], sphereSetting["color"]["g"], sphereSetting["color"]["b"]);
-                // Créer une sphère avec les paramètres extraits
-                _primitiveList.push_back(ObjectFactory::createSphere(Math::Point3D(origin), Raytracer::Material(c), sphereSetting["radius"]));
-            }
+            objects = ObjectFactory::createSpheresSettings(primitiveSetting["spheres"]);
+            for (std::size_t i = 0; i < objects.size(); i++)
+                this->_primitiveList.push_back(objects[i]);
         }
         if (primitiveSetting.exists("planes")) {
-            libconfig::Setting& planesSetting = primitiveSetting["planes"];
-            for (int i = 0; i < planesSetting.getLength(); ++i) {
-                libconfig::Setting& planeSetting = planesSetting[i];
-                Math::Point3D origin(planeSetting["position"]["x"], planeSetting["position"]["y"], planeSetting["position"]["z"]);
-                Raytracer::Color c(planeSetting["color"]["r"], planeSetting["color"]["g"], planeSetting["color"]["b"]);
-                // Créer un Plane avec les paramètres extraits
-                _primitiveList.push_back(ObjectFactory::createPlane(Math::Point3D(origin), Raytracer::Material(c), planeSetting["size"]));
-            }
+            objects = ObjectFactory::createPlanesSettings(primitiveSetting["planes"]);
+            for (std::size_t i = 0; i < objects.size(); i++)
+                this->_primitiveList.push_back(objects[i]);
         }
     }
 
-    void Core::createLight() {
+    void Core::loadLight() {
         libconfig::Setting& lightSetting = _config.lookup("lights");
         double ambient = lightSetting.lookup("ambient");
         double diffuse = lightSetting.lookup("diffuse");
+        std::vector<std::shared_ptr<Raytracer::AObject>> objects;
+
         if (lightSetting.exists("light")) {
-            libconfig::Setting& pointSettings = lightSetting["light"];
-            for (int i = 0; i < pointSettings.getLength(); ++i) {
-                libconfig::Setting& lightSetting = pointSettings[i];
-                Math::Point3D point(lightSetting["point"]["x"], lightSetting["point"]["y"], lightSetting["point"]["z"]);
-                Math::Vector3D direction(lightSetting["direction"]["x"], lightSetting["direction"]["y"], lightSetting["direction"]["z"]);
-                double angle = lightSetting["angle"];
-                // Créer une lumière avec les paramètres extraits
-                _lightList.push_back(ObjectFactory::createLight(ambient, diffuse, point, direction, angle));
-            }
+            objects = ObjectFactory::createLightsSettings(ambient, diffuse, lightSetting["light"]);
+            for (std::size_t i = 0; i < objects.size(); i++)
+                this->_lightList.push_back(objects[i]);
         }
     }
 }

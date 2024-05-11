@@ -45,6 +45,11 @@ namespace Raytracer
             std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
             std::unique_ptr<Raytracer::Camera> _camera;
 
+            // const std::map<std::string, ConfigBuilder> _acceptedPrimitives = {
+            //     {"spheres", ConfigBuilder(ObjectFactory::createSpheresSettings)},
+            //     {"planes", ConfigBuilder(ObjectFactory::createPlanesSettings)},
+            // };
+
             Image _image;
         protected:
         public:
@@ -55,9 +60,9 @@ namespace Raytracer
             void usage(std::string filename = "./raytracer", int status = 0);
             void setConfig(const std::string sceneFilePath);
             void loadConfig(const std::string sceneFilePath);
-            void createCamera();
-            void createPrimitive();
-            void createLight();
+            void loadCamera();
+            void loadPrimitive();
+            void loadLight();
 
             //Renderer
             Raytracer::Color getColorRay(Math::Ray& ray, int depth, hitRecord record);

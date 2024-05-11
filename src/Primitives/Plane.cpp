@@ -37,12 +37,9 @@ namespace Raytracer::Objects
         (void) distMin;
         (void) distMax;
         (void) record;
-        Math::Vector3D oc = this->_origin - other.getOrigin();
-        double a = std::pow(other.getDirection().length(), 2);
-        double h = other.getDirection().dot(oc);
-        double c = std::pow(oc.length(), 2) - pow(this->_size, 2);
-        double discriminant = h*h - a*c;
-        return (discriminant >= 0);
+        return false;
+        // double denominator = other.getDirection().dot(record.normal);
+        // return denominator != 0;
     }
 
     Raytracer::Color Plane::hitColor(const Math::Ray& ray) const {

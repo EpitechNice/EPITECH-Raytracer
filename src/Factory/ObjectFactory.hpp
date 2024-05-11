@@ -38,6 +38,10 @@ namespace Raytracer
                                                                           Math::Vector3D direction = Math::Vector3D(0, 0, 0),
                                                                           double angle = 10.0);
 
+            static std::vector<std::shared_ptr<Raytracer::AObject>> createLightsSettings(double ambient,
+                                                                                         double diffuse,
+                                                                                         libconfig::Setting& settings);
+
             static std::unique_ptr<Raytracer::Camera> createCamera(Raytracer::Resolution resolution = {1920, 1080},
                                                                    Math::Point3D origin = Math::Point3D(0, 0, 0),
                                                                    Math::Vector3D direction = Math::Vector3D(0, 0, 0),
@@ -47,9 +51,13 @@ namespace Raytracer
                                                                       Raytracer::Material material = Raytracer::Material(),
                                                                       double radius = 1);
 
+            static std::vector<std::shared_ptr<Raytracer::APrimitive>> createSpheresSettings(libconfig::Setting& settings);
+
             static std::unique_ptr<Raytracer::Objects::Plane> createPlane(Math::Point3D origin = Math::Point3D(0, 1, 0),
                                                                     Raytracer::Material material = Raytracer::Material(),
                                                                     double size = 0.0);
+
+            static std::vector<std::shared_ptr<Raytracer::APrimitive>> createPlanesSettings(libconfig::Setting& settings);
     };
 }
 

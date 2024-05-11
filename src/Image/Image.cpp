@@ -126,9 +126,9 @@ namespace Raytracer
         for (std::size_t i = 0; i < size.second; i++) {
             file << "# ===== /LINE " << i << "/ =====" << std::endl;
             for (std::size_t j = 0; j < size.first; j++)
-                file << this->_values[j][i][0][0] << "\t" <<
-                        this->_values[j][i][0][1] << "\t" <<
-                        this->_values[j][i][0][2] << "\t" << std::endl;
+                file << this->_values[j][size.second - i - 1][0][0] << "\t" <<
+                        this->_values[j][size.second - i - 1][0][1] << "\t" <<
+                        this->_values[j][size.second - i - 1][0][2] << "\t" << std::endl;
         }
         return true;
     }
