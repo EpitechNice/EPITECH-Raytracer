@@ -54,6 +54,11 @@ namespace Math
         return ss.str();
     }
 
+    Math::Point3D Ray::pointAt(double t) const
+    {
+        return this->_origin + this->_direction * t;
+    }
+
     std::ostream& operator<<(std::ostream& os, const Ray& obj)
     {
         os << obj.str();

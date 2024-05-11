@@ -103,6 +103,13 @@ namespace Math
                        other[0][2] - this->_values[0][2]);
     }
 
+    Vector3D Vector3D::operator+ (double other) const
+    {
+        return Vector3D(this->_values[0][0] + other,
+                        this->_values[0][1] + other,
+                        this->_values[0][2] + other);
+    }
+
     Vector3D Vector3D::operator* (double other) const
     {
         return Vector3D(this->_values[0][0] * other,

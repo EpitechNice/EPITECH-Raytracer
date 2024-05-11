@@ -66,6 +66,11 @@ namespace Math
                 this->fill(size, value);
             }
 
+            std::vector<std::vector<T>> getValues() const
+            {
+                return this->_values;
+            }
+
             void set(std::pair<std::size_t, std::size_t> position, T value)
             {
                 std::pair<std::size_t, std::size_t> size = this->getSize();

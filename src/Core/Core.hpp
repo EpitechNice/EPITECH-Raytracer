@@ -60,7 +60,8 @@ namespace Raytracer
             void createLight();
 
             //Renderer
-            void checkAllHits(Math::Ray& ray, int x, int y);
+            Raytracer::Color getColorRay(Math::Ray& ray, int depth, hitRecord record);
+            void checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax, hitRecord record);
             void render(double screenWidth, double screenHeight);
     };
 }

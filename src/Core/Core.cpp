@@ -40,18 +40,40 @@ namespace Raytracer
         return;
     }
 
-    void Core::checkAllHits(Math::Ray& ray, int x, int y)
+//TODO : Scattered, attenuation from record.material
+    Raytracer::Color Core::getColorRay(Math::Ray& ray, int depth, hitRecord record)
     {
+        (void) ray;
+        (void) depth;
+        (void) record;
+        Math::Vector3D color = (record.normal + 1) * 0.5;
+        int ir = color.getValues()[0][0]*255.99;
+		int ig = color.getValues()[0][1]*255.99;
+		int ib = color.getValues()[0][2]*255.99;
+        return (Raytracer::Color(ir, ig, ib));
+    }
+
+    void Core::checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax, hitRecord record)
+    {
+        hitRecord tmpRec;
+        double closestSoFar = distMax;
+        bool hasHit = false;
+        int depth = 0;
         size_t len = this->_primitiveList.size();
 
         for (size_t i = 0; i < len; i++) {
-            std::shared_ptr<APrimitive> primitive = std::dynamic_pointer_cast<APrimitive>(_primitiveList[i]);
-            float discriminant = primitive->doesHit(ray);
-            if (discriminant >= 0.0) {
-                _image.set({x, y}, primitive->hitColor(ray));
-                return;
+            if (_primitiveList[i]->doesHit(ray, distMin, closestSoFar, tmpRec)) {
+                hasHit = true;
+                closestSoFar = tmpRec.distance;
+                record = tmpRec;
+                // _image.set(pos, primitive->hitColor(ray));
+                // return;
             }
         }
+        if (hasHit) {
+            this->_image.set(pos, this->getColorRay(ray, depth, record));
+        }
+        return;
     }
 
     void Core::render(double screenWidth, double screenHeight)
@@ -61,17 +83,18 @@ namespace Raytracer
         Math::Vector3D horizontal(4.0, 0.0, 0.0);
         Math::Vector3D vertical(0.0, 4.0 / aspectRatio, 0.0);
         Math::Vector3D pixelPosition;
-        Math::Vector3D direction;
+        // Math::Vector3D direction;
         Math::Ray ray;
+        hitRecord rec;
 
         for (int y = (screenHeight - 1); y >= 0; y--) {
             for (int x = 0; x < screenWidth; x++) {
                 double u = double(x) / double(screenWidth);
                 double v = double(y) / double(screenHeight);
                 pixelPosition = lowerLeftCorner + horizontal * u + vertical * v;
-                Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
-                ray = Math::Ray(this->_camera->getPosition(), direction);
-                checkAllHits(ray, x, y);
+                // Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
+                ray = Math::Ray(this->_camera->getPosition(), pixelPosition);
+                checkRayHit(ray, {x, y}, 0.001, MAXFLOAT, rec);
             }
         }
     }

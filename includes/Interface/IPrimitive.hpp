@@ -29,10 +29,10 @@ namespace Raytracer
 {
     typedef struct hit_record_s
     {
-        float distance;
+        double distance;
         Math::Point3D intersectionPoint;
         Math::Vector3D normal;
-        std::shared_ptr<Raytracer::Material> material;
+        Raytracer::Material material;
     } hitRecord;
 
     class IPrimitive: virtual public Raytracer::IObject
@@ -41,7 +41,7 @@ namespace Raytracer
             virtual void setMaterial(Raytracer::Material material) = 0;
             virtual const Raytracer::Material& getMaterial() const = 0;
 
-            virtual float doesHit(const Math::Ray& ray) const = 0;
+            virtual bool doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const = 0;
             virtual Raytracer::Color hitColor(const Math::Ray& ray) const = 0;
             virtual Math::Ray bounce(const Math::Ray& ray) const = 0;
     };

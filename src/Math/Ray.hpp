@@ -45,6 +45,8 @@ namespace Math
 
             std::string str() const;
 
+            Math::Point3D pointAt(double t) const;
+
             friend std::ostream& operator<<(std::ostream& os, const Ray& obj);
     };
 }
