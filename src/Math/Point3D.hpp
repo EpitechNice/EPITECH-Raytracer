@@ -43,7 +43,6 @@ namespace Math
             Point3D operator-(const Math::Vector3D& other) const;
             Math::Vector3D operator-(const Point3D& other) const;
             Point3D operator+(const Vector3D& other) const;
-            // Exemple de méthode de normalisation dans Math::Vector3D
             Vector3D normalised() const;
 
 

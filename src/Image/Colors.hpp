@@ -41,6 +41,8 @@ namespace Raytracer
 
             std::string str() const;
             friend std::ostream& operator<<(std::ostream& os, const Raytracer::Color& obj);
+
+            Color operator*(double scalar) const;
     };
 }
 

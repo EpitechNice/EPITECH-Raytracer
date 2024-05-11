@@ -68,6 +68,15 @@ namespace Raytracer
                 std::to_string(this->_values[0][2]) << ")>";
         return ss.str();
     }
+
+    Color Color::operator*(double scalar) const
+    {
+        Color result(*this);
+        result._values[0][0] = static_cast<unsigned int>(result._values[0][0] * scalar);
+        result._values[0][1] = static_cast<unsigned int>(result._values[0][1] * scalar);
+        result._values[0][2] = static_cast<unsigned int>(result._values[0][2] * scalar);
+        return result;
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, const Raytracer::Color& obj)

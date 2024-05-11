@@ -41,28 +41,32 @@ namespace Raytracer
         }
 
 
-         bool Sphere::doesHit(const Math::Ray& other) const
+        float Sphere::doesHit(const Math::Ray& other) const
         {
             Math::Vector3D oc = other.getOrigin() - this->_origin;
             double a = other.getDirection().dot(other.getDirection());
             double h = oc.dot(other.getDirection());
             double c = oc.dot(oc) - this->_radius * this->_radius;
             double discriminant = h*h - a*c;
-            return (discriminant > 0);
-            // Math::Vector3D oc = this->_origin - other.getOrigin();
-            // double a = std::pow(other.getDirection().length(), 2);
-            // double h = other.getDirection().dot(oc);
-            // double c = std::pow(oc.length(), 2) - pow(this->_radius, 2);
-            // double discriminant = h*h - a*c;
-            // return (discriminant >= 0);
+            if (discriminant > 0 ){
+                return 1.0;
+            } else {
+                return (-h - sqrt(discriminant) / (2.0*a));
+            }
         }
 
         Raytracer::Color Sphere::hitColor(const Math::Ray& other) const
         {
-            if (!this->doesHit(other))
-                throw Exceptions::InvalidRayError("The " + other.str() + " does not hit " + this->str(),
-                    EXCEPTION_INFOS);
-            return this->_material.getPattern()[0][0];
+            float t = doesHit(other);
+
+            if (t <= 0.0)
+                throw Exceptions::InvalidRayError("The " + other.str() + " does not hit " + this->str(), EXCEPTION_INFOS);
+            Math::Point3D intersectionPoint = other.getOrigin() + other.getDirection() * t;
+            Math::Vector3D normal = (intersectionPoint - this->_origin).normalised();
+            Math::Vector3D colorModifier = normal * 0.5 + Math::Vector3D(0.5, 0.5, 0.5);
+            Raytracer::Color baseColor = this->_material.getPattern()[0][0];
+            Raytracer::Color modifiedColor = baseColor * colorModifier[0][0];
+            return modifiedColor;
         }
 
         Math::Ray Sphere::bounce(const Math::Ray& other) const

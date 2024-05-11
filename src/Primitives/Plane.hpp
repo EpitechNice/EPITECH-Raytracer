@@ -39,7 +39,7 @@ namespace Raytracer::Objects
 
             double getSize() const;
 
-            bool doesHit(const Math::Ray& ray) const override;
+            float doesHit(const Math::Ray& ray) const override;
             Raytracer::Color hitColor(const Math::Ray& ray) const override;
             Math::Ray bounce(const Math::Ray& other) const override;
             std::string str() const override;

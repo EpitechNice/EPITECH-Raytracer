@@ -28,8 +28,8 @@ namespace Raytracer
             this->usage(argv[0], 0);
 
         // if ()
-        int screenWidth = 1920;
-        int screenHeight = 1080;
+        int screenWidth = 1000;
+        int screenHeight = 500;
         this->loadConfig(argv[1]);
         _image = Raytracer::Image({screenWidth, screenHeight});
         generateRaysForImage(screenWidth, screenHeight);
@@ -63,7 +63,8 @@ namespace Raytracer
 
         for (size_t i = 0; i < len; i++) {
             std::shared_ptr<APrimitive> primitive = std::dynamic_pointer_cast<APrimitive>(_objectList[i]);
-            if (primitive->doesHit(ray)) {
+            float discriminent = primitive->doesHit(ray);
+            if (discriminent >= 0.0) {
                 // std::cout << "Does hit !" << std::endl;
                 // std::cout << "X = " << x << " | Y = " << y << std::endl;
                 _image.set({x, y}, primitive->hitColor(ray));
@@ -102,11 +103,8 @@ namespace Raytracer
         try {
             this->setConfig(sceneFilePath);
             this->createCamera();
-            // this->DEBUGPrintCameraInfo();
             this->createPrimitive();
-            // this->DEBUGPrintAllObject();
             this->createLight();
-            // this->DEBUGPrintAllLight();
 
         } catch (const libconfig::SettingNotFoundException &ex) {
             throw Exceptions::InvalidParsingSettingNotFound("Setting not found in configuration file. Error: " + std::string(ex.what()), EXCEPTION_INFOS);
@@ -169,37 +167,6 @@ namespace Raytracer
                 // Créer une lumière avec les paramètres extraits
                 _lightList.push_back(ObjectFactory::createLight(ambient, diffuse, point, direction, angle));
             }
-        }
-    }
-
-    void Core::DEBUGPrintAllObject()
-    {
-        for (const auto& objPtr : _objectList) {
-            if (auto spherePtr = std::dynamic_pointer_cast<Raytracer::Objects::Sphere>(objPtr)) {
-                const Raytracer::Objects::Sphere& sphere = *spherePtr;
-                std::cout << "Sphere: " << &sphere << std::endl;
-            } else if (auto planePtr = std::dynamic_pointer_cast<Raytracer::Objects::Plane>(objPtr)) {
-                const Raytracer::Objects::Plane& plane = *planePtr;
-                std::cout << "Plane: " << &plane << std::endl;
-            } else {
-                std::cerr << "Error: Object in _objectList is neither Sphere nor Plane." << std::endl;
-            }
-        }
-    }
-
-    void Core::DEBUGPrintCameraInfo()
-    {
-        try {
-            std::cout << &_camera << std::endl;
-        } catch (const std::exception& ex) {
-            std::cerr << "Error printing camera info: " << ex.what() << std::endl;
-        }
-    }
-
-    void Core::DEBUGPrintAllLight()
-    {
-        for (const auto& light : _lightList) {
-            std::cout << light << std::endl;
         }
     }
 }

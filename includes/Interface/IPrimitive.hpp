@@ -33,7 +33,7 @@ namespace Raytracer
             virtual void setMaterial(Raytracer::Material material) = 0;
             virtual const Raytracer::Material& getMaterial() const = 0;
 
-            virtual bool doesHit(const Math::Ray& ray) const = 0;
+            virtual float doesHit(const Math::Ray& ray) const = 0;
             virtual Raytracer::Color hitColor(const Math::Ray& ray) const = 0;
             virtual Math::Ray bounce(const Math::Ray& ray) const = 0;
     };

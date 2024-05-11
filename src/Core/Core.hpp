@@ -58,9 +58,6 @@ namespace Raytracer
             void createCamera();
             void createPrimitive();
             void createLight();
-            void DEBUGPrintAllObject();
-            void DEBUGPrintCameraInfo();
-            void DEBUGPrintAllLight();
             void generateRaysForImage(int imageWidth, int imageHeight);
             void checkAllHits(Math::Ray& ray, int x, int y);
     };
