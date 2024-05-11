@@ -34,9 +34,10 @@ namespace Raytracer::Objects
 
     bool Plane::doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const
     {
-        (void) distMin;
-        (void) distMax;
-        (void) record;
+        (void)other;
+        (void)distMin;
+        (void)distMax;
+        (void)record;
         return false;
         // double denominator = other.getDirection().dot(record.normal);
         // return denominator != 0;
