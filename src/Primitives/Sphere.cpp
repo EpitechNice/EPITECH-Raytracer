@@ -41,26 +41,46 @@ namespace Raytracer
         }
 
 
-        float Sphere::doesHit(const Math::Ray& other) const
+        bool Sphere::doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const
         {
             Math::Vector3D oc = other.getOrigin() - this->_origin;
             double a = other.getDirection().dot(other.getDirection());
             double h = oc.dot(other.getDirection());
             double c = oc.dot(oc) - this->_radius * this->_radius;
-            double discriminant = h*h - a*c;
-            if (discriminant > 0 ){
-                return 1.0;
-            } else {
-                return (-h - sqrt(discriminant) / (2.0 * a));
+            double discriminant = h * h - a * c;
+            double tmp;
+
+            if (discriminant > 0 ) {
+                tmp = (-h - sqrt(h * h - a * c)) / a;
+                if (tmp > distMin && tmp < distMax) {
+                    record.distance = tmp;
+                    record.intersectionPoint = other.pointAt(record.distance);
+                    record.normal = (record.intersectionPoint - this->_origin) / this->_radius;
+                    record.material = this->_material;
+                    return true;
+                }
+                tmp = (-h - sqrt(h * h - a * c)) / a;
+                if (tmp > distMin && tmp < distMax) {
+                    record.distance = tmp;
+                    record.intersectionPoint = other.pointAt(record.distance);
+                    record.normal = (record.intersectionPoint - this->_origin) / this->_radius;
+                    record.material = this->_material;
+                    return true;
+                }
             }
+            return false;
         }
 
+//TODO : variables
         Raytracer::Color Sphere::hitColor(const Math::Ray& other) const
         {
-            float t = doesHit(other);
-
-            if (t <= 0.0)
-                throw Exceptions::InvalidRayError("The " + other.str() + " does not hit " + this->str(), EXCEPTION_INFOS);
+            double t = 1;
+            // double distMin;
+            // double distMax;
+            // hitRecord rec;
+//
+            // if (doesHit(other) <= 0.0)
+                // throw Exceptions::InvalidRayError("The " + other.str() + " does not hit " + this->str(), EXCEPTION_INFOS);
             Math::Point3D intersectionPoint = other.getOrigin() + other.getDirection() * t;
             Math::Vector3D normal = (intersectionPoint - this->_origin).normalised();
             Math::Vector3D colorModifier = normal * 0.5 + Math::Vector3D(0.5, 0.5, 0.5);

@@ -32,8 +32,11 @@ namespace Raytracer::Objects
         return this->_size;
     }
 
-    float Plane::doesHit(const Math::Ray& other) const
+    bool Plane::doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const
     {
+        (void) distMin;
+        (void) distMax;
+        (void) record;
         Math::Vector3D oc = this->_origin - other.getOrigin();
         double a = std::pow(other.getDirection().length(), 2);
         double h = other.getDirection().dot(oc);
