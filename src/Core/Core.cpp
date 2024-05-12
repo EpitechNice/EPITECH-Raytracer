@@ -38,7 +38,7 @@ namespace Raytracer
         this->_image.save("raytracer.ppm");
 
         return;
-    }
+    } 
 
 //TODO : Scattered, attenuation from record.material
     Raytracer::Color Core::getColorRay(Math::Ray& ray, int depth)
@@ -47,7 +47,7 @@ namespace Raytracer
         (void) depth;
         // (void) record;
         // Math::Point3D intersectionPoint = ray.pointAt(2.0);
-        Math::Vector3D color = (this->_record.normal + 1) * 0.5;
+        Math::Vector3D color = (this->_this->_record.normal + 1) * 0.5;
 
         int ir = color.getValues()[0][0]*255.99;
 		int ig = color.getValues()[0][1]*255.99;
@@ -165,7 +165,7 @@ namespace Raytracer
         } catch (const libconfig::SettingNotFoundException &e) {
             throw Exceptions::InvalidParsingSettingNotFound("Missing required config in configuration file: " + std::string(e.what()), EXCEPTION_INFOS);
         } catch (const libconfig::SettingTypeException &e) {
-            throw Exceptions::InvalidParsingSettingInvalid("Incorrect type in configuration file. Error: " + std::string(e.getPath()) + std::string(e.what()), EXCEPTION_INFOS);
+            throw Exceptions::InvalidParsingSettingInvalid("Incorrect type in configuration file. Error: " + std::string(e.getPath()) + std::string(e.getPath()) + std::string(e.what()), EXCEPTION_INFOS);
         } catch (const libconfig::ParseException& e) {
             throw Exceptions::OtherParsingError("Error in configuration file, at line " + std::to_string(e.getLine()) + ": " + e.getError(), EXCEPTION_INFOS);
         } catch (const std::exception &e) {
