@@ -47,7 +47,7 @@ namespace Raytracer
         (void) depth;
         // (void) record;
         // Math::Point3D intersectionPoint = ray.pointAt(2.0);
-        Math::Vector3D color = (this->_this->_record.normal + 1) * 0.5;
+        Math::Vector3D color = (this->_record.normal + 1) * 0.5;
 
         int ir = color.getValues()[0][0]*255.99;
 		int ig = color.getValues()[0][1]*255.99;
