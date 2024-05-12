@@ -38,16 +38,16 @@ namespace Raytracer
         this->_image.save("raytracer.ppm");
 
         return;
-    }
+    } 
 
 //TODO : Scattered, attenuation from record.material
-    Raytracer::Color Core::getColorRay(Math::Ray& ray, int depth, hitRecord record)
+    Math::Vector3D Core::getColorRay(Math::Ray& ray, int depth)
     {
         (void) ray;
         (void) depth;
         (void) record;
         // Math::Point3D intersectionPoint = ray.pointAt(2.0);
-        Math::Vector3D color = (record.normal + 1) * 0.5;
+        Math::Vector3D color = (this->_record.normal + 1) * 0.5;
 
         int ir = color.getValues()[0][0]*255.99;
 		int ig = color.getValues()[0][1]*255.99;
@@ -63,14 +63,15 @@ namespace Raytracer
 
     void Core::render(double screenWidth, double screenHeight)
     {
-        double aspectRatio = screenWidth / screenHeight;
-        Math::Vector3D lowerLeftCorner(-2.0, -2.0 / aspectRatio, -2.0 / aspectRatio);
-        Math::Vector3D horizontal(4.0, 0.0, 0.0);
-        Math::Vector3D vertical(0.0, 4.0 / aspectRatio, 0.0);
-        Math::Vector3D pixelPosition;
-        // Math::Vector3D direction;
         Math::Ray ray;
-        hitRecord rec;
+        int maxColorSample = 0;
+        bool doesHit;
+        bool didHit;
+        Raytracer::Color currentColor;
+        Raytracer::Color color;
+        Raytracer::hitRecord record;
+
+        std::cout << "\r[  0%] Building image" << std::flush;
 
         for (int y = (screenHeight - 1); y >= 0; y--) {
             for (int x = 0; x < screenWidth; x++) {
@@ -79,14 +80,7 @@ namespace Raytracer
                 pixelPosition = lowerLeftCorner + horizontal * u + vertical * v;
                 // Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
                 ray = Math::Ray(this->_camera->getPosition(), pixelPosition);
-                this->checkRayHit(ray, {x, y}, 0.001, MAXFLOAT);
-            }
-
-            // Easter egg
-            if (!(rand() % 70) && this->_motivations.size()) {
-                std::size_t index = rand() % this->_motivations.size();
-                std::cout << "\r[====] " << this->_motivations[index] << std::endl;
-                this->_motivations.erase(this->_motivations.begin() + index);
+                checkRayHit(ray, {x, y}, 0.001, MAXFLOAT, rec);
             }
 
             std::cout << "\r[" << std::setw(3) << int((screenHeight - y) * 100 / screenHeight) << "%] Building image" << std::flush;
@@ -131,7 +125,7 @@ namespace Raytracer
         } catch (const libconfig::SettingNotFoundException &e) {
             throw Exceptions::InvalidParsingSettingNotFound("Missing required config in configuration file: " + std::string(e.what()), EXCEPTION_INFOS);
         } catch (const libconfig::SettingTypeException &e) {
-            throw Exceptions::InvalidParsingSettingInvalid("Incorrect type in configuration file. Error: " + std::string(e.what()), EXCEPTION_INFOS);
+            throw Exceptions::InvalidParsingSettingInvalid("Incorrect type in configuration file. Error: " + std::string(e.getPath()) + std::string(e.what()), EXCEPTION_INFOS);
         } catch (const libconfig::ParseException& e) {
             throw Exceptions::OtherParsingError("Error in configuration file, at line " + std::to_string(e.getLine()) + ": " + e.getError(), EXCEPTION_INFOS);
         } catch (const std::exception &e) {

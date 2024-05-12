@@ -53,6 +53,7 @@ namespace Raytracer
             // };
 
             Image _image;
+            hitRecord _record;
 
             // * Feel free to add any fun phrases you can think of ;)
             // Please note : Do not add anything the is against the Geneva convention, or violent, or could lead to a missunderstanding
@@ -79,8 +80,8 @@ namespace Raytracer
             void loadLight();
 
             //Renderer
-            Raytracer::Color getColorRay(Math::Ray& ray, int depth, hitRecord record);
-            void checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax);
+            Math::Vector3D getColorRay(Math::Ray& ray, int depth);
+            bool checkRayHit(Math::Ray& ray, double distMin, double distMax);
             void render(double screenWidth, double screenHeight);
     };
 }
