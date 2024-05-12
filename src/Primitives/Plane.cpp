@@ -43,12 +43,6 @@ namespace Raytracer::Objects
         // return denominator != 0;
     }
 
-    Raytracer::Color Plane::hitColor(const Math::Ray& ray) const {
-        (void)ray;
-        return Raytracer::Color(0, 0, 0);
-        //todo
-    }
-
     Math::Ray Plane::bounce(const Math::Ray& other) const
     {
         (void)other;

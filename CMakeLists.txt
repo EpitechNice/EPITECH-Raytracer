@@ -33,6 +33,7 @@ add_executable(raytracer
     src/Math/Vector3D.cpp
     src/mmain.cpp
     src/Objects/Camera.cpp
+    src/Objects/Hitables.cpp
     src/Objects/Light.cpp
     src/Primitives/Plane.cpp
     src/Primitives/Sphere.cpp

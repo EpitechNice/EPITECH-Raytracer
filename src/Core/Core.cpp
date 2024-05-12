@@ -55,27 +55,10 @@ namespace Raytracer
         return (Raytracer::Color(ir, ig, ib));
     }
 
-    void Core::checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax, hitRecord record)
+    void Core::checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax)
     {
-        hitRecord tmpRec;
-        double closestSoFar = distMax;
-        bool hasHit = false;
-        int depth = 0;
-        size_t len = this->_primitiveList.size();
-
-        for (size_t i = 0; i < len; i++) {
-            if (_primitiveList[i]->doesHit(ray, distMin, closestSoFar, tmpRec)) {
-                hasHit = true;
-                closestSoFar = tmpRec.distance;
-                record = tmpRec;
-                // _image.set(pos, primitive->hitColor(ray));
-                // return;
-            }
-        }
-        if (hasHit) {
-            this->_image.set(pos, this->getColorRay(ray, depth, record));
-        }
-        return;
+        Raytracer::Color color = this->_hitables.hitColor(ray, distMin, distMax);
+        this->_image.set(pos, color);
     }
 
     void Core::render(double screenWidth, double screenHeight)
@@ -96,8 +79,17 @@ namespace Raytracer
                 pixelPosition = lowerLeftCorner + horizontal * u + vertical * v;
                 // Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
                 ray = Math::Ray(this->_camera->getPosition(), pixelPosition);
-                checkRayHit(ray, {x, y}, 0.001, MAXFLOAT, rec);
+                this->checkRayHit(ray, {x, y}, 0.001, MAXFLOAT);
             }
+
+            // Easter egg
+            if (!(rand() % 70) && this->_motivations.size()) {
+                std::size_t index = rand() % this->_motivations.size();
+                std::cout << "\r[====] " << this->_motivations[index] << std::endl;
+                this->_motivations.erase(this->_motivations.begin() + index);
+            }
+
+            std::cout << "\r[" << std::setw(3) << int((screenHeight - y) * 100 / screenHeight) << "%] Building image" << std::flush;
         }
     }
 
@@ -164,13 +156,11 @@ namespace Raytracer
 
         if (primitiveSetting.exists("spheres")) {
             objects = ObjectFactory::createSpheresSettings(primitiveSetting["spheres"]);
-            for (std::size_t i = 0; i < objects.size(); i++)
-                this->_primitiveList.push_back(objects[i]);
+            this->_hitables.extend(objects);
         }
         if (primitiveSetting.exists("planes")) {
             objects = ObjectFactory::createPlanesSettings(primitiveSetting["planes"]);
-            for (std::size_t i = 0; i < objects.size(); i++)
-                this->_primitiveList.push_back(objects[i]);
+            this->_hitables.extend(objects);
         }
     }
 

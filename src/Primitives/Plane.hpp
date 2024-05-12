@@ -40,7 +40,6 @@ namespace Raytracer::Objects
             double getSize() const;
 
             bool doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const override;
-            Raytracer::Color hitColor(const Math::Ray& ray) const override;
             Math::Ray bounce(const Math::Ray& other) const override;
             std::string str() const override;
 
