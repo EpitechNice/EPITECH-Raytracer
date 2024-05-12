@@ -127,6 +127,15 @@ namespace Exceptions
             {}
     };
 
+    class FileNotFoundError: public Exceptions::Exception
+    {
+        public:
+            FileNotFoundError(std::string what = "File was not found",
+                             std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
+            Exceptions::Exception(what, position)
+            {}
+    };
+
     // ========== Warnings ==========
 
     class FileExtensionWarning: public Exceptions::Exception

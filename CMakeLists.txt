@@ -3,6 +3,9 @@ project(
     raytracer
 )
 
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+
 set(
     CMAKE_CXX_STANDARD 20
 )
@@ -32,19 +35,26 @@ add_executable(raytracer
     src/Math/Ray.cpp
     src/Math/Vector3D.cpp
     src/mmain.cpp
+    src/MultiThreading/Thread.cpp
     src/Objects/Camera.cpp
     src/Objects/Hitables.cpp
     src/Objects/Light.cpp
+    src/Observer/FileObserver.cpp
     src/Primitives/Plane.cpp
     src/Primitives/Sphere.cpp
 )
 
+
 target_include_directories(raytracer PUBLIC
-    ./includes/
+./includes/
 )
 
 target_link_libraries(raytracer
     config++
+)
+
+target_link_libraries(raytracer
+    ${SDL2_LIBRARIES}
 )
 
 add_custom_command(TARGET raytracer

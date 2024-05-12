@@ -107,10 +107,10 @@ namespace Raytracer
         result._values[0][2] = static_cast<double>(result._values[0][2] * scalar);
         return result;
     }
-}
 
-std::ostream& operator<<(std::ostream& os, const Raytracer::Color& obj)
-{
-    os << obj.str();
-    return os;
+    std::ostream& operator<<(std::ostream& os, const Raytracer::Color& obj)
+    {
+        os << obj.str();
+        return os;
+    }
 }

@@ -41,61 +41,101 @@ namespace Raytracer
     } 
 
 //TODO : Scattered, attenuation from record.material
-    Math::Vector3D Core::getColorRay(Math::Ray& ray, int depth)
+    Raytracer::Color Core::getColorRay(Math::Ray& ray, int depth)
     {
         (void) ray;
         (void) depth;
-        (void) record;
+        // (void) record;
         // Math::Point3D intersectionPoint = ray.pointAt(2.0);
-        Math::Vector3D color = (this->_record.normal + 1) * 0.5;
+        Math::Vector3D color = (this->_this->_record.normal + 1) * 0.5;
 
         int ir = color.getValues()[0][0]*255.99;
 		int ig = color.getValues()[0][1]*255.99;
 		int ib = color.getValues()[0][2]*255.99;
-        return (Raytracer::Color(ir, ig, ib));
+        return Raytracer::Color(ir, ig, ib);
     }
 
-    void Core::checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax)
+    // void Core::checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax)
+    Raytracer::Color Core::checkRayHit(Math::Ray& ray, double distMin, double distMax, bool& doesHit, Raytracer::hitRecord& record) const
     {
-        Raytracer::Color color = this->_hitables.hitColor(ray, distMin, distMax);
-        this->_image.set(pos, color);
+        Raytracer::Color color = this->_hitables.hitColor(ray, distMin, distMax, record);
+        doesHit = color[0][0] != -1;
+        // this->_image.set(pos, color);
+        return color;
     }
 
     void Core::render(double screenWidth, double screenHeight)
     {
-        Math::Ray ray;
-        int maxColorSample = 0;
-        bool doesHit;
-        bool didHit;
-        Raytracer::Color currentColor;
-        Raytracer::Color color;
-        Raytracer::hitRecord record;
+        // Math::Ray ray;
+        // int maxColorSample = 0;
+        // bool doesHit;
+        // bool didHit;
+        // Raytracer::Color currentColor;
+        // Raytracer::Color color;
+        // Raytracer::hitRecord record;
 
-        std::cout << "\r[  0%] Building image" << std::flush;
+        // for (int y = (screenHeight - 1); y >= 0; y--) {
+        //     for (int x = 0; x < screenWidth; x++) {
+        //         double u = double(x) / double(screenWidth);
+        //         double v = double(y) / double(screenHeight);
+        //         // pixelPosition = lowerLeftCorner + horizontal * u + vertical * v;
+        //         // Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
+        //         ray = Math::Ray(this->_camera->getPosition(), pixelPosition);
+        //         this->checkRayHit(ray, 0.001, MAXFLOAT, doesHit, record);
+        //     }
+        // }
+
+        std::size_t index = 0;
+        Threads::ShowThread showThread((screenHeight * screenWidth), index, screenWidth, screenHeight);
+
+        Math::Ray ray;
+        int maxColorSample = 1;
+        Raytracer::Color color;
+        bool doesHit, didHit;
+        Raytracer::hitRecord record;
 
         for (int y = (screenHeight - 1); y >= 0; y--) {
             for (int x = 0; x < screenWidth; x++) {
-                double u = double(x) / double(screenWidth);
-                double v = double(y) / double(screenHeight);
-                pixelPosition = lowerLeftCorner + horizontal * u + vertical * v;
-                // Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
-                ray = Math::Ray(this->_camera->getPosition(), pixelPosition);
-                checkRayHit(ray, {x, y}, 0.001, MAXFLOAT, rec);
-            }
 
-            std::cout << "\r[" << std::setw(3) << int((screenHeight - y) * 100 / screenHeight) << "%] Building image" << std::flush;
+                ray = this->_camera->getRay(double(x) / double(screenWidth), double(y) / double(screenHeight));
+                color = this->checkRayHit(ray, 0.001, MAXFLOAT, doesHit, record);
+                didHit = doesHit;
+
+                for (int colorSample = 0; colorSample < maxColorSample; colorSample++) {
+                    double u = double(x + drand48()) / double(screenWidth);
+                    double v = double(y + drand48()) / double(screenHeight);
+                    ray = this->_camera->getRay(u, v);
+                    color = this->checkRayHit(ray, 0.001, MAXFLOAT, doesHit, record);
+                    if (doesHit) {
+                        didHit = true;
+                        color += this->getColorRay(ray, 10);
+                    } else {
+                        color += this->_image[x][y];
+                    }
+                }
+
+                if (maxColorSample)
+                    color /= double(maxColorSample);
+
+                // color *= 255.99;
+                if (didHit)
+                    this->_image.set({x, y}, color);
+                showThread.drawPoint(this->_image[x][y], x, y);
+                index++;
+            }
         }
+        showThread.stop();
     }
 
 
     void Core::usage(std::string filename, int status)
     {
-        std::cerr <<    "--------------------" << std::endl <<
-                        "  __                " << std::endl <<
-                        " /__)_  _/_ _ _ _ _ " << std::endl <<
-                        "/ ( (/(/// (/( (-/  " << std::endl <<
-                        "      /             " << std::endl <<
-                        "--------------------" << std::endl <<
+        std::cerr <<    "+---------------------+" << std::endl <<
+                        "|   __                |" << std::endl <<
+                        "|  /__)_  _/_ _ _ _ _ |" << std::endl <<
+                        "| / ( (/(/// (/( (-/  |" << std::endl <<
+                        "|       /             |" << std::endl <<
+                        "+---------------------+" << std::endl <<
                         "Usage:" << std::endl <<
                         "\t" << filename << " [-h|--help] [config_file]" << std::endl <<
                         "\t\t-h | --help  Show this help and exit" << std::endl <<
@@ -125,7 +165,7 @@ namespace Raytracer
         } catch (const libconfig::SettingNotFoundException &e) {
             throw Exceptions::InvalidParsingSettingNotFound("Missing required config in configuration file: " + std::string(e.what()), EXCEPTION_INFOS);
         } catch (const libconfig::SettingTypeException &e) {
-            throw Exceptions::InvalidParsingSettingInvalid("Incorrect type in configuration file. Error: " + std::string(e.getPath()) + std::string(e.what()), EXCEPTION_INFOS);
+            throw Exceptions::InvalidParsingSettingInvalid("Incorrect type in configuration file. Error: " + std::string(e.getPath()) + std::string(e.getPath()) + std::string(e.what()), EXCEPTION_INFOS);
         } catch (const libconfig::ParseException& e) {
             throw Exceptions::OtherParsingError("Error in configuration file, at line " + std::to_string(e.getLine()) + ": " + e.getError(), EXCEPTION_INFOS);
         } catch (const std::exception &e) {

@@ -29,6 +29,7 @@
     #include "../Math/Ray.hpp"
     #include "../Math/Ray.hpp"
     #include "../Math/Vector3D.hpp"
+    #include "../MultiThreading/Thread.hpp"
     #include "../Objects/Camera.hpp"
     #include "../Objects/Camera.hpp"
     #include "../Objects/Hitables.hpp"
@@ -55,17 +56,6 @@ namespace Raytracer
             Image _image;
             hitRecord _record;
 
-            // * Feel free to add any fun phrases you can think of ;)
-            // Please note : Do not add anything the is against the Geneva convention, or violent, or could lead to a missunderstanding
-            // Also, make sure your phrases are at least 14 chars long (else, it will mess up the display)
-
-            std::vector<std::string> _motivations = {
-                "Building NVidia drivers...",
-                "Compiling shaders...",
-                "Threading display...",
-                "Calculating ASCII display...",
-                "Painting Mona Lisa...",
-            };
         protected:
         public:
             Core(int argc, char** argv);
@@ -80,7 +70,7 @@ namespace Raytracer
             void loadLight();
 
             //Renderer
-            Math::Vector3D getColorRay(Math::Ray& ray, int depth);
+            Raytracer::Color getColorRay(Math::Ray& ray, int depth);
             Raytracer::Color checkRayHit(Math::Ray& ray, double distMin, double distMax, bool& doesHit, Raytracer::hitRecord& record) const;
             // bool checkRayHit(Math::Ray& ray, double distMin, double distMax) const;
             void render(double screenWidth, double screenHeight);
