@@ -59,7 +59,7 @@ namespace Raytracer
                     record.material = this->_material;
                     return true;
                 }
-                tmp = (-h - sqrt(h * h - a * c)) / a;
+                tmp = (-h + sqrt(h * h - a * c)) / a;
                 if (tmp > distMin && tmp < distMax) {
                     record.distance = tmp;
                     record.intersectionPoint = other.pointAt(record.distance);

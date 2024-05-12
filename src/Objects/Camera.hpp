@@ -37,6 +37,9 @@ namespace Raytracer
         private:
             Resolution _resolution;
             double _fieldOfView;
+            Math::Vector3D _lowerLeftCorner;
+            Math::Vector3D _horizontal;
+            Math::Vector3D _vertical;
 
         public:
             Camera();
@@ -50,6 +53,10 @@ namespace Raytracer
 
             const Resolution& getResolution() const;
             double getFieldOfView() const;
+            const Math::Vector3D getLowerLeftCorner() const;
+            const Math::Vector3D getHorizontal() const;
+            const Math::Vector3D getVertical() const;
+            Math::Ray getRay(double u, double v) const;
 
             std::string str() const;
 

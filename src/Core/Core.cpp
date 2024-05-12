@@ -41,62 +41,64 @@ namespace Raytracer
     }
 
 //TODO : Scattered, attenuation from record.material
-    Raytracer::Color Core::getColorRay(Math::Ray& ray, int depth, hitRecord record)
+    Math::Vector3D Core::getColorRay(Math::Ray& ray, int depth)
     {
         (void) ray;
         (void) depth;
-        (void) record;
         // Math::Point3D intersectionPoint = ray.pointAt(2.0);
-        Math::Vector3D color = (record.normal + 1) * 0.5;
+        Math::Vector3D color = (this->_record.normal + 1) * 0.5;
 
-        int ir = color.getValues()[0][0]*255.99;
-		int ig = color.getValues()[0][1]*255.99;
-		int ib = color.getValues()[0][2]*255.99;
-        return (Raytracer::Color(ir, ig, ib));
+        return color;
     }
 
-    void Core::checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax, hitRecord record)
+    bool Core::checkRayHit(Math::Ray& ray, double distMin, double distMax)
     {
         hitRecord tmpRec;
         double closestSoFar = distMax;
         bool hasHit = false;
-        int depth = 0;
         size_t len = this->_primitiveList.size();
 
         for (size_t i = 0; i < len; i++) {
             if (_primitiveList[i]->doesHit(ray, distMin, closestSoFar, tmpRec)) {
                 hasHit = true;
                 closestSoFar = tmpRec.distance;
-                record = tmpRec;
-                // _image.set(pos, primitive->hitColor(ray));
-                // return;
+                this->_record = tmpRec;
             }
         }
-        if (hasHit) {
-            this->_image.set(pos, this->getColorRay(ray, depth, record));
-        }
-        return;
+        return hasHit;
     }
 
     void Core::render(double screenWidth, double screenHeight)
     {
-        double aspectRatio = screenWidth / screenHeight;
-        Math::Vector3D lowerLeftCorner(-2.0, -2.0 / aspectRatio, -2.0 / aspectRatio);
-        Math::Vector3D horizontal(4.0, 0.0, 0.0);
-        Math::Vector3D vertical(0.0, 4.0 / aspectRatio, 0.0);
-        Math::Vector3D pixelPosition;
-        // Math::Vector3D direction;
         Math::Ray ray;
-        hitRecord rec;
+        int maxColorSample;
+        int ir, ig, ib;
 
         for (int y = (screenHeight - 1); y >= 0; y--) {
             for (int x = 0; x < screenWidth; x++) {
-                double u = double(x) / double(screenWidth);
-                double v = double(y) / double(screenHeight);
-                pixelPosition = lowerLeftCorner + horizontal * u + vertical * v;
-                // Math::Vector3D direction = (pixelPosition - this->_camera->getPosition()).normalised();
-                ray = Math::Ray(this->_camera->getPosition(), pixelPosition);
-                checkRayHit(ray, {x, y}, 0.001, MAXFLOAT, rec);
+                Math::Vector3D color(0.0, 0.0, 0.0);
+//Decrease this value to accelerate render/Increase this value to better render (antialiasing)
+                maxColorSample = 5;
+//Antialiasing process
+                for (int colorSample = 0; colorSample < maxColorSample; colorSample++) {
+                    double u = double(x + drand48()) / double(screenWidth);
+                    double v = double(y + drand48()) / double(screenHeight);
+                    ray = this->_camera->getRay(u, v);
+                    if (checkRayHit(ray, 0.001, MAXFLOAT)) {
+                        color += getColorRay(ray, 10);
+                    } else {
+//TODO: Instead of this, getBackgroundColor() already set in Image constructor
+                        Math::Vector3D defaultColor(1.0,1.0,1.0);
+                        color += defaultColor;
+                    }
+                }
+                color /= double(maxColorSample);
+//TODO: Stdout to debug, to delete before end of project
+                std::cout << "{ " << x << ", " << y << " }\t" << color.getValues()[0][0] << "\t" << color.getValues()[0][1] << "\t" << color.getValues()[0][2] << std::endl;
+                ir = color.getValues()[0][0] * 255.99;
+		        ig = color.getValues()[0][1] * 255.99;
+		        ib = color.getValues()[0][2] * 255.99;
+                this->_image.set({x, y}, Raytracer::Color(ir, ig, ib));
             }
         }
     }

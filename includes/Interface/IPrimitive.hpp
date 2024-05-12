@@ -33,6 +33,7 @@ namespace Raytracer
         Math::Point3D intersectionPoint;
         Math::Vector3D normal;
         Raytracer::Material material;
+        Raytracer::Color color;
     } hitRecord;
 
     class IPrimitive: virtual public Raytracer::IObject

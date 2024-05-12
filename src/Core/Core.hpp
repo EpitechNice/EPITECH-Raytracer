@@ -51,6 +51,7 @@ namespace Raytracer
             // };
 
             Image _image;
+            hitRecord _record;
         protected:
         public:
             Core(int argc, char** argv);
@@ -65,8 +66,8 @@ namespace Raytracer
             void loadLight();
 
             //Renderer
-            Raytracer::Color getColorRay(Math::Ray& ray, int depth, hitRecord record);
-            void checkRayHit(Math::Ray& ray, std::pair<std::size_t, std::size_t> pos, double distMin, double distMax, hitRecord record);
+            Math::Vector3D getColorRay(Math::Ray& ray, int depth);
+            bool checkRayHit(Math::Ray& ray, double distMin, double distMax);
             void render(double screenWidth, double screenHeight);
     };
 }
