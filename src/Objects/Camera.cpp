@@ -24,6 +24,9 @@ namespace Raytracer
     {
         this->_origin = Math::Point3D(0, 0, 0);
         this->_direction = Math::Vector3D(0, 0, 0);
+        this->_lowerLeftCorner = Math::Vector3D(-2.0, -1.0, -1.0);
+        this->_horizontal = Math::Vector3D(4.0, 0.0, 0.0);
+        this->_vertical = Math::Vector3D(0.0, 2.0, 0.0);
     }
 
     Camera::Camera(Math::Point3D origin, Math::Vector3D direction, Resolution resolution, double fieldOfView):
@@ -31,6 +34,9 @@ namespace Raytracer
     {
         this->_origin = origin;
         this->_direction = direction;
+        this->_lowerLeftCorner = Math::Vector3D(-2.0, -1.0, -1.0);
+        this->_horizontal = Math::Vector3D(4.0, 0.0, 0.0);
+        this->_vertical = Math::Vector3D(0.0, 2.0, 0.0);
     }
 
     std::string Camera::getClassName() const
@@ -52,7 +58,6 @@ namespace Raytracer
         _resolution = resolution;
     }
 
-    // Setter pour le champ de vision
     void Camera::setFieldOfView(double fieldOfView)
     {
         _fieldOfView = fieldOfView;
@@ -65,6 +70,26 @@ namespace Raytracer
 
     double Camera::getFieldOfView() const{
         return _fieldOfView;
+    }
+
+    const Math::Vector3D Camera::getLowerLeftCorner() const
+    {
+        return this->_lowerLeftCorner;
+    }
+
+    const Math::Vector3D Camera::getHorizontal() const
+    {
+        return this->_horizontal;
+    }
+
+    const Math::Vector3D Camera::getVertical() const
+    {
+        return this->_vertical;
+    }
+
+    Math::Ray Camera::getRay(double u, double v) const
+    {
+        return {this->_origin, this->_lowerLeftCorner + this->_horizontal * u + this->_vertical * v};
     }
 
     std::string Camera::str() const

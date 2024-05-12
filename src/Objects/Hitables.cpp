@@ -28,11 +28,10 @@ namespace Raytracer
         _hitables(list)
     {}
 
-    Raytracer::Color Hitables::hitColor(const Math::Ray& ray, double distMin, double distMax) const
+    Raytracer::Color Hitables::hitColor(const Math::Ray& ray, double distMin, double distMax, Raytracer::hitRecord& record) const
     {
         double lowestDistance = -1;
         Raytracer::Color winnerColor(-1, -1, -1);
-        Raytracer::hitRecord record;
 
         for (std::size_t i = 0; i < this->_hitables.size(); i++) {
             if (!this->_hitables[i].get()->doesHit(ray, distMin, distMax, record))

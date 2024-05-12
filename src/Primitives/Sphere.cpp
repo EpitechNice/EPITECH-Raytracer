@@ -40,7 +40,6 @@ namespace Raytracer
             return ss.str();
         }
 
-
         bool Sphere::doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const
         {
             Math::Vector3D oc = other.getOrigin() - this->_origin;
@@ -51,14 +50,12 @@ namespace Raytracer
             double tmp;
 
             if (discriminant > 0 ) {
-                // Cmon, never write your code twice ;)
                 for (int i = 0; i < 2; i++) {
-                    tmp = (-h - sqrt(h * h - a * c)) / a;
+                    tmp = ((i % 2) ? ((-h - sqrt(h * h - a * c)) / a) : (-h + sqrt(h * h - a * c)));
                     if (tmp > distMin && tmp < distMax) {
                         record.distance = tmp;
                         record.intersectionPoint = other.pointAt(record.distance);
                         record.normal = (record.intersectionPoint - this->_origin) / this->_radius;
-                        record.material = this->_material;
                         return true;
                     }
                 }

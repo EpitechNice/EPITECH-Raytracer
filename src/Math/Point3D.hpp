@@ -44,6 +44,7 @@ namespace Math
             Math::Vector3D operator-(const Point3D& other) const;
             Point3D operator+(const Vector3D& other) const;
             Vector3D normalised() const;
+            Math::Vector3D toVector3D() const;
 
 
             std::string str() const;

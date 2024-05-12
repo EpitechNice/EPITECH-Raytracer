@@ -34,7 +34,7 @@ namespace Raytracer
             Hitables();
             Hitables(std::initializer_list<std::shared_ptr<Raytracer::APrimitive>> list);
 
-            Raytracer::Color hitColor(const Math::Ray& ray, double distMin, double distMax) const;
+            Raytracer::Color hitColor(const Math::Ray& ray, double distMin, double distMax, Raytracer::hitRecord& record) const;
             void add(std::shared_ptr<Raytracer::APrimitive> obj);
             void extend(std::vector<std::shared_ptr<Raytracer::APrimitive>> objs);
     };
