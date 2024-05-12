@@ -23,6 +23,8 @@
 
     #include "../../src/Image/Image.hpp"
     #include "../../src/Material/Material.hpp"
+    #include "../../src/Material/Matte.hpp"
+    #include "../../src/Material/Metal.hpp"
     #include "../../src/Math/Ray.hpp"
 
 namespace Raytracer
@@ -32,7 +34,7 @@ namespace Raytracer
         double distance;
         Math::Point3D intersectionPoint;
         Math::Vector3D normal;
-        Raytracer::Material material;
+        Raytracer::Materials::Matte material;
         Raytracer::Color color;
     } hitRecord;
 

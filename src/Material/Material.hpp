@@ -27,6 +27,8 @@
     #include "../Math/Point3D.hpp"
     #include "../Math/Vector3D.hpp"
 
+//TODO: Interface IMaterial
+// à ne pas implémenter : virtual bool scatter(const Math::Ray& ray, const hitRecord& record, Math::Vector3D attenuation, Math::Ray& scattered) const = 0;
 namespace Raytracer
 {
     class Material
@@ -46,6 +48,9 @@ namespace Raytracer
 
             const Raytracer::Image& getPattern() const;
             void setPattern(Raytracer::Image pattern);
+
+//Matte
+            // bool scatter(const Math::Ray& ray, const hitRecord& record, Math::Vector3D attenuation, Math::Ray& scattered) const;
 
             Material& operator=(const Material& other);
 

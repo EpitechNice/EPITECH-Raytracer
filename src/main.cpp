@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 // {
 //     hittable_list world;
 
-//     auto ground_material = make_shared<lambertian>(color(0.5, 0.5, 0.5));
+//     auto ground_material = make_shared<Matte>(color(0.5, 0.5, 0.5));
 //     world.add(make_shared<sphere>(point3(0,-1000,0), 1000, ground_material));
 
 //     for (int a = -11; a < 11; a++) {
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 //                 if (choose_mat < 0.8) {
 //                     // diffuse
 //                     auto albedo = color::random() * color::random();
-//                     sphere_material = make_shared<lambertian>(albedo);
+//                     sphere_material = make_shared<Matte>(albedo);
 //                     world.add(make_shared<sphere>(center, 0.2, sphere_material));
 //                 } else if (choose_mat < 0.95) {
 //                     // metal
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 //     // auto material1 = make_shared<dielectric>(1.5);
 //     // world.add(make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
 
-//     // auto material2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
+//     // auto material2 = make_shared<Matte>(color(0.4, 0.2, 0.1));
 //     // world.add(make_shared<sphere>(point3(-4, 1, 0), 1.0, material2));
 
 //     // auto material3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);

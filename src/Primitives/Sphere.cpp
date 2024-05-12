@@ -89,6 +89,18 @@ namespace Raytracer
             return modifiedColor;
         }
 
+//TODO : recheck Point3D operation overload in Vector3D
+        Math::Vector3D Sphere::generateRandomPoint()
+        {
+            Math::Vector3D point;
+
+            do {
+                point = Math::Vector3D(drand48(),drand48(),drand48()) * 2.0 - Math::Vector3D(1.0, 1.0, 1.0);
+            } while (point.dot(point) >= 1.0);
+
+            return point;
+        }
+
         Math::Ray Sphere::bounce(const Math::Ray& other) const
         {
             (void)other;

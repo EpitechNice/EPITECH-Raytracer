@@ -1,8 +1,8 @@
 /*                                                                                      *
- * EPITECH PROJECT - Wed, Apr, 2024                                                     *
- * Title           - Visual Studio Live Share (Workspace)                               *
+ * EPITECH PROJECT - Mon, May, 2024                                                     *
+ * Title           - EPITECH-Raytracer                                                  *
  * Description     -                                                                    *
- *     Core                                                                             *
+ *     Matte                                                                       *
  *                                                                                      *
  * -----------------------------------------------------------------------------------  *
  *                                                                                      *
@@ -15,63 +15,36 @@
  *                                                                                      *
  * -----------------------------------------------------------------------------------  */
 
-#ifndef INCLUDED_CORE_HPP
-    #define INCLUDED_CORE_HPP
+#ifndef Matte_HPP
+    #define Matte_HPP
 
-    #include "includes.hpp"
-
-    #include "../Abstract/AObject.hpp"
-    #include "../Abstract/APrimitive.hpp"
-    #include "../Image/Colors.hpp"
-    #include "../Image/Image.hpp"
-    #include "../Math/Ray.hpp"
-    #include "../Objects/Camera.hpp"
-    #include "../Objects/Camera.hpp"
-    #include "../Objects/Light.hpp"
-    #include "../Primitives/Plane.hpp"
-    #include "../Primitives/Sphere.hpp"
-    #include "../Factory/ObjectFactory.hpp"
-    #include "../Math/Ray.hpp"
+    #include "configs.hpp"
+    #include "headers.hpp"
+    #include "../../includes/Interface/IPrimitive.hpp"
     #include "../Math/Point3D.hpp"
     #include "../Math/Vector3D.hpp"
-    #include "../Material/Matte.hpp"
-    #include "../Material/Metal.hpp"
+    #include "../Math/Ray.hpp"
+    #include "../Primitives/Sphere.hpp"
 
-namespace Raytracer
+
+namespace Raytracer::Materials
 {
-    class Core
+    class Matte
     {
         private:
-            libconfig::Config _config;
-            std::vector<std::shared_ptr<Raytracer::APrimitive>> _primitiveList;
-            std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
-            std::unique_ptr<Raytracer::Camera> _camera;
-
-            // const std::map<std::string, ConfigBuilder> _acceptedPrimitives = {
-            //     {"spheres", ConfigBuilder(ObjectFactory::createSpheresSettings)},
-            //     {"planes", ConfigBuilder(ObjectFactory::createPlanesSettings)},
-            // };
-
-            Image _image;
-            hitRecord _record;
-        protected:
+            Math::Vector3D _albedo;
         public:
-            Core(int argc, char** argv);
-            ~Core() = default;
+            Matte();
+            Matte(const Math::Vector3D& albedo);
+            ~Matte() = default;
 
-            //Config
-            void usage(std::string filename = "./raytracer", int status = 0);
-            void setConfig(const std::string sceneFilePath);
-            void loadConfig(const std::string sceneFilePath);
-            void loadCamera();
-            void loadPrimitive();
-            void loadLight();
+            Math::Vector3D getAlbedo() const;
 
-            //Renderer
-            Math::Vector3D getColorRay(Math::Ray& ray, int depth);
-            bool checkRayHit(Math::Ray& ray, double distMin, double distMax);
-            void render(double screenWidth, double screenHeight);
+            bool scatter(const Math::Ray& ray, const hitRecord& record, Math::Vector3D& attenuation, Math::Ray& scattered) const;
+
     };
+
+    std::ostream& operator<<(std::ostream&, const Matte&);
 }
 
 #endif

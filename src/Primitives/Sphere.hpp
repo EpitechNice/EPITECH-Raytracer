@@ -47,6 +47,8 @@ namespace Raytracer::Objects
 
             bool doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const;
             Raytracer::Color hitColor(const Math::Ray& ray) const;
+
+            static Math::Vector3D generateRandomPoint();
             Math::Ray bounce(const Math::Ray& other) const;
     };
 }

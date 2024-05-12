@@ -43,11 +43,16 @@ namespace Raytracer
 //TODO : Scattered, attenuation from record.material
     Math::Vector3D Core::getColorRay(Math::Ray& ray, int depth)
     {
-        (void) ray;
-        (void) depth;
-        // Math::Point3D intersectionPoint = ray.pointAt(2.0);
-        Math::Vector3D color = (this->_record.normal + 1) * 0.5;
+        Math::Ray scattered;
+        Math::Vector3D attenuation;
 
+        if (depth < 10 && this->_record.material.scatter(ray, this->_record, attenuation, scattered)) {
+            return this->getColorRay(scattered, depth++) * attenuation;
+        } else {
+// I don't know what value i have to put
+            Math::Vector3D(0.0,0.0,0.0);
+        }
+        Math::Vector3D color = Math::Vector3D(this->_record.normal + 1) * 0.5;
         return color;
     }
 
@@ -71,14 +76,14 @@ namespace Raytracer
     void Core::render(double screenWidth, double screenHeight)
     {
         Math::Ray ray;
-        int maxColorSample;
+//Decrease this value to accelerate render/Increase this value to better render (antialiasing)
+        int maxColorSample = 1;
         int ir, ig, ib;
+        Math::Point3D target;
 
         for (int y = (screenHeight - 1); y >= 0; y--) {
             for (int x = 0; x < screenWidth; x++) {
                 Math::Vector3D color(0.0, 0.0, 0.0);
-//Decrease this value to accelerate render/Increase this value to better render (antialiasing)
-                maxColorSample = 5;
 //Antialiasing process
                 for (int colorSample = 0; colorSample < maxColorSample; colorSample++) {
                     double u = double(x + drand48()) / double(screenWidth);
@@ -93,6 +98,7 @@ namespace Raytracer
                     }
                 }
                 color /= double(maxColorSample);
+                color = Math::Vector3D(sqrt(color.getValues()[0][0]), sqrt(color.getValues()[0][1]), sqrt(color.getValues()[0][2]));
 //TODO: Stdout to debug, to delete before end of project
                 std::cout << "{ " << x << ", " << y << " }\t" << color.getValues()[0][0] << "\t" << color.getValues()[0][1] << "\t" << color.getValues()[0][2] << std::endl;
                 ir = color.getValues()[0][0] * 255.99;
