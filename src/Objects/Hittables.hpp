@@ -36,8 +36,7 @@ namespace Raytracer
 
             std::size_t size() const;
 
-            bool didHit(const Math::Ray& ray, double distMin, double distMax, Raytracer::hitRecord& record) const;
-            // Raytracer::Color hitColor(const Math::Ray& ray, double distMin, double distMax, Raytracer::hitRecord& record) const;
+            Raytracer::hitRecord didHit(const Math::Ray& ray, double distMin, double distMax) const;
             void add(std::shared_ptr<Raytracer::APrimitive> obj);
             void extend(std::vector<std::shared_ptr<Raytracer::APrimitive>> objs);
 

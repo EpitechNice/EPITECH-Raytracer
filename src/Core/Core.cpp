@@ -41,16 +41,22 @@ namespace Raytracer
     }
 
 //TODO : Scattered, attenuation from record.material
-    Raytracer::Color Core::getColorRay(Math::Ray& ray, std::pair<size_t, size_t> pos, int depth)
+    Math::Vector3D Core::getColorRay(Math::Ray& ray, std::pair<size_t, size_t> pos, int depth)
     {
         (void) ray;
         (void) depth;
-        hitRecord record;
+        Math::Vector3D color;
+        double ir, ig, ib;
 
-        if (this->_hittables.didHit(ray, 0.001, MAXFLOAT, record))
-            return record.color;
-
-        return this->_image[pos.first][pos.second];
+        this->_record = this->_hittables.didHit(ray, 0.001, MAXFLOAT);
+        if (this->_record.hasHit) {
+            color = Math::Vector3D(this->_record.normal + 1) * 0.5;
+            return color;
+        }
+        ir = this->_image[pos.first][pos.second].getValues()[0][0] / 255.99;
+        ib = this->_image[pos.first][pos.second].getValues()[0][1] / 255.99;
+        ig = this->_image[pos.first][pos.second].getValues()[0][2] / 255.99;
+        return Math::Vector3D(ir, ib, ig);
     }
 
     void Core::render(double screenWidth, double screenHeight)
@@ -59,16 +65,13 @@ namespace Raytracer
         Threads::ShowThread display(screenHeight * screenWidth, displayIndex, screenWidth, screenHeight);
 
         Math::Ray ray; // = this->_camera->getRay(0, 0);
-        int maxColorSample = 5;
-        bool gotHit;
         double nx, ny;
-
-        // std::cout << this->getColorRay(ray, {0, 0}, 10) << std::endl;
+        int ir, ig, ib;
+        int maxColorSample = 5;
 
         for (int y = (screenHeight - 1); y >= 0; y--) {
             for (int x = 0; x < screenWidth; x++) {
-                Raytracer::Color color = Raytracer::Color(); // = this->_image[x][y];
-                gotHit = false;
+                Math::Vector3D color = Math::Vector3D();  // = this->_image[x][y];
 
                 for (int colorSample = 0; colorSample < maxColorSample; colorSample++) {
                     nx = double(x + drand48());
@@ -76,17 +79,14 @@ namespace Raytracer
                     double u = nx / double(screenWidth);
                     double v = ny / double(screenHeight);
                     ray = this->_camera->getRay(u, v);
-                    if (this->_hittables.didHit(ray, 0.001, MAXFLOAT, this->_record)) {
-                        gotHit = true;
-                        color += this->getColorRay(ray, {nx, ny}, 10);
-                    } else {
-                        color += this->_image[nx][ny];
-                    }
+                    color += this->getColorRay(ray, {nx, ny}, 10);
                 }
                 if (maxColorSample)
                     color /= double(maxColorSample);
-                if (gotHit)
-                    this->_image.set({x, y}, color);
+                ir = color.getValues()[0][0] * 255.99;
+		        ig = color.getValues()[0][1] * 255.99;
+		        ib = color.getValues()[0][2] * 255.99;
+                this->_image.set({x, y}, Raytracer::Color(ir, ig, ib));
                 displayIndex++;
                 display.drawPoint(this->_image[x][y], x, y);
             }

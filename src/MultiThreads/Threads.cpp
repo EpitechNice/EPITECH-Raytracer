@@ -70,7 +70,7 @@ namespace Threads
             if (this->_pointsToSet.size()) {
                 for (std::size_t i = 0; i < this->_pointsToSet.size(); i++) {
                     SDL_SetRenderDrawColor(this->_renderer, this->_pointsToSet[i].second[0][0], this->_pointsToSet[i].second[0][1], this->_pointsToSet[i].second[0][2], SDL_ALPHA_OPAQUE);
-                    SDL_RenderDrawPoint(this->_renderer, this->_width - this->_pointsToSet[i].first.first, this->_height - this->_pointsToSet[i].first.second);
+                    SDL_RenderDrawPoint(this->_renderer, this->_pointsToSet[i].first.first, this->_height - this->_pointsToSet[i].first.second);
                 }
                 this->_pointsToSet.clear();
             }

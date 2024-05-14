@@ -43,20 +43,13 @@ namespace Raytracer
     {
         private:
             libconfig::Config _config;
-            // std::vector<std::shared_ptr<Raytracer::APrimitive>> _primitiveList;
             Raytracer::Hittables _hittables;
             std::vector<std::shared_ptr<Raytracer::AObject>> _lightList;
             std::unique_ptr<Raytracer::Camera> _camera;
-
-            // const std::map<std::string, ConfigBuilder> _acceptedPrimitives = {
-            //     {"spheres", ConfigBuilder(ObjectFactory::createSpheresSettings)},
-            //     {"planes", ConfigBuilder(ObjectFactory::createPlanesSettings)},
-            // };
-
             Image _image;
+            hitRecord _record;
         protected:
         public:
-            hitRecord _record;
             Core(int argc, char** argv);
             ~Core() = default;
 
@@ -69,7 +62,7 @@ namespace Raytracer
             void loadLight();
 
             //Renderer
-            Raytracer::Color getColorRay(Math::Ray& ray, std::pair<size_t, size_t> pos, int depth);
+            Math::Vector3D getColorRay(Math::Ray& ray, std::pair<size_t, size_t> pos, int depth);
             void render(double screenWidth, double screenHeight);
     };
 }

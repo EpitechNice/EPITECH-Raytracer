@@ -26,8 +26,8 @@ namespace Raytracer
     Image::Image(std::pair<std::size_t, std::size_t> size)
     {
         this->fill(size, Raytracer::Color(DEFAULT_COLOR));
-        Raytracer::Color startValue(0x45, 0xa8, 0xff);
-        Raytracer::Color   endValue(0x9d, 0xd1, 0xff);
+        Raytracer::Color endValue(0x45, 0xa8, 0xff);
+        Raytracer::Color   startValue(0x9d, 0xd1, 0xff);
         Raytracer::Color currentValue;
 
         for (std::size_t j = 0; j < size.second; j++) {

@@ -89,7 +89,7 @@ namespace Raytracer
 
     Math::Ray Camera::getRay(double u, double v) const
     {
-        return {this->_origin, this->_lowerLeftCorner + this->_horizontal * u + this->_vertical * v + this->_origin.toVector3D()};
+        return {this->_origin, this->_lowerLeftCorner + this->_horizontal * u + this->_vertical * v - this->_origin.toVector3D()};
     }
 
     std::string Camera::str() const

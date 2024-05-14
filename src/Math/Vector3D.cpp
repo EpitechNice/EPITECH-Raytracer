@@ -103,9 +103,9 @@ namespace Math
 
     Vector3D Vector3D::operator-(const Vector3D& other) const
     {
-        return Vector3D(other[0][0] - this->_values[0][0],
-                       other[0][1] - this->_values[0][1],
-                       other[0][2] - this->_values[0][2]);
+        return Vector3D(this->_values[0][0] - other[0][0],
+                        this->_values[0][1] - other[0][1],
+                        this->_values[0][2] - other[0][2]);
     }
 
     Vector3D& Vector3D::operator+=(const Vector3D& other)

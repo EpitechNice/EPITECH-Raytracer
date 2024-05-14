@@ -30,6 +30,7 @@ namespace Raytracer
     class AMaterial;
     typedef struct hit_record_s
     {
+        bool hasHit;
         double distance;
         Math::Point3D intersectionPoint;
         Math::Vector3D normal;
