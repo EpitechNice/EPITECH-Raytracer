@@ -27,23 +27,17 @@
 
 namespace Raytracer
 {
-    class Color: public Math::Matrix<double>
+    class Color: public Math::Matrix<unsigned int>
     {
         public:
             Color();
-            Color(std::vector<double> values);
-            Color(std::vector<std::vector<double>> values);
-            Color(double r, double g, double b);
+            Color(std::vector<unsigned int> values);
+            Color(std::vector<std::vector<unsigned int>> values);
+            Color(unsigned int r, unsigned int g, unsigned int b);
             Color(const Color& other);
             ~Color() = default;
 
             Color& operator=(const Color& other);
-
-            Color operator+(const Color& other) const;
-            Color& operator+=(const Color& other);
-
-            Color operator/(double other) const;
-            Color& operator/=(double other);
 
             Color operator*(double scalar) const;
 

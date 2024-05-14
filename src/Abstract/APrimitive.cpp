@@ -19,12 +19,12 @@
 
 namespace Raytracer
 {
-    void APrimitive::setMaterial(Raytracer::Material material)
+    void APrimitive::setMaterial(std::shared_ptr<Raytracer::AMaterial> material)
     {
         this->_material = material;
     }
 
-    const Raytracer::Material& APrimitive::getMaterial() const
+    std::shared_ptr<Raytracer::AMaterial> APrimitive::getMaterial() const
     {
         return this->_material;
     }

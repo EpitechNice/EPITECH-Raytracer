@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Wed, Apr, 2024                                                     *
+ * EPITECH PROJECT - Mon, May, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Sphere                                                                           *
+ *     BuildMaterials                                                                   *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -17,42 +17,26 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_SPHERE_HPP
-    #define INCLUDED_SPHERE_HPP
+#ifndef INCLUDED_BUILDMATERIALS_HPP
+    #define INCLUDED_BUILDMATERIALS_HPP
 
-    #include "headers.hpp"
-    #include "../Abstract/APrimitive.hpp"
+    #include "Matte.hpp"
+    #include "Metal.hpp"
 
-    #include "../Math/Vector3D.hpp"
-    #include "../Math/Point3D.hpp"
-    #include "../Math/Ray.hpp"
-
-namespace Raytracer::Objects
+namespace Raytracer
 {
-    class Sphere:
-       public Raytracer::APrimitive
+    class BuildMaterials
     {
         private:
-            double _radius;
+            std::map<std::string, std::shared_ptr<Raytracer::AMaterial>> _materials;
+
+            void build();
+            BuildMaterials();
 
         public:
-            Sphere(std::shared_ptr<Raytracer::AMaterial> material,
-                Math::Point3D origin = Math::Point3D(0, 0, -1),
-                double radius = 1);
-            ~Sphere() = default;
-
-            std::string str() const override;
-
-            double getRadius() const { return this->_radius; }
-
-            bool doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const;
-            Raytracer::Color hitColor(const Math::Ray& ray) const;
-            Math::Ray bounce(const Math::Ray& other) const;
-
-            static Math::Vector3D generateRandomPoint();
+            static BuildMaterials& get();
+            std::shared_ptr<Raytracer::AMaterial> operator[](std::string key);
     };
 }
-
-std::ostream& operator<<(std::ostream& os, const Raytracer::Objects::Sphere& obj);
 
 #endif

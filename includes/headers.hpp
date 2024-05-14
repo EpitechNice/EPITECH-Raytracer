@@ -18,9 +18,7 @@
     #include <memory>
     #include <sstream>
     #include <string>
-    #include <sys/stat.h>
     #include <thread>
-    #include <unistd.h>
     #include <vector>
     #include <libconfig.h++>
 

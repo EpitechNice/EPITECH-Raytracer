@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Mon, May, 2024                                                     *
+ * EPITECH PROJECT - Sun, May, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     FileObserver                                                                     *
+ *     Hittables                                                                        *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -15,52 +15,34 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#include "FileObserver.hpp"
-#include <sys/stat.h>
+#ifndef INCLUDED_HITtABLES_HPP
+    #define INCLUDED_HITtABLES_HPP
 
-namespace Threads
+    #include "headers.hpp"
+    #include "../Abstract/APrimitive.hpp"
+    #include "../Math/Ray.hpp"
+    #include "../Image/Colors.hpp"
+
+namespace Raytracer
 {
-    FileObserver::FileObserver(std::string filename):
-        _filename(filename), _running(false)
+    class Hittables
     {
-        this->_thread = std::thread(&FileObserver::watchThread, this);
-    }
+        private:
+            std::vector<std::shared_ptr<Raytracer::APrimitive>> _hittables;
+        public:
+            ~Hittables() = default;
+            Hittables();
+            Hittables(std::initializer_list<std::shared_ptr<Raytracer::APrimitive>> list);
 
-    FileObserver::~FileObserver()
-    {
-        this->_running = false;
-        if (this->_thread.joinable())
-            this->_thread.join();
-    }
+            std::size_t size() const;
 
-    void FileObserver::watchThread()
-    {
-        struct stat attr;
-        if (stat(this->_filename.c_str(), &attr) == -1)
-            throw Exceptions::FileNotFoundError("Could not find file \"" + this->_filename + "\"", EXCEPTION_INFOS);
+            bool didHit(const Math::Ray& ray, double distMin, double distMax, Raytracer::hitRecord& record) const;
+            // Raytracer::Color hitColor(const Math::Ray& ray, double distMin, double distMax, Raytracer::hitRecord& record) const;
+            void add(std::shared_ptr<Raytracer::APrimitive> obj);
+            void extend(std::vector<std::shared_ptr<Raytracer::APrimitive>> objs);
 
-        this->_lastModifiedTime = attr.st_mtime;
-        this->_running = true;
-
-        while (this->_running) {
-            stat(this->_filename.c_str(), &attr);
-            if (attr.st_mtime != this->_lastModifiedTime)
-                this->_lastModifiedTime = attr.st_mtime;
-            usleep(this->WAIT_TIME);
-        }
-    }
-
-    void FileObserver::stop()
-    {
-        this->_running = false;
-    }
-
-    void FileObserver::wait() const
-    {
-        while (!this->_running)
-            usleep(this->WAIT_TIME);
-        time_t currentModTime = this->_lastModifiedTime;
-        while (this->_lastModifiedTime == currentModTime && this->_running)
-            usleep(this->WAIT_TIME);
-    }
+            std::shared_ptr<Raytracer::APrimitive> operator[](std::size_t index) const;
+    };
 }
+
+#endif

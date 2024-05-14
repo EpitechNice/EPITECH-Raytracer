@@ -25,7 +25,7 @@ namespace Raytracer
         Matrix({0, 0, 0})
     {}
 
-    Color::Color(std::vector<double> values)
+    Color::Color(std::vector<unsigned int> values)
     {
         if (values.size() != 3)
             throw Exceptions::InvalidSizeError("Awaiting 3 points but got " + values.size(),
@@ -33,7 +33,7 @@ namespace Raytracer
         this->_values = {values};
     }
 
-    Color::Color(std::vector<std::vector<double>> values)
+    Color::Color(std::vector<std::vector<unsigned int>> values)
     {
         if (values.size() != 1 || values[0].size() != 3)
             throw Exceptions::InvalidSizeError("Awaiting 1x3 array but got " +
@@ -43,7 +43,7 @@ namespace Raytracer
         this->_values = values;
     }
 
-    Color::Color(double r, double g, double b):
+    Color::Color(unsigned int r, unsigned int g, unsigned int b):
         Matrix({r, g, b})
     {}
 
@@ -54,36 +54,6 @@ namespace Raytracer
     Color& Color::operator=(const Color& other)
     {
         this->_values = other._values;
-        return *this;
-    }
-
-    Color Color::operator+(const Color& other) const
-    {
-        return Color(this->_values[0][0] + other._values[0][0],
-                     this->_values[0][1] + other._values[0][1],
-                     this->_values[0][2] + other._values[0][2]);
-    }
-
-    Color& Color::operator+=(const Color& other)
-    {
-        this->_values[0][0] += other._values[0][0];
-        this->_values[0][1] += other._values[0][1];
-        this->_values[0][2] += other._values[0][2];
-        return *this;
-    }
-
-    Color Color::operator/(double other) const
-    {
-        return Color(this->_values[0][0] / other,
-                     this->_values[0][1] / other,
-                     this->_values[0][2] / other);
-    }
-
-    Color& Color::operator/=(double other)
-    {
-        this->_values[0][0] /= other;
-        this->_values[0][1] /= other;
-        this->_values[0][2] /= other;
         return *this;
     }
 
@@ -102,9 +72,9 @@ namespace Raytracer
     Color Color::operator*(double scalar) const
     {
         Color result(*this);
-        result._values[0][0] = static_cast<double>(result._values[0][0] * scalar);
-        result._values[0][1] = static_cast<double>(result._values[0][1] * scalar);
-        result._values[0][2] = static_cast<double>(result._values[0][2] * scalar);
+        result._values[0][0] = static_cast<unsigned int>(result._values[0][0] * scalar);
+        result._values[0][1] = static_cast<unsigned int>(result._values[0][1] * scalar);
+        result._values[0][2] = static_cast<unsigned int>(result._values[0][2] * scalar);
         return result;
     }
 
@@ -114,3 +84,4 @@ namespace Raytracer
         return os;
     }
 }
+

@@ -1,10 +1,11 @@
-/*                                                                                      *
- * EPITECH PROJECT - Mon, May, 2024                                                     *
- * Title           - EPITECH-Raytracer                                                  *
- * Description     -                                                                    *
- *     Includes                                                                         *
+/* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * -----------------------------------------------------------------------------------  *
+ * EPITECH PROJECT - Mon, May, 2024                                                     *
+ * Title           - Raytracer                                                          *
+ * Description     -                                                                    *
+ *     BuildMaterials                                                                   *
+ *                                                                                      *
+ * ------------------------------------------------------------------------------------ *
  *                                                                                      *
  *             ███████╗██████╗ ██╗████████╗███████╗ ██████╗██╗  ██╗                     *
  *             ██╔════╝██╔══██╗██║╚══██╔══╝██╔════╝██╔════╝██║  ██║                     *
@@ -13,16 +14,37 @@
  *             ███████╗██║     ██║   ██║   ███████╗╚██████╗██║  ██║                     *
  *             ╚══════╝╚═╝     ╚═╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝                     *
  *                                                                                      *
- * -----------------------------------------------------------------------------------  */
+ * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDES_HPP
-    #define INCLUDES_HPP
+#include "BuildMaterials.hpp"
 
-    #include "configs.hpp"
-    #include "headers.hpp"
+namespace Raytracer
+{
+    void BuildMaterials::build()
+    {
+        this->_materials["metal"] = std::make_shared<Raytracer::Materials::Metal>();
+        this->_materials["matte"] = std::make_shared<Raytracer::Materials::Matte>();
+    }
 
-    #include "Interface/IObject.hpp"
-    #include "Interface/IPrimitive.hpp"
-    #include "Interface/IMaterial.hpp"
+    BuildMaterials::BuildMaterials()
+    {
+        this->build();
+    }
 
-#endif
+    BuildMaterials& BuildMaterials::get()
+    {
+        static BuildMaterials instance;
+        return instance;
+    }
+
+    std::shared_ptr<Raytracer::AMaterial> BuildMaterials::operator[](std::string key)
+    {
+        std::string lowerCaseKey = "";
+        for (std::size_t i = 0; i < key.size(); i++)
+            lowerCaseKey += std::tolower(key[i]);
+        if (!this->_materials.contains(key))
+            throw Exceptions::KeyError("No such material named " + key, EXCEPTION_INFOS);
+
+        return this->_materials.at(lowerCaseKey);
+    }
+}

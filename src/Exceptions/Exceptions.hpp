@@ -127,10 +127,10 @@ namespace Exceptions
             {}
     };
 
-    class FileNotFoundError: public Exceptions::Exception
+    class KeyError: public Exceptions::Exception
     {
         public:
-            FileNotFoundError(std::string what = "File was not found",
+            KeyError(std::string what = "Asked key does not exists",
                              std::pair<std::string, std::pair<std::string, std::size_t>> position = {"", {"", 0}}):
             Exceptions::Exception(what, position)
             {}

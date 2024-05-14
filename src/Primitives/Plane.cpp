@@ -20,7 +20,7 @@
 
 namespace Raytracer::Objects
 {
-    Plane::Plane(Math::Point3D origin, Raytracer::Material material, double size)
+    Plane::Plane(std::shared_ptr<Raytracer::AMaterial> material, Math::Point3D origin, double size)
     {
         this->_origin = origin;
         this->_material = material;
@@ -32,15 +32,32 @@ namespace Raytracer::Objects
         return this->_size;
     }
 
-    bool Plane::doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const
+   bool Plane::doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const
     {
-        (void)other;
-        (void)distMin;
-        (void)distMax;
-        (void)record;
+        Math::Vector3D normal = _direction + Math::Vector3D(0, -90, 0);
+        double denom = normal.dot(other.getDirection());
+    
+        if (denom > 1e-6) {
+            Math::Vector3D p0l0 = _origin - other.getOrigin();
+            double t = p0l0.dot(normal) / denom;
+            Math::Point3D p = other.getOrigin() + (other.getDirection());
+            Math::Vector3D v = p.translation(_origin);
+            double dist = v.dot(v);
+            if (t >= 0 && distMin < dist && dist < distMax) {
+                record.distance = dist;
+                record.intersectionPoint = other.pointAt(record.distance);
+                record.normal = normal;
+                record.material = this->_material;
+                return (true);
+            }
+        }
         return false;
-        // double denominator = other.getDirection().dot(record.normal);
-        // return denominator != 0;
+    }
+
+    Raytracer::Color Plane::hitColor(const Math::Ray& ray) const {
+        (void)ray;
+        return Raytracer::Color(0, 0, 0);
+        //todo
     }
 
     Math::Ray Plane::bounce(const Math::Ray& other) const

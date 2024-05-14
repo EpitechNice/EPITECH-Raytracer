@@ -41,13 +41,14 @@ namespace Math
             Vector3D normalised() const;
 
             static Vector3D makeFromNormalized(const Vector3D& obj, double length);
-
+            static Vector3D reflexionLaw(const Vector3D& incidentVector, const Vector3D& surfaceVector);
             friend std::ostream& operator<<(std::ostream& os, const Math::Vector3D& obj);
             Vector3D& operator=(const Vector3D& other);
             Point3D operator+ (const Point3D& other) const;
             Vector3D operator+ (const Vector3D& other) const;
             Point3D operator- (const Point3D& other) const;
             Vector3D operator- (const Vector3D& other) const;
+            Vector3D operator*(const Vector3D& other) const;
             Vector3D& operator+=(const Vector3D &other);
 
             Vector3D operator+ (double other) const;

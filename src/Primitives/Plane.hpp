@@ -32,14 +32,15 @@ namespace Raytracer::Objects
             double _size;
 
         public:
-            Plane(Math::Point3D origin = Math::Point3D(0, 1, 0),
-                Raytracer::Material material = Raytracer::Material(),
+            Plane(std::shared_ptr<Raytracer::AMaterial> material,
+                Math::Point3D origin = Math::Point3D(0, 1, 0),
                 double size = 0.0);
             ~Plane() = default;
 
             double getSize() const;
 
             bool doesHit(const Math::Ray& other, double distMin, double distMax, hitRecord& record) const override;
+            Raytracer::Color hitColor(const Math::Ray& ray) const override;
             Math::Ray bounce(const Math::Ray& other) const override;
             std::string str() const override;
 

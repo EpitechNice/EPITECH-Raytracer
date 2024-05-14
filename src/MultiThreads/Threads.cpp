@@ -17,7 +17,7 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#include "Thread.hpp"
+#include "Threads.hpp"
 
 namespace Threads
 {
@@ -78,7 +78,7 @@ namespace Threads
 
             if (!(rand() % 300) && this->_phrases.size()) {
                 std::size_t index = rand() % this->_phrases.size();
-                std::cout << "\r[======] " << this->_phrases[index] << std::endl;
+                std::cout << "\r[====] " << this->_phrases[index] << std::endl;
                 this->_phrases.erase(this->_phrases.begin() + index);
             }
 
@@ -86,7 +86,7 @@ namespace Threads
 
             std::cout << display.str() << std::flush;
             display.clear();
-            ShowThread::loop();
+            this->loop();
         }
     }
 

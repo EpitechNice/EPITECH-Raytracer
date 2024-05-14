@@ -3,7 +3,7 @@
  * EPITECH PROJECT - Sun, May, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Hitables                                                                         *
+ *     Hittables                                                                        *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
@@ -16,44 +16,57 @@
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#include "Hitables.hpp"
+#include "Hittables.hpp"
 
 namespace Raytracer
 {
-    Hitables::Hitables():
-        _hitables({})
+    Hittables::Hittables():
+        _hittables({})
     {}
 
-    Hitables::Hitables(std::initializer_list<std::shared_ptr<Raytracer::APrimitive>> list):
-        _hitables(list)
+    Hittables::Hittables(std::initializer_list<std::shared_ptr<Raytracer::APrimitive>> list):
+        _hittables(list)
     {}
 
-    Raytracer::Color Hitables::hitColor(const Math::Ray& ray, double distMin, double distMax, Raytracer::hitRecord& record) const
+    std::size_t Hittables::size() const
     {
-        double lowestDistance = -1;
-        Raytracer::Color winnerColor(-1, -1, -1);
+        return this->_hittables.size();
+    }
 
-        for (std::size_t i = 0; i < this->_hitables.size(); i++) {
-            if (!this->_hitables[i].get()->doesHit(ray, distMin, distMax, record))
+    bool Hittables::didHit(const Math::Ray& ray, double distMin, double distMax, Raytracer::hitRecord& record) const
+    {
+        Raytracer::hitRecord tempRecord;
+        double lowestDistance = -1;
+
+        for (std::size_t i = 0; i < this->_hittables.size(); i++) {
+            if (!this->_hittables[i].get()->doesHit(ray, distMin, ((lowestDistance == -1) ? distMax : lowestDistance), tempRecord))
                 continue;
-            if (lowestDistance == -1 ||
-                record.distance < lowestDistance) {
-                lowestDistance = record.distance;
-                winnerColor = record.material.getPattern()[0][0]; //TODO: Make it so it gets the actual position, not the point /\ <
-            }
+            lowestDistance = tempRecord.distance;
+            record.color = tempRecord.color;
+            record.distance = tempRecord.distance;
+            record.intersectionPoint = tempRecord.intersectionPoint;
+            record.material = tempRecord.material;
+            record.normal = tempRecord.normal;
         }
 
-        return winnerColor;
+        return lowestDistance != -1;
     }
 
-    void Hitables::add(std::shared_ptr<Raytracer::APrimitive> obj)
+    void Hittables::add(std::shared_ptr<Raytracer::APrimitive> obj)
     {
-        this->_hitables.push_back(obj);
+        this->_hittables.push_back(obj);
     }
 
-    void Hitables::extend(std::vector<std::shared_ptr<Raytracer::APrimitive>> objs)
+    void Hittables::extend(std::vector<std::shared_ptr<Raytracer::APrimitive>> objs)
     {
         for (std::size_t i = 0; i < objs.size(); i++)
-            this->_hitables.push_back(objs[i]);
+            this->_hittables.push_back(objs[i]);
+    }
+
+    std::shared_ptr<Raytracer::APrimitive> Hittables::operator[](std::size_t index) const
+    {
+        if (index >= this->_hittables.size())
+            throw Exceptions::InvalidPositionError(std::string("Asked position ") + std::to_string(index) + " of Hittables, but it's only " + std::to_string(this->_hittables.size()) + " of length.", EXCEPTION_INFOS);
+        return this->_hittables[index];
     }
 }

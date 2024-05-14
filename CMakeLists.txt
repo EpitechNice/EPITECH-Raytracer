@@ -23,6 +23,7 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 )
 
 add_executable(raytracer
+    src/Abstract/AMaterial.cpp
     src/Abstract/AObject.cpp
     src/Abstract/APrimitive.cpp
     src/Core/Core.cpp
@@ -30,23 +31,24 @@ add_executable(raytracer
     src/Factory/ObjectFactory.cpp
     src/Image/Colors.cpp
     src/Image/Image.cpp
-    src/Material/Material.cpp
+    src/main.cpp
+    src/Material/BuildMaterials.cpp
+    src/Material/Matte.cpp
+    src/Material/Metal.cpp
     src/Math/Point3D.cpp
     src/Math/Ray.cpp
     src/Math/Vector3D.cpp
-    src/mmain.cpp
-    src/MultiThreading/Thread.cpp
+    src/main.cpp
+    src/MultiThreads/Threads.cpp
     src/Objects/Camera.cpp
-    src/Objects/Hitables.cpp
+    src/Objects/Hittables.cpp
     src/Objects/Light.cpp
-    src/Observer/FileObserver.cpp
     src/Primitives/Plane.cpp
     src/Primitives/Sphere.cpp
 )
 
-
 target_include_directories(raytracer PUBLIC
-./includes/
+    ./includes/
 )
 
 target_link_libraries(raytracer

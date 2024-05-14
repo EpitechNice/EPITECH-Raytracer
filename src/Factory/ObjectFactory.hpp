@@ -22,6 +22,7 @@
 
     #include <memory>
     #include "../Abstract/AObject.hpp"
+    #include "../Material/BuildMaterials.hpp"
     #include "../Objects/Light.hpp"
     #include "../Objects/Camera.hpp"
     #include "../Primitives/Sphere.hpp"
@@ -47,15 +48,15 @@ namespace Raytracer
                                                                    Math::Vector3D direction = Math::Vector3D(0, 0, 0),
                                                                    double fieldOfView = 90.0);
 
-            static std::unique_ptr<Raytracer::Objects::Sphere> createSphere(Math::Point3D origin = Math::Point3D(0, 0, 0),
-                                                                      Raytracer::Material material = Raytracer::Material(),
-                                                                      double radius = 1);
+            static std::unique_ptr<Raytracer::Objects::Sphere> createSphere(std::shared_ptr<Raytracer::AMaterial> material,
+                                                                            Math::Point3D origin,
+                                                                            double radius);
 
             static std::vector<std::shared_ptr<Raytracer::APrimitive>> createSpheresSettings(libconfig::Setting& settings);
 
-            static std::unique_ptr<Raytracer::Objects::Plane> createPlane(Math::Point3D origin = Math::Point3D(0, 1, 0),
-                                                                    Raytracer::Material material = Raytracer::Material(),
-                                                                    double size = 0.0);
+            static std::unique_ptr<Raytracer::Objects::Plane> createPlane(std::shared_ptr<Raytracer::AMaterial> material,
+                                                                          Math::Point3D origin,
+                                                                          double size);
 
             static std::vector<std::shared_ptr<Raytracer::APrimitive>> createPlanesSettings(libconfig::Setting& settings);
     };

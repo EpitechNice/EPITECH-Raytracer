@@ -1,38 +1,41 @@
 /* ------------------------------------------------------------------------------------ *
  *                                                                                      *
- * EPITECH PROJECT - Fri, Apr, 2024                                                     *
+ * EPITECH PROJECT - Mon, May, 2024                                                     *
  * Title           - Raytracer                                                          *
  * Description     -                                                                    *
- *     Material                                                                         *
+ *     IIMaterial                                                                        *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ *
  *                                                                                      *
- *       ▄▀▀█▄▄▄▄  ▄▀▀▄▀▀▀▄  ▄▀▀█▀▄    ▄▀▀▀█▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▄▄▄▄   ▄▀▀▄ ▄▄             *
- *      ▐  ▄▀   ▐ █   █   █ █   █  █  █    █  ▐ ▐  ▄▀   ▐ █ █    ▌ █  █   ▄▀            *
- *        █▄▄▄▄▄  ▐  █▀▀▀▀  ▐   █  ▐  ▐   █       █▄▄▄▄▄  ▐ █      ▐  █▄▄▄█             *
- *        █    ▌     █          █        █        █    ▌    █         █   █             *
- *       ▄▀▄▄▄▄    ▄▀        ▄▀▀▀▀▀▄   ▄▀        ▄▀▄▄▄▄    ▄▀▄▄▄▄▀   ▄▀  ▄▀             *
- *       █    ▐   █         █       █ █          █    ▐   █     ▐   █   █               *
- *       ▐        ▐         ▐       ▐ ▐          ▐        ▐         ▐   ▐               *
+ *             ███████╗██████╗ ██╗████████╗███████╗ ██████╗██╗  ██╗                     *
+ *             ██╔════╝██╔══██╗██║╚══██╔══╝██╔════╝██╔════╝██║  ██║                     *
+ *             █████╗  ██████╔╝██║   ██║   █████╗  ██║     ███████║                     *
+ *             ██╔══╝  ██╔═══╝ ██║   ██║   ██╔══╝  ██║     ██╔══██║                     *
+ *             ███████╗██║     ██║   ██║   ███████╗╚██████╗██║  ██║                     *
+ *             ╚══════╝╚═╝     ╚═╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝                     *
  *                                                                                      *
  * ------------------------------------------------------------------------------------ */
 
-#ifndef INCLUDED_MATERIAL_HPP
-    #define INCLUDED_MATERIAL_HPP
+#ifndef INCLUDED_IMATERIAL_HPP
+    #define INCLUDED_IMATERIAL_HPP
 
-    #include "configs.hpp"
     #include "headers.hpp"
+    #include "includes.hpp"
     #include "../../src/Image/Image.hpp"
+    #include "../../src/Math/Ray.hpp"
+
 
 namespace Raytracer
 {
     class IMaterial
     {
         public:
-            virtual std::string str() const = 0;
-
             virtual const Raytracer::Image& getPattern() const = 0;
             virtual void setPattern(Raytracer::Image pattern) = 0;
+            virtual bool scatter(const Math::Ray& ray, const hitRecord& record, Math::Vector3D& attenuation, Math::Ray& scattered) const = 0;
+
+
+            std::string str() const;
     };
 }
 
