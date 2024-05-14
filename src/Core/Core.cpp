@@ -40,17 +40,36 @@ namespace Raytracer
         return;
     }
 
-//TODO : Scattered, attenuation from record.material
+        Math::Vector3D generateRandomPoint()
+        {
+            Math::Vector3D point;
+
+            do {
+                point = Math::Vector3D(drand48(),drand48(),drand48()) * 2.9 - Math::Vector3D(1.0, 1.0, 1.0);
+            } while (point.dot(point) >= 1.0);
+
+            return point;
+        }
+
     Math::Vector3D Core::getColorRay(Math::Ray& ray, std::pair<size_t, size_t> pos, int depth)
     {
         (void) ray;
         (void) depth;
         Math::Vector3D color;
+        Math::Vector3D target;
+        Math::Vector3D minus;
+        Math::Ray new_ray;
         double ir, ig, ib;
 
         this->_record = this->_hittables.didHit(ray, 0.001, MAXFLOAT);
         if (this->_record.hasHit) {
-            color = Math::Vector3D(this->_record.normal + 1) * 0.5;
+            Math::Vector3D vector_to_delete(this->_record.intersectionPoint.getValues()[0][0], this->_record.intersectionPoint.getValues()[0][1],this->_record.intersectionPoint.getValues()[0][2]);
+            target = vector_to_delete + this->_record.normal + generateRandomPoint();
+            minus = Math::Vector3D((target - this->_record.intersectionPoint).getValues()[0][0], (target - this->_record.intersectionPoint).getValues()[0][1],(target - this->_record.intersectionPoint).getValues()[0][2]);
+            new_ray = Math::Ray(this->_record.intersectionPoint, minus * (-1));
+            Math::Vector3D tempColor = getColorRay(new_ray, pos, 10);
+
+            color = tempColor * 0.5;
             return color;
         }
         ir = this->_image[pos.first][pos.second].getValues()[0][0] / 255.99;
@@ -64,10 +83,10 @@ namespace Raytracer
         std::size_t displayIndex = 0;
         Threads::ShowThread display(screenHeight * screenWidth, displayIndex, screenWidth, screenHeight);
 
-        Math::Ray ray; // = this->_camera->getRay(0, 0);
+        Math::Ray ray;
         double nx, ny;
         int ir, ig, ib;
-        int maxColorSample = 5;
+        int maxColorSample = 1;
 
         for (int y = (screenHeight - 1); y >= 0; y--) {
             for (int x = 0; x < screenWidth; x++) {
@@ -81,8 +100,8 @@ namespace Raytracer
                     ray = this->_camera->getRay(u, v);
                     color += this->getColorRay(ray, {nx, ny}, 10);
                 }
-                if (maxColorSample)
-                    color /= double(maxColorSample);
+                color /= double(maxColorSample);
+                color = Math::Vector3D(sqrt(color.getValues()[0][0]), sqrt(color.getValues()[0][1]), sqrt(color.getValues()[0][2]));
                 ir = color.getValues()[0][0] * 255.99;
 		        ig = color.getValues()[0][1] * 255.99;
 		        ib = color.getValues()[0][2] * 255.99;

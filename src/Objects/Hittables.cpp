@@ -33,7 +33,6 @@ namespace Raytracer
         return this->_hittables.size();
     }
 
-//TODO: CLEMENT SOURCE CODE
     Raytracer::hitRecord Hittables::didHit(const Math::Ray& ray, double distMin, double distMax) const
     {
         Raytracer::hitRecord record;
@@ -50,21 +49,6 @@ namespace Raytracer
             }
         }
         return record;
-        // Raytracer::hitRecord tempRecord;
-        // double lowestDistance = -1;
-
-        // for (std::size_t i = 0; i < this->_hittables.size(); i++) {
-        //     if (!this->_hittables[i].get()->doesHit(ray, distMin, ((lowestDistance == -1) ? distMax : lowestDistance), tempRecord))
-        //         continue;
-        //     lowestDistance = tempRecord.distance;
-        //     record.color = tempRecord.color;
-        //     record.distance = tempRecord.distance;
-        //     record.intersectionPoint = tempRecord.intersectionPoint;
-        //     record.material = tempRecord.material;
-        //     record.normal = tempRecord.normal;
-        // }
-
-        // return lowestDistance != -1;
     }
 
     void Hittables::add(std::shared_ptr<Raytracer::APrimitive> obj)
