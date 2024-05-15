@@ -36,7 +36,7 @@ namespace Raytracer::Objects
     {
         Math::Vector3D normal = _direction + Math::Vector3D(0, -90, 0);
         double denom = normal.dot(other.getDirection());
-    
+
         if (denom > 1e-6) {
             Math::Vector3D p0l0 = _origin - other.getOrigin();
             double t = p0l0.dot(normal) / denom;

@@ -58,8 +58,7 @@ namespace Raytracer
                     record.intersectionPoint = other.pointAt(record.distance);
                     record.normal = (record.intersectionPoint - this->_origin) / this->_radius;
                     record.material = this->_material;
-        
-                    // record.color = record.material.get()->getPattern()[0][0];
+                    record.color = record.material.get()->getPattern()[0][0];
                     return true;
                 }
                 tmp = (-h + sqrt(h * h - a * c)) / a;

@@ -32,11 +32,15 @@ namespace Raytracer::Materials
     {
         private:
             Math::Vector3D _albedo;
+            int _fuzz;
         public:
             Metal();
             ~Metal() = default;
 
             Math::Vector3D getAlbedo() const;
+            int getFuzz() const;
+
+            void setFuzz(int fuzz);
 
             bool scatter(const Math::Ray& ray, const hitRecord& record, Math::Vector3D& attenuation, Math::Ray& scattered) const;
 
