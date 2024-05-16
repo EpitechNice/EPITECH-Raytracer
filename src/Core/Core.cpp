@@ -79,7 +79,7 @@ namespace Raytracer
         Math::Ray ray;
         double nx, ny;
         int ir, ig, ib;
-        int maxColorSample = 2;
+        int maxColorSample = 5;
 
         for (int y = (screenHeight - 1); y >= 0; y--) {
             for (int x = 0; x < screenWidth; x++) {
